@@ -36,7 +36,7 @@
                                     <small>
                                         ({% for system in campaign.system.all %}
                                             <a style="position: relative;" class="stretched-link"
-                                               href=systems/{{ system.id }}>{{ system.name }}</a>
+                                               href=/database/systems/{{ system.id }}>{{ system.name }}</a>
                                             {% if not forloop.last %},&nbsp{% endif %}
                                         {% endfor %})
                                     </small>

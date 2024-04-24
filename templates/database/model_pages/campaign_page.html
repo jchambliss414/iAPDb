@@ -2,9 +2,9 @@
 {% block campaign_page %}
 <div class="body-container">
     <div class="row no-gutters">
-        <form method="post">
+        <form class="page-buttons_form" method="post">
             {% csrf_token %}
-            <div class="page-buttons">
+            <div class="page-buttons" >
                 <button name="previousEnt" type="submit">Previous Campaign</button>
                 <button name="nextEnt" type="submit">Next Campaign</button>
             </div>

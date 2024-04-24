@@ -1,21 +1,47 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">iAPdb</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-lg-3">
+    <a class="navbar-brand" href="#">iAPDb</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-     <div class="navbar-nav d-flex w-100 justify-content-end">
-        <a class="nav-link active" aria-current="page" href="/">Home</a>
-        <a class="nav-link" href="/database">Database</a>
-        {% if user.is_authenticated %}
-            <a class="nav-link" href="/members/{{user.id}}/inbox">Inbox</a>
-            <a class="nav-link" href="/members/logout">Logout</a>
-        {% else %}
-            <a class="nav-link" href="/members/login">Login</a>
-        {% endif %}
-      </div>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto d-flex w-100">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Database</a>
+            </li>
+            <li class="nav-item">
+                {% if user.is_authenticated %}
+                    <a class="nav-link" href="/members/{{ user.id }}/inbox">Inbox</a>
+                    <a class="nav-link" href="/members/logout">Logout</a>
+                {% else %}
+                    <a class="nav-link" href="/members/login">Login</a>
+                {% endif %}
+            </li>
+        </ul>
+        <form class="form-inline" style="width: 50%">
+            <div class="input-group">
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" name="searched" aria-label="Search">
+                <select name="entity_type" id="entity_type">
+                    <option value="all" selected="selected">All</option>
+                    <option value="all">Campaigns</option>
+                    <option value="all">Actors</option>
+                    <option value="all">PCs</option>
+                    <option value="all">Parties</option>
+                    <option value="all">Producers</option>
+                    <option value="all">Systems</option>
+                    <option value="all">Publishers</option>
+                </select>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </div>
+        </form>
+
     </div>
-  </div>
 </nav>
+
+

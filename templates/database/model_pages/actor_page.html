@@ -49,7 +49,7 @@
                                                     {% for party in pc.member_of.all %}
                                                         {% for campaign in party.campaigns.all %}
                                                             <a style="position: relative;" class="stretched-link"
-                                                               href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                               href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
                                                             {% if not forloop.last %},&nbsp{% endif %}
                                                         {% endfor %}
                                                     {% endfor %}
@@ -57,7 +57,7 @@
                                                 {% if pc.guest_of.all %}
                                                     {% for campaign in pc.guest_of.all %}
                                                         <a style="position: relative;" class="stretched-link"
-                                                           href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                           href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
                                                     {% endfor %}
                                                 {% endif %}
                                             </small>
@@ -90,7 +90,7 @@
                                                         {% for party in pc.member_of.all %}
                                                             {% for campaign in party.campaigns.all %}
                                                                 <a style="position: relative;" class="stretched-link"
-                                                                   href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                   href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
                                                                 {% if not forloop.last %},&nbsp{% endif %}
                                                             {% endfor %}
                                                         {% endfor %}
@@ -98,7 +98,7 @@
                                                     {% if pc.guest_of.all %}
                                                         {% for campaign in pc.guest_of.all %}
                                                             <a style="position: relative;" class="stretched-link"
-                                                               href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                               href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
                                                         {% endfor %}
                                                     {% endif %}
                                                 </small>

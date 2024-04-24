@@ -52,8 +52,9 @@ body {
 hr {
     width: 100%;
     border: 1px solid #262322;
+    padding: 0;
+    margin: 0;
 }
-
 
     /* -------------- Tables and Elements --------------*/
 
@@ -180,6 +181,11 @@ td.center{
 .page-buttons {
     display: flex;
     justify-content: space-between;
+}
+
+.page-buttons_form {
+    padding: 1%;
+    background-color: #262322;
 }
 
 .card-title {

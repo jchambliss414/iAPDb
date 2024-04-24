@@ -68,7 +68,7 @@
                                             <small>
                                                 {% for producer in campaign.produced_by.all %}
                                                     <a style="position: relative;" class="stretched-link"
-                                                       href=producers/{{ producer.id }}>{{ producer.name }}</a>
+                                                       href=/database/producers/{{ producer.id }}>{{ producer.name }}</a>
                                                     {% if not forloop.last %},&nbsp{% endif %}
                                                 {% endfor %}
                                             </small>
