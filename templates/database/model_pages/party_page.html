@@ -1,0 +1,90 @@
+{% extends 'base_template.html' %}
+{% block party_page %}
+<div class="body-container">
+    <div class="row no-gutters">
+        <form method="post">
+            {% csrf_token %}
+            <div class="page-buttons">
+                <button name="previousEnt" type="submit">Previous Party</button>
+                <button name="nextEnt" type="submit">Next Party</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div class="row no-gutters">
+        <div class="col-5">
+            <h1 class="dark">{{ party.name }}</h1>
+            <img class="model-img" src={{ party.image_url }}>
+            <a class="subtitle" href='#'>Edit Party</a>
+            <p class="dark">{{ party.blurb }}</p>
+        </div>
+        <div class="col-7">
+        <div class="card-buttons">
+            <button>Follow Party</button>
+        </div>
+        <!--    Nav Bar              -->
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-members-tab" data-bs-toggle="tab" data-bs-target="#nav-members" type="button" role="tab" aria-controls="nav-members" aria-selected="true">Members</button>
+                    <button class="nav-link" id="nav-campaigns-tab" data-bs-toggle="tab" data-bs-target="#nav-campaigns" type="button" role="tab" aria-controls="nav-campaigns" aria-selected="true">Campaigns</button>
+                </div>
+            </nav>
+        <!--    Content      -->
+            <div class="tab-content" id="nav-tabContent">
+            <!--        Members       -->
+                <div class="tab-pane fade show active" id="nav-members" role="tabpanel" aria-labelledby="nav-members-tab" tabindex="0">
+                    <h2 class="dark">Members</h2>
+                    {% for pc in party.members.all %}
+                        <div class="card_md rounded-start dark-background" style="max-width: 100%; height: 300px;">
+                            <div class="row" style="max-width: 100%; height: inherit; position: relative; ">
+                                <div class="col-md-5 my-auto">
+                                    <img class="img-fluid rounded-start" style="width:200px; height: 200px; object-fit: cover; object-position: 20% 0" src={{ pc.image_url }}>
+                                </div>
+                                <div class="col-md-7 my-auto">
+                                    <div class="card-body" style="height: inherit;">
+                                        <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a></h3>
+                                        <p class="subtitle">(Portrayed By - <a style="position: relative;" class="stretched-link" href=/database/actors/{{ pc.played_by.all.0.id }}>{{ pc.played_by.all.0.name }}</a>)</p>
+                                        <p class="card-text">{{ pc.blurb }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    {% endfor %}
+                </div>
+            <!--        Campaigns       -->
+                <div class="tab-pane fade" id="nav-campaigns" role="tabpanel" aria-labelledby="nav-campaigns-tab" tabindex="0">
+                    <h2 class="dark">Campaigns</h2>
+                    {% for campaign in party.campaigns.all %}
+                        <div class="card_md rounded-start dark-background" >
+                            <div class="row" style="max-width: 100%; height: inherit">
+                                <div class="col-md-5 my-auto">
+                                    <img class="img-fluid rounded-start" style="width:200px; height: 200px; object-fit: cover;" src={{ campaign.image_url }}>
+                                </div>
+                                <div class="col-md-7 my-auto">
+                                    <div class="card-body" style="height: inherit; position: relative;">
+                                        <h4 class="card-title with_subtitle"><a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a></h4>
+                                        <p class="subtitle overflow-1">
+                                            <small>
+                                                {% for producer in campaign.produced_by.all %}
+                                                    <a style="position: relative;" class="stretched-link"
+                                                       href=producers/{{ producer.id }}>{{ producer.name }}</a>
+                                                    {% if not forloop.last %},&nbsp{% endif %}
+                                                {% endfor %}
+                                            </small>
+                                        </p>
+                                        <p class="card-text">{{ campaign.blurb }}</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock party_page %}

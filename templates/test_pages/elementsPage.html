@@ -1,0 +1,529 @@
+{% extends 'base_template.html' %}
+{% block elements %}
+<h1>This is the elements Testing Page</h1>
+
+<div class="body-container">
+<section>
+    <h2 style="color: #262322">Database View - Campaigns</h2>
+        <div class="card dark-background" style="max-width: 95%;">
+            <div class="row g-0">
+                <div class="col-md-6 my-auto">
+                    <img class="img-fluid rounded-start" style="height: 250px; width: 100%; object-fit: cover" src={{ campaign.image_url }}>
+                </div>
+                <div class="col-md-6 my-auto" style="justify-content: center">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ campaign.title }}</h3>
+                        <table style="margin: auto">
+                            <tr>
+                                <td colspan="2" style="text-align: center">{{ campaign.progress }}</td>
+                                <td colspan="2" style="text-align: center">{{ campaign.medium }} - {{ campaign.type }}</td>
+                            </tr>
+                            <tr>
+                                <th>Produced by:</th>
+                                <td colspan="3">
+                                    {% for producer in campaign.produced_by.all %}
+                                        <a href=database/producers/{{ producer.id }}>{{ producer.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>System(s):</th>
+                                <td colspan="3">
+                                    {% for system in campaign.system.all %}
+                                        <a href=database/systems/{{ system.id }}>{{ system.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        </table>
+                        {% if campaign.blurb %}<p class="card-text">{{ campaign.blurb }}</p>{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+    <section>
+        <h2 style="color: #262322">Database View - Actors</h2>
+        <div class="card_actor dark-background" style="max-width: 95%; height: 400px">
+            <div class="row g-0">
+                <div class="col-md-4 my-auto">
+                    <img class="img-fluid rounded-start" src={{ actor.image_url }}>
+                </div>
+                <div class="col-md-8 my-auto" style="padding: 1%">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ actor.name }}</h3>
+                        <p class="card-text">{{ actor.blurb }}</p>
+
+                        {% if actor.gm_campaigns.all and actor.characters.all %}
+                            <div class="row">
+                                <div class="col-sm-6 my-auto">
+                                    <h5>GM For:</h5>
+                                    <div class="grid">
+                                        <div class="card_sm">
+                                            <div class="card-header" style="text-align: center">
+                                                {{ campaign.title }}
+                                            </div>
+                                            <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 my-auto">
+                                    <h5>Characters:</h5>
+                                    <div class="grid">
+                                        <div class="card_sm">
+                                            <div class="card-header" style="padding: 1%">
+                                                <u>{{ pc.name }}</u> -
+                                                <small>{{ pc.member_of.all.0.campaigns.all.0.title }}
+                                                    {{ pc.guest_of.all.0 }}</small>
+                                            </div>
+                                            <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% elif actor.gm_campaigns.all and not actor.characters.all %}
+                            <div class="row my-auto">
+                                <h5>GM For:</h5>
+                                    <div class="grid">
+                                        <div class="card_sm">
+                                            <div class="card-header" style="text-align: center">
+                                                {{ campaign.title }}
+                                            </div>
+                                            <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                        </div>
+                                    </div>
+                            </div>
+                        {% elif not actor.gm_campaigns.all and actor.characters.all %}
+                            <div class="row my-auto">
+                                <h5>Characters:</h5>
+                                <div class="grid">
+                                    <div class="card_sm">
+                                        <div class="card-header" style="padding: 1%">
+                                            <u>{{ pc.name }}</u> -
+                                            <small>{{ pc.member_of.all.0.campaigns.all.0.title }}
+                                                {{ pc.guest_of.all.0 }}</small>
+                                        </div>
+                                        <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 style="color: #262322">Database View - PCs</h2>
+        <div class="card dark-background" style="max-width: 95%; height: 400px">
+            <div class="row">
+                <div class="col-md-4 my-auto">
+                    <img class="img-fluid rounded-start card-img_sm" src={{ pc.image_url }}>
+                </div>
+                <div class="col-md-8" style="padding: 1%">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ pc.name }}</h3>
+                        <p class="card-text">{{ pc.blurb }}</p>
+                        <div class="card_sm">
+                            <div class="card-header" style="text-align: center">
+                                {{ pc.played_by.all.0 }}
+                            </div>
+                            <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 style="color: #262322">Database View - Producers</h2>
+            <div class="card_database_lg">
+                <div class="card-buttons_database">
+                    <button>Follow Producer</button>
+                </div>
+                <div class="card-title_database">
+                    <h2 class="with_subtitle">{{ producer.name }}</h2>
+                    <p class="subtitle">({{ producer.medium }})</p>
+                </div>
+                <div class="card_body">
+                    {% if producer.blurb %}
+                        <div class="row">
+                            <div class="column">
+                                <img class="card-image_lg" src={{ producer.image_url }}>
+                            </div>
+                            <div class="column">
+                                <p class="card-description_campaign_database">{{ producer.blurb }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h3 style="margin-top: 1px; padding: 1%">Campaigns:</h3>
+                            <div class="grid">
+                                {% for campaign in producer.campaigns.all %}
+                                    <div class="grid-item_campaign">
+                                        <div class="card_campaign_grid">
+                                            <div class="card-title_grid">{{ campaign.title }}</div>
+                                            <div class="card_body">
+                                                <img class="card-image_rect_sm" src={{ campaign.image_url }}>
+                                                <p class="subtitle">(
+                                                    {% for system in campaign.system.all %}
+                                                        <a href=database/systems/{{ system.id }}>{{ system.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                                    {% endfor %})
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <div class="column">
+                                <img class="card-image_lg" src={{ producer.image_url }}>
+                            </div>
+                            <div class="column">
+                                <h3 style="margin-top: 1px; padding: 1%">Campaigns:</h3>
+                                <div class="grid_sm">
+                                    {% for campaign in producer.campaigns.all %}
+                                        <div class="grid-item_campaign">
+                                            <div class="card_campaign_grid">
+                                                <div class="card-title_grid">{{ campaign.title }}</div>
+                                                <div class="card_body">
+                                                    <img class="card-image_rect_sm" src={{ campaign.image_url }}>
+                                                    <p class="subtitle">(
+                                                        {% for system in campaign.system.all %}
+                                                            <a href=database/systems/{{ system.id }}>{{ system.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                                        {% endfor %})
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+    </section>
+
+    <section>
+        <h2 style="color: #262322">Database View - Parties</h2>
+            <div class="card_database_lg">
+                <div class="card-buttons_database">
+                    <button>Follow Party</button>
+                </div>
+                <div class="card-title_database">
+                    <a href=database/parties/{{ party.id }}><h2>{{ party.name }}</h2></a>
+                </div>
+                <div class="card_body">
+                    <div class="row">
+                        <div class="column">
+                            <img class="card-image_lg" src={{ party.image_url }}>
+                        </div>
+                        <div class="double_column">
+                            <div class="row">
+                                <p class="card-description_campaign_database">{{ party.blurb }}</p>
+                            </div>
+                            <p class="subtitle align_left">Featured In:</p>
+                            <div class="row">
+                                <div class="grid">
+                                    {% for campaign in producer.campaigns.all %}
+                                        <div class="grid-item_campaign">
+                                            <div class="card_campaign_grid">
+                                                <div class="card-title_grid">{{ campaign.title }}</div>
+                                                <div class="card_body">
+                                                    <img class="card-image_rect_sm" src={{ campaign.image_url }}>
+                                                    <p class="subtitle">(
+                                                        {% for system in campaign.system.all %}
+                                                            <a href=database/systems/{{ system.id }}>{{ system.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                                        {% endfor %})
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h3 style="margin-top: 1px; padding: 1%">Members:</h3>
+                            <div class="grid">
+                                {% for pc in party.members.all %}
+                                    <div class="grid-item">
+                                        <div class="card_pc_grid">
+                                            <div class="card-title_grid">{{ pc.name }}</div>
+                                            <div class="card_body">
+                                                <img class="card-image_sq" src={{ pc.image_url }}>
+                                                <p class="subtitle">
+                                                    <a href=database/actors/{{ pc.played_by.all.0.id }}>{{ pc.played_by.all.0.name }}</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section>
+        <h2 style="color: #262322">Database View - Systems</h2>
+            <div class="card_database_lg">
+                <div class="card-buttons_database">
+                    <button>Follow System</button>
+                </div>
+                <div class="card-title_database">
+                    <h2 class="with_subtitle">{{ system.name }}</h2>
+                    <p class="subtitle">Published by:
+                        {% for publisher in system.published_by.all %}
+                            <a href=database/producers/{{ publisher.id }}>{{ publisher.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                        {% endfor %}</p>
+                </div>
+                <div class="card_body">
+                    <div class="row">
+                        <div class="column width_lg">
+                            <img class="card-image_xl" src={{ system.image_url }}>
+                        </div>
+                        <div class="column width_lg">
+                            <p>{{ system.blurb }}</p>
+                            <h3 style="margin-top: 1px; padding: 1%">Featured Campaigns:</h3>
+                            <div class="grid_campaign_actor-database-card">
+                                <div class="grid-item">
+                                    <div class="card_campaign_grid">
+                                        <div class="card-title_grid">Fantasy High: Sophmore Year</div>
+                                        <div class="card_body">
+                                            <img class="card-image_rect_sm_crop" src="static/images/default-rect-img.png">
+                                            <p class="subtitle">(DnD 5e)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section>
+        <h2 style="color: #262322">Database View - Publishers</h2>
+            <div class="card_database_lg">
+                <div class="card-buttons_database">
+                    <button>Follow Publisher</button>
+                </div>
+                <div class="card-title_database">
+                    <a href=database/publishers/{{ publisher.id }}><h2 class="with_subtitle">{{ publisher.name }}</h2></a>
+                </div>
+                <div class="card_body">
+                    <div class="row">
+                        <div class="column width_lg">
+                            <img class="card-image_xl" src={{ publisher.image_url }}>
+                        </div>
+                        <div class="column width_lg">
+                            <p class="card-description_campaign_database">{{ publisher.blurb }}</p>
+                            <h3 style="margin-top: 1px; padding: 1%">Systems:</h3>
+                            <div class="grid_campaign_actor-database-card">
+                                {% for system in publisher.systems.all %}
+                                    <div class="grid-item">
+                                        <div class="card_campaign_grid">
+                                            <div class="card-title_grid">{{ system.name }}</div>
+                                            <div class="card_body">
+                                                <img class="card-image_rect_sm" src={{ system.image_url }}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+
+{# ---------------------------- Cards ---------------------------- #}
+    <section>
+        <h2 style="color: #262322">Cards and Grids</h2>
+
+{# -------------- Card for Actor in Grid -------------- #}
+        <div class="card_actor_grid">
+            <div class="card-title_grid">Brennan Lee Mulligan</div>
+            <div class="card_body">
+                <img class="card-image_sq" src="static/images/default_profile_pic.png">
+                <p class="subtitle">as Game Master</p>
+            </div>
+        </div>
+
+{# -------------- Card for PC in Grid -------------- #}
+        <div class="card_actor_grid">
+            <div class="card-title_grid">Fabian Aramais Seacaster</div>
+            <div class="card_body">
+                <img class="card-image_sq" src="static/images/default_profile_pic.png">
+                <p class="subtitle">Fantasy High, and more...</p>
+            </div>
+        </div>
+
+{# -------------- Card for GM on Model Page -------------- #}
+        <div class="card_database_lg">
+            <div class="card_body">
+                <div class="row">
+                    <div class="column">
+                        <img class="card-image_sq" src="static/images/default_profile_pic.png">
+                    </div>
+                    <div class="triple_column">
+                        <h2 class="card-title_database with_subtitle">Brennan Lee Mulligan</h2>
+                        <p class="card-description_campaign_database">This is the description of the campaign. Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                        <button class="card-button_lg">View Page</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+{# -------------- Card for PC on Model Page -------------- #}
+        <div class="card_pc_model-page">
+            <div class="card_body">
+                <div class="row">
+                    <div class="column width_lg">
+                        <img class="card-image_sq" src="static/images/default_profile_pic.png">
+                    </div>
+                    <div class="double_column width_lg">
+                        <h2 class="card-title_database with_subtitle">Fabian Aramais Seacaster</h2>
+                        <p class="card-description_campaign_database">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                    <div class="column width_lg">
+                        <h4 class="with_subtitle">Portrayed By:</h4>
+                        <h6 class="subtitle">Lou Wilson</h6>
+                        <img class="card-image_sq" src="static/images/default_profile_pic.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{# -------------- Card for Episodes on Model Page -------------- #}
+        <div class="card_database_lg">
+            <div class="card_body">
+                <div class="row">
+                    <div class="column width_lg">
+                        <img class="card-image_rect_sm" src="static/images/default-rect-img.png">
+                    </div>
+                    <div class="triple_column width_lg">
+                        <h2 class="card-title_database with_subtitle">The Beginning Begins</h2>
+                        <table>
+                            <tr>
+                                <th>Episode:</th>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <th>Medium:</th>
+                                <td>Video</td>
+                            </tr>
+                            <tr>
+                                <th>Runtime:</th>
+                                <td>01:53:57</td>
+                            </tr>
+                            <tr>
+                                <th>Airdate:</th>
+                                <td>Sept. 26, 2018</td>
+                            </tr>
+                        </table>
+                        <button class="card-button_lg">Watch Episode</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{# -------------- Card for Related on Model Page -------------- #}
+        <div class="card_database_lg">
+            <div class="card_body">
+                <div class="row">
+                    <div class="column width_lg">
+                        <img class="card-image_rect_sm" src="static/images/default-rect-img.png">
+                    </div>
+                    <div class="triple_column width_lg">
+                        <h2 class="card-title_database with_subtitle">Some Campaign Name</h2>
+                        <h4>Produced By: <u>Dimension 20</u></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{# -------------- Card for Campaign on Model Page -------------- #}
+        <div class="card_database_lg">
+            <div class="card_body">
+                <div class="row">
+                    <div class="column width_lg">
+                        <img class="card-image_rect_sm" src="static/images/default-rect-img.png">
+                    </div>
+                    <div class="triple_column width_lg">
+                        <h2 class="card-title_database with_subtitle">Some Campaign Name</h2>
+                        <h4 class="subtitle">Produced By: <u>Dimension 20</u></h4>
+                        <h4 class="subtitle">System(s): <u>DnD 5e</u>, <u>Good Society</u></h4>
+                        <h4 class="subtitle">Featuring: <u>The Bad Kids</u></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{# -------------- Card for Campaign in Grid -------------- #}
+        <div class="card_campaign_grid">
+            <div class="card-title_grid">Fantasy High: Sophmore Year</div>
+            <div class="card_body">
+                <img class="card-image_rect_sm_crop" src="static/images/default-rect-img.png">
+                <p class="subtitle">(DnD 5e)</p>
+            </div>
+        </div>
+
+{# -------------- Grid -------------- #}
+        <div style="width: 600px; margin: auto" class="grid">
+            <div class="grid-item">
+                <div class="card_actor_grid">
+                    <div class="card-title_grid">Brennan Lee Mulligan</div>
+                    <div class="card_body">
+                        <img class="card-image_sq" src="static/images/default_profile_pic.png">
+                        <p class="subtitle">as Game Master</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="card_actor_grid">
+                    <div class="card-title_grid">Brennan Lee Mulligan</div>
+                    <div class="card_body">
+                        <img class="card-image_sq" src="static/images/default_profile_pic.png">
+                        <p class="subtitle">as Game Master</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="card_actor_grid">
+                    <div class="card-title_grid">Brennan Lee Mulligan</div>
+                    <div class="card_body">
+                        <img class="card-image_sq" src="static/images/default_profile_pic.png">
+                        <p class="subtitle">as Game Master</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="card_actor_grid">
+                    <div class="card-title_grid">Brennan Lee Mulligan</div>
+                    <div class="card_body">
+                        <img class="card-image_sq" src="static/images/default_profile_pic.png">
+                        <p class="subtitle">as Game Master</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock elements %}

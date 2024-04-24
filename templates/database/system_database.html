@@ -1,0 +1,54 @@
+{% extends 'database_template.html' %}
+
+{% block systems %}
+<h1>Systems Page</h1>
+
+<div class="body-container">
+
+    {% for system in systems %}
+        <br>
+        <div class="card dark-background" style="max-width: 95%; height: 400px">
+            <div class="row" style="max-width: 100%; height: inherit">
+                <div class="col-md-5 my-auto">
+                    <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ system.image_url }}>
+                </div>
+                <div class="col-md-7 my-auto">
+                    <div class="card-body" style="height: inherit">
+                        <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/systems/{{ system.id }}>{{ system.name }}</a></h3>
+                            <p class="subtitle">
+                                {% if system.published_by.all %}
+                                    (Published By: {% for publisher in system.published_by.all|slice:"0:3" %}
+                                        {% if forloop.counter < 3%}
+                                            <a style="position: relative;" class="stretched-link" href=/database/publisher/{{ publisher.id }}>{{ publisher.name }}</a>{% if not forloop.last %},{% endif %}
+                                        {% elif forloop.counter >= 3 %}
+                                            <a style="position: relative;" class="stretched-link" href=/database/systems/{{ system.id }}>and more...</a>
+                                        {% endif %}
+                                    {% endfor %})
+                                <br>
+                                {% endif %}
+                                (Campaigns in Database: {{ system.campaigns.all.count }})
+                            </p>
+                        <p class="card-text">{{ system.blurb }}</p>
+                            <div class="row featured_campaigns">
+                                <h5>Featured Campaigns:</h5>
+                                <div class="grid">
+                                    {% for campaign in featured_campaigns %}
+                                        {% if system in campaign.system.all %}
+                                            <div style="position: relative;"  class="card_sm">
+                                                <div class="card-header" style="text-align: center">
+                                                    <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                </div>
+                                                <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <br>
+</div>
+{% endblock systems %}

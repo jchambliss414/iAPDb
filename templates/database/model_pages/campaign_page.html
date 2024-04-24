@@ -1,0 +1,163 @@
+{% extends 'base_template.html' %}
+{% block campaign_page %}
+<div class="body-container">
+    <div class="row no-gutters">
+        <form method="post">
+            {% csrf_token %}
+            <div class="page-buttons">
+                <button name="previousEnt" type="submit">Previous Campaign</button>
+                <button name="nextEnt" type="submit">Next Campaign</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div class="row no-gutters">
+        <div class="col-5">
+            <h1 class="dark">{{ campaign.title }}</h1>
+            <img class="model-img" src={{ campaign.image_url }}>
+            <a class="subtitle" href='#'>Edit Campaign</a>
+            <p class="dark">{{ campaign.blurb }}</p>
+        </div>
+        <div class="col-7">
+        <!--    Nav Bar              -->
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-details-tab" data-bs-toggle="tab" data-bs-target="#nav-details" type="button" role="tab" aria-controls="nav-details" aria-selected="true">Details</button>
+                    <button class="nav-link" id="nav-cast-tab" data-bs-toggle="tab" data-bs-target="#nav-cast" type="button" role="tab" aria-controls="nav-cast" aria-selected="true">Cast & Characters</button>
+                    <button class="nav-link" id="nav-episodes-tab" data-bs-toggle="tab" data-bs-target="#nav-episodes" type="button" role="tab" aria-controls="nav-episodes" aria-selected="true">Episodes</button>
+                </div>
+            </nav>
+        <!--    Content      -->
+            <div class="tab-content" id="nav-tabContent">
+            <!--        Details       -->
+                <div class="tab-pane fade show active" id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab" tabindex="0">
+                    <div class="card-buttons">
+                        <button>Follow Campaign</button>
+                        &nbsp
+                        <button>Add to Watchlist</button>
+                    </div>
+                    <table style="width: 95%; display: table;margin: 2%">
+                        <tr>
+                            <th colspan="2" style="text-align: center;">
+                                <h3 style="color: aquamarine">Details</h3>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style="width: 25%">Type:</th>
+                            <td>{{campaign.medium}}</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 25%">Produced By:</th>
+                            <td>
+                                {% for producer in campaign.produced_by.all %}
+                                    <a href=/database/producers/{{producer.id}}>
+                                        {{producer.name}}</a>{% if not forloop.last %},&nbsp;{% endif %}
+                                {% endfor %}
+                            </td>
+                            </tr>
+                        <tr>
+                        <th style="width: 25%">System:</th>
+                            <td>
+                                {% for system in campaign.system.all %}
+                                    <a href=/database/systems/{{system.id}}>
+                                        {{system.name}}{% if not forloop.last %},&nbsp;{% endif %}
+                                    </a>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 25%"># of Episodes:</th>
+                            <td>{{episodes.count}}</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 25%">First Ep. Airdate</th>
+                            <td>
+                                {% for episode in episodes %}
+                                    {% if forloop.counter == 1 %}
+                                        {{episode.airdate}}
+                                    {% endif %}
+                                {% empty %}
+                                    Unknown
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 25%">Status</th>
+                            <td>
+                                {% if campaign.status %}
+                                    {{campaign.status}}
+                                {% else %}
+                                    Unknown
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            <!--        Cast & Characters       -->
+                <div class="tab-pane fade" id="nav-cast" role="tabpanel" aria-labelledby="nav-cast-tab" tabindex="0">
+                    <h2 class="dark">Game Master(s)</h2>
+                    {% for actor in campaign.gm.all %}
+                        <div class="card_md rounded-start dark-background" >
+                            <div class="row" style="max-width: 100%; height: inherit">
+                                <div class="col-md-5 my-auto">
+                                    <img class="img-fluid rounded-start" style="width:200px; height: 200px; object-fit: cover;" src={{ actor.image_url }}>
+                                </div>
+                                <div class="col-md-7 my-auto">
+                                    <div class="card-body" style="height: inherit; position: relative;">
+                                        <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/actors/{{ actor.id }}>{{ actor.name }}</a></h3>
+                                        <p class="card-text">{{ actor.blurb }}</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <hr>
+                    <h2 class="dark">Player Characters</h2>
+                        {% for party in campaign.party.all %}
+                            {% for pc in party.members.all %}
+                                <div class="card_md rounded-start dark-background" style="max-width: 100%; height: 300px;">
+                                    <div class="row" style="max-width: 100%; height: inherit; position: relative; ">
+                                        <div class="col-md-5 my-auto">
+                                            <img class="img-fluid rounded-start" style="width:200px; height: 200px; object-fit: cover; object-position: 0 10%" src={{ pc.image_url }}>
+                                        </div>
+                                        <div class="col-md-7 my-auto">
+                                            <div class="card-body" style="height: inherit;">
+                                                <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a></h3>
+                                                <p class="subtitle">(Portrayed By - <a style="position: relative;" class="stretched-link" href=/database/actors/{{ pc.played_by.all.0.id }}>{{ pc.played_by.all.0.name }}</a>)</p>
+                                                <p class="card-text">{{ pc.blurb }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            {% endfor %}
+                        {% endfor %}
+                    <h2 class="dark">Guest PCs</h2>
+                        {% for pc in campaign.guests.all %}
+                            <div class="card_md rounded-start dark-background">
+                                <div class="row" style="max-width: 100%; height: inherit; position: relative; ">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width:200px; height: 200px; object-fit: cover; object-position: 0 0" src={{ pc.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit;">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a></h3>
+                                            <p class="card-text">{{ pc.blurb }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        {% endfor %}
+                </div>
+            <!--        Episodes       -->
+                <div class="tab-pane fade" id="nav-episodes" role="tabpanel" aria-labelledby="nav-episodes-tab" tabindex="0">
+                    <h1>Episodes</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock campaign_page %}

@@ -1,0 +1,56 @@
+{% extends 'base_template.html' %}
+{% block producer_page %}
+<div class="body-container">
+    <div class="row no-gutters">
+        <form method="post">
+            {% csrf_token %}
+            <div class="page-buttons">
+                <button name="previousEnt" type="submit">Previous Producer</button>
+                <button name="nextEnt" type="submit">Next Producer</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div class="row no-gutters">
+        <div class="col-5">
+            <h1 class="dark">{{ producer.name }}</h1>
+            <img class="model-img" src={{ producer.image_url }}>
+            <a class="subtitle" href='#'>Edit Producer</a>
+            <p class="dark">{{ producer.blurb }}</p>
+        </div>
+        <div class="col-7">
+            <div class="card-buttons">
+                <button>Follow Producer</button>
+            </div>
+            <h2 class="dark">Campaigns:</h2>
+            {% for campaign in producer.campaigns.all %}
+                <div class="card_md rounded-start dark-background" >
+                    <div class="row" style="max-width: 100%; height: inherit">
+                        <div class="col-md-5 my-auto">
+                            <img class="img-fluid rounded-start" style="width:200px; height: 200px; object-fit: cover;" src={{ campaign.image_url }}>
+                        </div>
+                        <div class="col-md-7 my-auto">
+                            <div class="card-body" style="height: inherit; position: relative;">
+                                <h4 class="card-title with_subtitle overflow-1"><a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a></h4>
+                                <p class="subtitle overflow-1">
+                                    <small>
+                                        ({% for system in campaign.system.all %}
+                                            <a style="position: relative;" class="stretched-link"
+                                               href=systems/{{ system.id }}>{{ system.name }}</a>
+                                            {% if not forloop.last %},&nbsp{% endif %}
+                                        {% endfor %})
+                                    </small>
+                                </p>
+                                <p class="card-text">{{ campaign.blurb }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock producer_page %}

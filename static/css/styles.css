@@ -1,0 +1,214 @@
+/* -------------- Default and Top Level Properties --------------*/
+h1, h2, h3, h4, h5, h6, p {
+    color: aquamarine !important;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.dark {
+    color: #262322 !important;
+}
+
+.dark-background {
+    background-color: #262322 !important;
+}
+
+.with_subtitle {
+    margin-bottom: 0!important;
+    padding: 0!important;
+}
+
+.subtitle {
+    font-size: small;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+  color: aquamarine !important;
+}
+
+a.subtitle {
+    font-size: small;
+    text-align: center;
+    margin: 0 0 5%;
+}
+
+a:visited {
+  color: #4ab08e !important;
+}
+
+body {
+    background-color: #262322 !important;
+}
+
+.body-container {
+    width: 70%!important;
+    margin: auto;
+    background-color: mediumaquamarine;
+}
+
+hr {
+    width: 100%;
+    border: 1px solid #262322;
+}
+
+
+    /* -------------- Tables and Elements --------------*/
+
+table, td, th {
+    border: solid aquamarine 1px !important;
+}
+
+table{
+    width: 95%;
+    border-collapse: collapse;
+    background-color: #262322;
+    align-self: center;
+    color: aquamarine;
+}
+
+th {
+    text-align: right;
+}
+
+th, td {
+    padding: 1%;
+}
+
+th.table_title {
+    font-size: x-large;
+    text-align: center;
+}
+
+td.center{
+    text-align: center;
+}
+
+
+
+/* -------------- Model Elements --------------*/
+.model-img {
+    width: 100%;
+}
+
+/* -------------- Card and Card Elements --------------*/
+.card {
+    margin: auto;
+    background-color: #262322;
+    color: aquamarine;
+    contain: content;
+}
+
+.card-col {
+}
+
+.campaign-card {
+    max-height: 350px;
+}
+
+.card-body {
+    width: 100%;
+    height: inherit;
+    margin: 0;
+    padding: 0!important;
+}
+
+.card_sm {
+    width: 200px;
+    height: 150px;
+    margin: auto;
+    background-color: #262322;
+    color: aquamarine;
+}
+
+.card_md {
+    width: 95%;
+    height: 200px!important;
+    margin: auto;
+    background-color: #262322;
+    color: aquamarine;
+}
+
+.card-img_sm {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 0 25%;
+}
+
+.card-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+    padding: 1% 1%;
+    margin: 3% 1%;
+}
+
+
+.card-header {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+}
+
+
+.overflow-1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+}
+
+.card-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.page-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-title {
+    text-align: center;
+    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+    padding: 1%;
+}
+
+.grid {
+    display: grid;
+    grid-auto-columns: 200px;
+    grid-auto-flow: column;
+    grid-gap: 2%;
+    overflow-x: scroll;
+    background-color: mediumaquamarine;
+    padding: 1%;
+    margin: auto;
+    max-height: 250px;
+    border: solid mediumaquamarine 5px;
+}
+
+
+
+
+
+
+
+

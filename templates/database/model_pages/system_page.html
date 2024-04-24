@@ -1,0 +1,72 @@
+{% extends 'base_template.html' %}
+{% block system_page %}
+<div class="body-container">
+    <div class="row no-gutters">
+        <form method="post">
+            {% csrf_token %}
+            <div class="page-buttons">
+                <button name="previousEnt" type="submit">Previous PC</button>
+                <button name="nextEnt" type="submit">Next PC</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div class="row no-gutters">
+        <div class="col-5">
+            <h1 class="dark">{{ system.name }}</h1>
+            <img class="model-img" src={{ system.image_url }}>
+            <a class="subtitle" href='#'>Edit System</a>
+            <p class="dark">{{ system.blurb }}</p>
+        </div>
+        <div class="col-7">
+            <div class="card-buttons">
+                <button>Follow System</button>
+            </div>
+            <h2 class="dark">Published By:</h2>
+            {% for publisher in system.published_by.all %}
+                <div class="card_md rounded-start dark-background" >
+                    <div class="row" style="max-width: 100%; height: inherit">
+                        <div class="col-md-5 my-auto">
+                            <img class="img-fluid rounded-start" style="width:200px; height: 200px; object-fit: cover;" src={{ publisher.image_url }}>
+                        </div>
+                        <div class="col-md-7 my-auto">
+                            <div class="card-body" style="height: inherit; position: relative;">
+                                <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/publishers/{{ publisher.id }}>{{ publisher.name }}</a></h3>
+                                <p class="card-text">{{ publisher.blurb }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <hr>
+            <h2 class="dark">Featured Campaigns:</h2>
+            {% for campaign in featured_campaigns %}
+                <div class="card_md rounded-start dark-background" >
+                    <div class="row" style="max-width: 100%; height: inherit">
+                        <div class="col-md-5 my-auto">
+                            <img class="img-fluid rounded-start" style="width:200px; height: 200px; object-fit: cover;" src={{ campaign.image_url }}>
+                        </div>
+                        <div class="col-md-7 my-auto">
+                            <div class="card-body" style="height: inherit; position: relative;">
+                                <h4 class="card-title with_subtitle overflow-1"><a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a></h4>
+                                <p class="subtitle overflow-1">
+                                    <small>
+                                        {% for producer in campaign.produced_by.all %}
+                                            <a style="position: relative;" class="stretched-link"
+                                               href=producers/{{ producer.id }}>{{ producer.name }}</a>
+                                            {% if not forloop.last %},&nbsp{% endif %}
+                                        {% endfor %}
+                                    </small>
+                                </p>
+                                <p class="card-text">{{ campaign.blurb }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock system_page %}

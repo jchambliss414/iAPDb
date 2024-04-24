@@ -1,0 +1,51 @@
+{% extends 'database_template.html' %}
+
+{% block pcs %}
+<h1>PC Page</h1>
+
+<div class="body-container">
+
+    {% for pc in pcs %}
+        <br>
+        <div class="card dark-background" style="max-width: 95%; height: 400px">
+            <div class="row" style="max-width: 100%; height: inherit">
+                <div class="col-md-5 my-auto">
+                    <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ pc.image_url }}>
+                </div>
+                <div class="col-md-7 my-auto">
+                    <div class="card-body" style="height: inherit">
+                        <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a></h3>
+                        {% if pc.member_of.all %}<p class="subtitle"><a style="position: relative;" class="stretched-link" href=/database/parties/{{ pc.member_of.all.0.id }}>({{ pc.member_of.all.0 }})</a></p>{% endif %}
+                        <p class="card-text">{{ pc.blurb }}</p>
+                        <div class="row">
+                            <h5>Featured In:</h5>
+                            <div class="grid">
+                                {% for party in pc.member_of.all %}{% for campaign in party.campaigns.all %}
+                                    <div style="position: relative;"  class="card_sm">
+                                        <div class="card-header" style="text-align: center">
+                                            <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                        </div>
+                                        <div class="card-body">
+                                            <img class="card-img_sm" src={{ campaign.image_url }}>
+                                        </div>
+                                    </div>
+                                {% endfor %}{% endfor %}
+                                {% for campaign in pc.guest_of.all %}
+                                    <div class="card_sm">
+                                        <div class="card-header" style="text-align: center">
+                                            <a style="position: relative;" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                        </div>
+                                        <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <br>
+</div>
+{% endblock pcs %}
