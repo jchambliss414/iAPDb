@@ -1,5 +1,5 @@
 /* -------------- Default and Top Level Properties --------------*/
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6, p, li {
     color: aquamarine !important;
     margin-top: 2%;
     margin-bottom: 2%;
@@ -160,6 +160,13 @@ td.center{
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     -webkit-box-pack: center;
+}
+
+
+.search-card-header {
+    text-align: center;
+    font-size: large;
+    background-color: #2d2929;
 }
 
 

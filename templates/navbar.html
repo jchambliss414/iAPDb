@@ -9,10 +9,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto d-flex w-100">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Database</a>
+                <a class="nav-link" href="database/">Database</a>
             </li>
             <li class="nav-item">
                 {% if user.is_authenticated %}
@@ -23,19 +23,19 @@
                 {% endif %}
             </li>
         </ul>
-        <form class="form-inline" style="width: 50%">
+        <form class="form-inline" style="width: 50%" method="POST" action="{% url 'search_results' %}">
+            {% csrf_token %}
             <div class="input-group">
-                {% csrf_token %}
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" name="searched" aria-label="Search">
                 <select name="entity_type" id="entity_type">
                     <option value="all" selected="selected">All</option>
-                    <option value="all">Campaigns</option>
-                    <option value="all">Actors</option>
-                    <option value="all">PCs</option>
-                    <option value="all">Parties</option>
-                    <option value="all">Producers</option>
-                    <option value="all">Systems</option>
-                    <option value="all">Publishers</option>
+                    <option value="campaigns">Campaigns</option>
+                    <option value="actors">Actors</option>
+                    <option value="pcs">PCs</option>
+                    <option value="parties">Parties</option>
+                    <option value="producers">Producers</option>
+                    <option value="systems">Systems</option>
+                    <option value="publishers">Publishers</option>
                 </select>
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </div>

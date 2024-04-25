@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+import iAPdb_Project.views as project_views
 
 urlpatterns = [
     path('', views.database_home),
@@ -27,6 +28,9 @@ urlpatterns = [
     path('producers/', views.producer_database),
     path('systems/', views.system_database),
     path('publishers/', views.publisher_database),
+
+
+    path('search_results/', project_views.search_results, name="search_results"),
 
 
     path('<str:entity>/<int:ent_id>/', views.model_pages, name="model_page"),

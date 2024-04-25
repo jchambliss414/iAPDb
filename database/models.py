@@ -1,13 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
+from django.db.models.signals import post_save
 
 
 # ---------------------------------------- create profile on user signup ----------------------------------------
-def create_profile(sender, instance, created, **kwargs):
+def create_user_profile(sender, instance, created, **kwargs):
     if created:
         user_profile = Profile(user=instance)
         user_profile.save()
+
+
+post_save.connect(create_user_profile, sender=User)
 
 
 # ----------------------------------------  watchlist models ----------------------------------------
@@ -66,7 +70,7 @@ class ActorAccounts(models.Model):
     actor = models.ForeignKey('Actor', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.profile.user}'s Actor Pages:"
+        return "Actor Pages:"
 
 
 class ActorCharacters(models.Model):
@@ -74,7 +78,7 @@ class ActorCharacters(models.Model):
     actor = models.ForeignKey('Actor', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.actor.name}'s PCs:"
+        return "PCs:"
 
 
 class CampaignParty(models.Model):
@@ -82,7 +86,7 @@ class CampaignParty(models.Model):
     party = models.ForeignKey('Party', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.campaign.title}'s Party:"
+        return "Party:"
 
 
 class CampaignGuests(models.Model):
@@ -90,7 +94,7 @@ class CampaignGuests(models.Model):
     pc = models.ForeignKey('PC', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.campaign.title}'s Guest PCs:"
+        return "Guest PCs:"
 
 
 class CampaignSystem(models.Model):
@@ -98,7 +102,7 @@ class CampaignSystem(models.Model):
     system = models.ForeignKey('system', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.campaign.title}'s Systems:"
+        return "Systems:"
 
 
 class CampaignGMs(models.Model):
@@ -106,15 +110,7 @@ class CampaignGMs(models.Model):
     actor = models.ForeignKey('actor', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.campaign.title}'s GMs:"
-
-
-class CampaignEpisodes(models.Model):
-    campaign = models.ForeignKey('Campaign', on_delete=models.CASCADE)
-    episode = models.ForeignKey('Episode', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"Campaign Episodes"
+        return "GMs:"
 
 
 class EpisodesWatched(models.Model):
@@ -122,7 +118,7 @@ class EpisodesWatched(models.Model):
     episode = models.ForeignKey('Episode', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Episodes Watched"
+        return "Episodes Watched"
 
 
 class ProducerCampaigns(models.Model):
@@ -130,7 +126,7 @@ class ProducerCampaigns(models.Model):
     Producer = models.ForeignKey('Producer', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Producer campaigns"
+        return "Producer campaigns"
 
 
 class ProducerOwners(models.Model):
@@ -138,7 +134,7 @@ class ProducerOwners(models.Model):
     Producer = models.ForeignKey('Producer', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.profile.user}'s Producer Accounts:"
+        return "Producer Accounts:"
 
 
 class PartyMembers(models.Model):
@@ -146,7 +142,7 @@ class PartyMembers(models.Model):
     party = models.ForeignKey('party', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.party.name}'s Members:"
+        return "Members:"
 
 
 class PublisherSystems(models.Model):
@@ -154,7 +150,7 @@ class PublisherSystems(models.Model):
     publisher = models.ForeignKey('Publisher', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Publisher Systems"
+        return "Publisher Systems"
 
 
 # ---------------------------------------- Models ----------------------------------------
@@ -203,7 +199,6 @@ class Campaign(models.Model):
     system = models.ManyToManyField('System', through='CampaignSystem', blank=True, related_name='campaign_systems')
     produced_by = models.ManyToManyField('Producer', through=ProducerCampaigns, blank=True,
                                          related_name='campaign_companies')
-    episodes = models.ManyToOneRel('title', 'Episode', field_name='title')
     progress = models.CharField(max_length=100, choices=progress_choices, blank=True, null=True)
     medium = MultiSelectField(choices=medium_choices, blank=True, null=True, max_length=100)
     type = models.CharField(max_length=100, choices=type_choices, blank=True, null=True)
@@ -302,8 +297,8 @@ class PC(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image_url = models.CharField(max_length=2083, blank=True, null=False,
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
+    image_url = models.CharField(max_length=2083, blank=True, null=True,
                                  default='static/images/default_profile_pic.png')
     campaigns_to_watch = models.ManyToManyField('Campaign', through=Watchlist, blank=True, related_name='To_Watch')
     campaigns_watching = models.ManyToManyField('Campaign', through=WatchingList, blank=True, related_name='Watching')

@@ -1,0 +1,12 @@
+{% extends 'base_template.html' %}
+
+<h1>Logout</h1>
+
+{% block logout %}
+  <h2>Logout</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Logout</button>
+  </form>
+{% endblock %}

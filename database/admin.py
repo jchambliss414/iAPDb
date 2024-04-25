@@ -8,56 +8,71 @@ from django.contrib.auth.models import User
 class ActorAccountsInline(admin.TabularInline):
     model = models.ActorAccounts
     extra = 1
+    verbose_name = 'Actor Account'
 
 
 class ActorCharactersInline(admin.TabularInline):
     model = models.ActorCharacters
     extra = 1
+    verbose_name = 'Actor Character'
+
+
+class CampaignEpisodeInline(admin.TabularInline):
+    model = models.Episode
+    fields = ('title', 'ep_count')
+    readonly_fields = ('title', 'ep_count')
+    can_delete = False
+    extra = 0
+    verbose_name = 'Campaign Episode'
 
 
 class CampaignPartyInline(admin.TabularInline):
     model = models.CampaignParty
     extra = 1
+    verbose_name = 'Campaign Party'
+    verbose_name_plural = 'Campaign Parties'
 
 
 class CampaignGuestsInline(admin.TabularInline):
     model = models.CampaignGuests
     extra = 1
+    verbose_name = 'Campaign Guest'
 
 
 class CampaignSystemInline(admin.TabularInline):
     model = models.CampaignSystem
     extra = 1
+    verbose_name = 'Campaign System'
 
 
 class CampaignGMsInline(admin.TabularInline):
     model = models.CampaignGMs
     extra = 1
+    verbose_name = 'Campaign GM'
 
 
 class ProducerCampaignsInline(admin.TabularInline):
     model = models.ProducerCampaigns
     extra = 1
+    verbose_name = 'Producer Campaign'
 
 
 class ProducerOwnersInline(admin.TabularInline):
     model = models.ProducerOwners
     extra = 1
-
-
-class ProfileProducerInline(admin.TabularInline):
-    model = models.ProducerOwners
-    extra = 1
+    verbose_name = 'Producer Owner'
 
 
 class PartyMembersInline(admin.TabularInline):
     model = models.PartyMembers
     extra = 1
+    verbose_name = 'Party Member'
 
 
 class PublisherSystemsInline(admin.TabularInline):
     model = models.PublisherSystems
     extra = 1
+    verbose_name = 'Publisher System'
 
 
 # -------------------- Admin Pages --------------------
@@ -72,8 +87,8 @@ class ActorAdmin(admin.ModelAdmin):
 
 
 class CampaignAdmin(admin.ModelAdmin):
-    inlines = [CampaignPartyInline, CampaignGuestsInline, CampaignSystemInline, CampaignGMsInline, ProducerCampaignsInline,
-               ]
+    inlines = [CampaignPartyInline, CampaignGuestsInline, CampaignSystemInline, CampaignGMsInline,
+               ProducerCampaignsInline, CampaignEpisodeInline]
     list_display = ['id', 'title']
 
 
@@ -104,7 +119,6 @@ class PublisherAdmin(admin.ModelAdmin):
 
 class ProfileAdmin(admin.ModelAdmin):
     exclude = []
-    inlines = [ProfileProducerInline]
 
 
 class NotificationAdmin(admin.ModelAdmin):
