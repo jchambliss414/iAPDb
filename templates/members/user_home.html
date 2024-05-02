@@ -1,0 +1,213 @@
+{% extends 'base_template.html' %}
+
+{% block user_home %}
+    <h1>User Homepage for <u>{{ user }}</u></h1>
+
+    <div class="body-container">
+        <section>
+            <h1 class="dark">Watchlists</h1>
+            <!--    Nav Bar              -->
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-watchlist-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-watchlist" type="button" role="tab" aria-controls="nav-watchlist"
+                            aria-selected="true">Watchlist
+                    </button>
+                    <button class="nav-link" id="nav-watching-tab" data-bs-toggle="tab" data-bs-target="#nav-watching"
+                            type="button" role="tab" aria-controls="nav-watching" aria-selected="true">Watching
+                    </button>
+                    <button class="nav-link" id="nav-watched-tab" data-bs-toggle="tab" data-bs-target="#nav-watched"
+                            type="button" role="tab" aria-controls="nav-watched" aria-selected="true">Watched
+                    </button>
+                </div>
+            </nav>
+
+            <!--    Content      -->
+            <form method="post">
+            {% csrf_token %}
+                <div class="tab-content" id="nav-tabContent">
+
+                    <!--        Watchlist       -->
+                    <div class="tab-pane fade show active" id="nav-watchlist" role="tabpanel"
+                         aria-labelledby="nav-watchlist-tab" tabindex="0">
+                        {% if not watchlist %}
+                            <h3 class="dark">No Campaigns in your Watchlist</h3>
+                        {% endif %}
+                        <div class="grid">
+                            {% for campaign in watchlist %}
+                                <div class="grid-item">
+                                    <div class="card">
+                                        <div class="card-body-md">
+                                            <div class="card-title with_subtitle overflow-1">
+                                                {{ campaign.title }}
+                                            </div>
+                                            <img class="card-img_sm-rect" src={{ campaign.image_url }}>
+                                            <button class="card-button-sm" name="WatchlistToWatching" type="submit" value={{campaign.id}}>Move to Watching
+                                            </button>
+                                            <button class="card-button-sm" name="RemoveWatchlist" type="submit" value={{campaign.id}}>Remove From
+                                                Watchlist
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!--        Currently Watching       -->
+                    <div class="tab-pane fade" id="nav-watching" role="tabpanel" aria-labelledby="nav-watching-tab"
+                         tabindex="0">
+                        {% if not watchinglist %}
+                            <h3 class="dark">You are not currently watching any Campaigns</h3>
+                        {% endif %}
+                        <div class="grid">
+                            {% for campaign in watchinglist %}
+                                <div class="grid-item">
+                                    <div class="card">
+                                        <div class="card-body-md">
+                                            <div class="card-title with_subtitle overflow-1">
+                                                {{ campaign.title }}
+                                            </div>
+                                            <img class="card-img_sm-rect" src={{ campaign.image_url }}>
+                                            <button class="card-button-sm" name="WatchingToWatched" type="submit" value={{campaign.id}}>Move to Watched
+                                            </button>
+                                            <button class="card-button-sm" name="RemoveWatching" type="submit" value={{campaign.id}}>Remove From Watching
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!--        Have Watched       -->
+                    <div class="tab-pane fade" id="nav-watched" role="tabpanel" aria-labelledby="nav-watched-tab"
+                         tabindex="0">
+                        {% if not watchlist %}
+                            <h3 class="dark">No Campaigns Watched</h3>
+                        {% endif %}
+                        <div class="grid">
+                            {% for campaign in have_watchedlist %}
+                                <div class="grid-item">
+                                    <div class="card">
+                                        <div class="card-body-md">
+                                            <div class="card-title with_subtitle overflow-1">
+                                                {{ campaign.title }}
+                                            </div>
+                                            <img class="card-img_sm-rect" src={{ campaign.image_url }}>
+                                            <button class="card-button-sm" name="RemoveWatched" type="submit" value={{campaign.id}}>Remove From List
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <br>
+        <hr>
+
+        <section>
+            <h1 class="dark">Following</h1>
+            <!--    Nav Bar              -->
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-following-campaign-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-following-campaign" type="button" role="tab" aria-controls="nav-following-campaign"
+                            aria-selected="true">Campaigns
+                    </button>
+                    <button class="nav-link" id="nav-following-actor-tab" data-bs-toggle="tab" data-bs-target="#nav-following-actor"
+                            type="button" role="tab" aria-controls="nav-following-actor" aria-selected="true">Actors
+                    </button>
+                    <button class="nav-link" id="nav-following-producer-tab" data-bs-toggle="tab" data-bs-target="#nav-following-producer"
+                            type="button" role="tab" aria-controls="nav-following-producer" aria-selected="true">Producers
+                    </button>
+                </div>
+            </nav>
+
+            <!--    Content      -->
+            <form method="post">
+            {% csrf_token %}
+                <div class="tab-content" id="nav-tabContent">
+
+                    <!--        Campaigns       -->
+                    <div class="tab-pane fade show active" id="nav-following-campaign" role="tabpanel"
+                         aria-labelledby="nav-following-campaign-tab" tabindex="0">
+                        {% if not following_campaigns %}
+                            <h3 class="dark">You are not following any Campaigns</h3>
+                        {% endif %}
+                        <div class="grid">
+                            {% for campaign in following_campaigns %}
+                                <div class="grid-item">
+                                    <div class="card">
+                                        <div class="card-body-md">
+                                            <div class="card-title with_subtitle overflow-1">
+                                                {{ campaign.title }}
+                                            </div>
+                                            <img class="card-img_sm-rect" src={{ campaign.image_url }}>
+                                            <button class="card-button-sm" name="UnfollowCampaign" type="submit"
+                                                    value={{ campaign.id }}>Unfollow
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!--        Actors       -->
+                    <div class="tab-pane fade" id="nav-following-actor" role="tabpanel"
+                         aria-labelledby="nav-following-actor-tab"
+                         tabindex="0">
+                        {% if not following_actors %}
+                            <h3 class="dark">You are not following any Actors</h3>
+                        {% endif %}
+                        <div class="grid">
+                            {% for actor in following_actors %}
+                                <div class="grid-item">
+                                    <div class="card">
+                                        <div class="card-body-md">
+                                            <div class="card-title with_subtitle overflow-1">
+                                                {{ actor.name }}
+                                            </div>
+                                            <img class="card-img_sm-rect" src={{ actor.image_url }}>
+                                            <button class="card-button-sm" name="UnfollowActor" type="submit"
+                                                    value={{ actor.id }}>Unfollow
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!--        Producers       -->
+                    <div class="tab-pane fade" id="nav-following-producer" role="tabpanel"
+                         aria-labelledby="nav-following-producer-tab"
+                         tabindex="0">
+                        {% if not following_campaigns %}
+                            <h3 class="dark">You are not following any Producers</h3>
+                        {% endif %}
+                        <div class="grid">
+                            {% for producer in following_producers %}
+                                <div class="grid-item">
+                                    <div class="card">
+                                        <div class="card-body-md">
+                                            <div class="card-title with_subtitle overflow-1">
+                                                {{ producer.name }}
+                                            </div>
+                                            <img class="card-img_sm-rect" src={{ producer.image_url }}>
+                                            <button class="card-button-sm" name="UnfollowProducer" type="submit"
+                                                    value={{ producer.id }}>Unfollow
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    <br>
+    </div>
+{% endblock user_home %}

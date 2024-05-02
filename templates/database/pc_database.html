@@ -19,7 +19,7 @@
                         <p class="card-text">{{ pc.blurb }}</p>
                         <div class="row">
                             <h5>Featured In:</h5>
-                            <div class="grid">
+                            <div class="grid_one-row">
                                 {% for party in pc.member_of.all %}{% for campaign in party.campaigns.all %}
                                     <div style="position: relative;"  class="card_sm">
                                         <div class="card-header" style="text-align: center">

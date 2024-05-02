@@ -75,6 +75,42 @@ class PublisherSystemsInline(admin.TabularInline):
     verbose_name = 'Publisher System'
 
 
+class WatchlistInline(admin.TabularInline):
+    model = models.Watchlist
+    extra = 1
+    verbose_name = 'Watchlist Campaign'
+
+
+class WatchinglistInline(admin.TabularInline):
+    model = models.WatchingList
+    extra = 1
+    verbose_name = 'Watching Campaign'
+
+
+class WatchedlistInline(admin.TabularInline):
+    model = models.HaveWatchedList
+    extra = 1
+    verbose_name = 'Have Watched Campaign'
+
+
+class FollowingActorsInline(admin.TabularInline):
+    model = models.ActorFollowers
+    extra = 1
+    verbose_name = 'Following Actor'
+
+
+class FollowingCampaignsInline(admin.TabularInline):
+    model = models.CampaignFollowers
+    extra = 1
+    verbose_name = 'Following Campaign'
+
+
+class FollowingProducersInline(admin.TabularInline):
+    model = models.ProducerFollowers
+    extra = 1
+    verbose_name = 'Following Producer'
+
+
 # -------------------- Admin Pages --------------------
 
 class UserAdmin(admin.ModelAdmin):
@@ -118,6 +154,8 @@ class PublisherAdmin(admin.ModelAdmin):
 
 
 class ProfileAdmin(admin.ModelAdmin):
+    inlines = [WatchlistInline, WatchinglistInline, WatchedlistInline, FollowingActorsInline,
+               FollowingCampaignsInline, FollowingProducersInline]
     exclude = []
 
 

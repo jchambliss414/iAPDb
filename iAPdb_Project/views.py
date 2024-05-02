@@ -3,7 +3,10 @@ from database import models
 
 
 def landing_page(request):
-    return render(request, 'landingpage.html')
+    if request.user.is_authenticated:
+        return redirect('user_home', request.user.id)
+    else:
+        return render(request, 'landingpage.html')
 
 
 def search_results(request):

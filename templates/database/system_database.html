@@ -31,7 +31,7 @@
                         <p class="card-text">{{ system.blurb }}</p>
                             <div class="row featured_campaigns">
                                 <h5>Featured Campaigns:</h5>
-                                <div class="grid">
+                                <div class="grid_one-row">
                                     {% for campaign in featured_campaigns %}
                                         {% if system in campaign.system.all %}
                                             <div style="position: relative;"  class="card_sm">

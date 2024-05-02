@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="col-sm-6 my-auto">
                                     <h5>GM For:</h5>
-                                    <div class="grid">
+                                    <div class="grid_one-row">
                                         {% for campaign in actor.gm_campaigns.all %}
                                             <div class="card_sm">
                                                 <div class="card-header" style="text-align: center">
@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="col-sm-6 my-auto">
                                     <h5>Characters:</h5>
-                                    <div class="grid">
+                                    <div class="grid_one-row">
                                         {% for pc in actor.characters.all %}<div class="card_sm">
                                             <div class="card-header" style="padding: 1%">
                                             <u>{{ pc.name }}</u> <br>
@@ -61,7 +61,7 @@
                         {% elif actor.gm_campaigns.all and not actor.characters.all %}
                             <div class="row my-auto">
                                 <h5>GM For:</h5>
-                                    <div class="grid">
+                                    <div class="grid_one-row">
                                         {% for campaign in actor.gm_campaigns.all %}
                                             <div class="card_sm">
                                             <div class="card-header" style="text-align: center">
@@ -75,7 +75,7 @@
                         {% elif not actor.gm_campaigns.all and actor.characters.all %}
                             <div class="row my-auto">
                                 <h5>Characters:</h5>
-                                <div class="grid">
+                                <div class="grid_one-row">
                                     {% for pc in actor.characters.all%}
                                         <div class="card_sm">
                                         <div class="card-header" style="padding: 1%">

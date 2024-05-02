@@ -4,9 +4,9 @@
 <h1>Campaign Page</h1>
 
 <div class="body-container">
-
+    <a href='add_campaign' class="database-header-link">Add New Campaign(s)</a>
     {% for campaign in campaigns %}
-        <br>
+        {% if forloop.counter > 1%}<br>{% endif %}
         <div class="card dark-background" style="max-width: 95%;">
             <div class="row g-0">
                 <div class="col-md-6 my-auto">
