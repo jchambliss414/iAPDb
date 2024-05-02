@@ -1,0 +1,50 @@
+{% extends 'base_template.html' %}
+
+{% block add_party %}
+
+<div id="addParty-Form">
+<h1>Add Party</h1>
+<form method="post">
+{% csrf_token %}
+<table name="addParty_form">
+    <tr>
+        <th>
+            {{addParty_form.name.label_tag}}
+        </th>
+        <td colspan="3">
+           {{addParty_form.name}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+           {{addParty_form.members.label_tag}}
+        </th>
+        <td colspan="3">
+           {{addParty_form.members}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            {{addParty_form.fandom_page.label_tag}}
+        </th>
+        <td>
+           {{addParty_form.fandom_page}}
+        </td>
+        <th>
+            {{addParty_form.image_url.label_tag}}
+        </th>
+        <td>
+           {{addParty_form.image_url}}
+        </td>
+    </tr>
+    <tr>
+        <th>{{addParty_form.blurb.label_tag}}</th>
+        <td colspan="3">{{addParty_form.blurb}}</td>
+    </tr>
+</table>
+<button type="submit" name="submitParty">Add Party</button>
+</form>
+<br><br>
+</div>
+{{addParty_form.media}}
+{% endblock add_party %}

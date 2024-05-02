@@ -1,0 +1,30 @@
+{% extends 'base_template.html' %}
+
+{% block campaign-episodes %}
+<h3>Episodes in this Campaign</h3>
+<form method="post">
+    {% csrf_token %}
+    <button name="addEpisode" type="submit">Add Episodes</button>
+</form>
+<h2>Episodes</h2>
+{% for episode in episodes %}
+    <div class="d-flex justify-content-center">
+        <div class="card" style="width: 75%;">
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <h5 class="card-title">{{episode.title}}</h5>
+                </div><br>
+                <div class="d-flex justify-content-between">
+                    <a href=/database/episodes/{{episode.id}}><img class="card-image" src={{campaign.image_url}} width="250px"></a>
+                    <p class="card-text">{{episode.blurb|safe}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+
+
+
+
+{% endblock campaign-episodes %}

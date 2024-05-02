@@ -1,0 +1,47 @@
+{% extends 'base_template.html' %}
+
+{% block edit-publisher %}
+<div id="editPublisher-Form">
+<h1>Edit Publisher</h1>
+<form method="post">
+{% csrf_token %}
+<table name="editPublisher-table">
+    <tr>
+        <th>
+            {{form.name.label_tag}}
+        </th>
+        <td>
+           {{form.name}}
+        </td>
+        <th>
+            {{form.website.label_tag}}
+        </th>
+        <td>
+           {{form.website}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            {{form.image_url.label_tag}}
+        </th>
+        <td>
+           {{form.image_url}}
+        </td>
+        <th>
+            {{form.systems.label_tag}}
+        </th>
+        <td>
+           {{form.systems}}
+        </td>
+    </tr>
+    <tr>
+        <th>{{form.blurb.label_tag}}</th>
+        <td colspan="4">{{form.blurb}}</td>
+    </tr>
+</table>
+<button type="submit" name="submitPublisher">Edit Publisher</button>
+</form>
+<br><br>
+</div>
+{{form.media}}
+{% endblock edit-publisher %}

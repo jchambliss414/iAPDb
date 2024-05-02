@@ -1,0 +1,76 @@
+{% extends 'base_template.html' %}
+{% block episode-form %}
+
+<div>
+<h1>Edit Episode</h1>
+<form method="post">
+{% csrf_token %}
+<table>
+    <tr>
+        <th>
+            {{form.title.label_tag}}
+        </th>
+        <td>
+           {{form.title}}
+        </td>
+        <th>
+           {{form.medium.label_tag}}
+        </th>
+        <td>
+           {{form.medium}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+           {{form.runtime.label_tag}}
+        </th>
+        <td>
+           {{form.runtime}}
+        </td>
+        <th>
+            {{form.airdate.label_tag}}
+        </th>
+        <td>
+            {{form.airdate}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            {{form.link.label_tag}}
+        </th>
+        <td>
+            {{form.link}}
+        </td>
+        <th>
+            {{form.image_url.label_tag}}
+        </th>
+        <td>
+            {{form.image_url}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            {{form.in_campaign.label_tag}}
+        </th>
+        <td>
+           {{form.in_campaign}}
+        </td>
+        <th>
+            {{form.ep_count.label_tag}}
+        </th>
+        <td>
+           {{form.ep_count}}
+        </td>
+    </tr>
+    <tr>
+        <th>{{form.blurb.label_tag}}</th>
+        <td colspan="5">{{form.blurb}}</td>
+    </tr>
+</table>
+<button type="submit">Submit Changes</button>
+</form>
+<br><br>
+</div>
+
+
+{% endblock episode-form %}

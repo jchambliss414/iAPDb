@@ -1,0 +1,48 @@
+{% extends 'base_template.html' %}
+
+{% block add_producer %}
+
+<div id="addProducer-Form">
+    <h1>Add Producer</h1>
+    <form method="post">
+    {% csrf_token %}
+    <table name="addProducer-table">
+        <tr>
+            <th>
+                {{addProducer_form.name.label_tag}}
+            </th>
+            <td>
+               {{addProducer_form.name}}
+            </td>
+            <th>
+               {{addProducer_form.medium.label_tag}}
+            </th>
+            <td>
+               {{addProducer_form.medium}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                {{addProducer_form.website.label_tag}}
+            </th>
+            <td>
+               {{addProducer_form.website}}
+            </td>
+            <th>
+                {{addProducer_form.image_url.label_tag}}
+            </th>
+            <td>
+               {{addProducer_form.image_url}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{addProducer_form.blurb.label_tag}}</th>
+            <td colspan="4">{{addProducer_form.blurb}}</td>
+        </tr>
+    </table>
+    <button type="submit" name="submitProducer">Add Producer</button>
+    </form>
+<br><br>
+</div>
+{{addProducer_form.media}}
+{% endblock add_producer %}

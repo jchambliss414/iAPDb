@@ -1,0 +1,74 @@
+{% extends 'base_template.html' %}
+
+{% block campaign-parties %}
+<h3>Parties in this Campaign</h3>
+<form method="post">
+    {% csrf_token %}
+    <button name="editCampaign" type="submit">Add Party/Guest PC</button>
+    <button name="addGuestPC" type="submit">Add Guest PC</button>
+</form>
+<h2>Party</h2>
+{% for party in parties %}
+    <div class="card" style="width: 75%;">
+        <h5 class="card-title">{{party.name}}</h5>
+        <div class="card-body">
+            <div class="d-flex d-flex align-items-center">
+                <a href=/database/parties/{{party.id}}><img class="card-image" src={{party.image_url}} width="250px"></a>
+                <p style="color: #09201C">{{party.blurb|safe}}</p>
+            </div>
+            <div class="grid">
+             {% for pc in party.members.all %}
+                <div class="grid__item">
+                    <a href=/database/pcs/{{pc.id}}><img class="pc-card__img" src={{pc.image_url}} width="150"></a>
+                    <h3><a href=/database/pcs/{{pc.id}}>{{pc.name}}</a></h3>
+                    <h6>
+                        Played by:
+                        {% for actor in pc.played_by.all %}
+                            {% if forloop.counter < 2 %}
+                                <a href=/database/actors/{{actor.id}}>{{actor.name}}</a>{% if not forloop.last %},&nbsp;{% endif %}
+                            {% elif forloop.counter == 2 %}
+                                <a href=/database/actors/{{actor.id}}>"{{actor.name}}"</a>, <a href=/database/pcs/{{pc.id}}>...</a>
+                            {% endif %}
+                        {% empty %}
+                            Unknown
+                        {% endfor %}
+                    </h6>
+                </div>
+                {% empty %}
+                    No PCs Currently Listed
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <div class="d-grid gap-2">
+        <a href="/members/edit_party/{{party.id}}" class="btn btn-primary" role="button">Edit Party</a>
+    </div>
+    </div>
+    </div>
+{% endfor %}
+
+{% if guests %}
+<h2>Guest PCs: </h2>
+<div class="grid">
+    {% for pc in guests %}
+        <div class="grid__item">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{pc.name}}</h5>
+                    <a href=/database/pcs/{{pc.id}}><img class="card-image" src={{pc.image_url}} width="250px"></a>
+                    <p class="card-text">{{pc.blurb|safe}}</p>
+                </div>
+                <br>
+                <div>
+                    <a href="/members/pcs/{{pc.id}}" class="btn btn-primary" role="button">Edit PC</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+
+
+{% endblock %}

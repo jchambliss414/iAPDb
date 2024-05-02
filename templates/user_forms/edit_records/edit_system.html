@@ -1,0 +1,41 @@
+{% extends 'base_template.html' %}
+
+{% block edit-system %}
+<div id="editSystem-Form">
+<h1>Edit System</h1>
+<form method="post">
+{% csrf_token %}
+<table name="editSystem-table">
+    <tr>
+        <th>
+            {{form.name.label_tag}}
+        </th>
+        <td>
+           {{form.name}}
+        </td>
+        <th>
+            {{form.website.label_tag}}
+        </th>
+        <td>
+           {{form.website}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            {{form.image_url.label_tag}}
+        </th>
+        <td>
+           {{form.image_url}}
+        </td>
+    </tr>
+    <tr>
+        <th>{{form.blurb.label_tag}}</th>
+        <td colspan="4">{{form.blurb}}</td>
+    </tr>
+</table>
+<button type="submit" name="submitSystem">Edit System</button>
+</form>
+<br><br>
+</div>
+{{form.media}}
+{% endblock edit-system %}

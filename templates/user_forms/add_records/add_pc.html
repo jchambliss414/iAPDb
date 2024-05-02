@@ -1,0 +1,48 @@
+{% extends 'base_template.html' %}
+
+{% block add_pc %}
+
+<div id="addPC-Form">
+<h1>Add PC</h1>
+<form method="post">
+{% csrf_token %}
+<table name="addPC_form">
+    <tr>
+        <th>
+            {{addPC_form.name.label_tag}}
+        </th>
+        <td>
+           {{addPC_form.name}}
+        </td>
+        <th>
+            {{addPC_form.played_by.label_tag}}
+        </th>
+        <td>
+            {{addPC_form.played_by}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            {{addPC_form.fandom_page.label_tag}}
+        </th>
+        <td>
+           {{addPC_form.fandom_page}}
+        </td>
+        <th>
+            {{addPC_form.image_url.label_tag}}
+        </th>
+        <td>
+           {{addPC_form.image_url}}
+        </td>
+    </tr>
+    <tr>
+        <th>{{addPC_form.blurb.label_tag}}</th>
+        <td colspan="3">{{addPC_form.blurb}}</td>
+    </tr>
+</table>
+<button type="submit" name="submitPC">Add PC</button>
+</form>
+<br><br>
+</div>
+{{addPC_form.media}}
+{% endblock add_pc %}

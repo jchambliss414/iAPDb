@@ -1,0 +1,37 @@
+{% extends 'base_template.html' %}
+
+{% block producer-campaigns %}
+<h3>Producer Campaigns</h3>
+<form method="post">
+    {% csrf_token %}
+    <button name="addCampaign" type="submit">Add Campaign</button>
+</form>
+{% for campaign in campaigns %}
+    <div class="d-flex justify-content-center">
+        <div class="card" style="width: 75%;">
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <h5 class="card-title">{{campaign.title}}</h5>
+                </div><br>
+                <div class="d-flex justify-content-between">
+                    <a href=/database/campaigns/{{campaign.id}}><img class="card-image" src={{campaign.image_url}} width="250px"></a>
+                    <p class="card-text">{{campaign.blurb|safe}}</p>
+                    <ul>
+                        {% for party in campaign.party.all %}
+                            <li><a href=/database/parties/{{party.id}}>{{party.name}}</a></li>
+                        {% endfor %}
+                        <a href="/members/manage_parties/campaign/{{campaign.id}}" class="btn btn-primary" role="button">Manage Parties</a>
+                    </ul>
+                </div>
+                <br>
+                <div class="d-grid gap-2">
+                    <a href="/members/edit_campaign/{{campaign.id}}" class="btn btn-primary" role="button">Edit Campaign!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+
+
+{% endblock %}

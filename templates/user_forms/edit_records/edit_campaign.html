@@ -1,0 +1,79 @@
+{% extends 'base_template.html' %}
+
+{% block edit-campaign %}
+<div id="EditCampaign-Form">
+    <h1>Edit Campaign</h1>
+    <form method="post">
+    {% csrf_token %}
+    <table name="editCampaign-table">
+        <tr>
+            <th>
+                {{form.title.label_tag}}
+            </th>
+            <td>
+               {{form.title}}
+            </td>
+            <th>
+               {{form.system.label_tag}}
+            </th>
+            <td>
+               {{form.system}}
+            </td>
+            <th>
+               {{form.medium.label_tag}}
+            </th>
+            <td>
+               {{form.medium}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                {{form.produced_by.label_tag}}
+            </th>
+            <td>
+                {{form.produced_by}}
+            </td>
+            <th>
+                {{form.gm.label_tag}}
+            </th>
+            <td>
+                {{form.gm}}
+            </td>
+            <th>
+                {{form.party.label_tag}}
+            </th>
+            <td>
+               {{form.party}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                {{form.website.label_tag}}
+            </th>
+            <td>
+               {{form.website}}
+            </td>
+            <th>
+                {{form.image_url.label_tag}}
+            </th>
+            <td>
+               {{form.image_url}}
+            </td>
+            <th>
+                {{form.guests.label_tag}}
+            </th>
+            <td>
+               {{form.guests}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{form.blurb.label_tag}}</th>
+            <td colspan="5">{{form.blurb}}</td>
+        </tr>
+    </table>
+    <button type="submit" name="submit">Submit</button>
+    </form>
+<br><br>
+</div>
+{{form.media}}
+{% endblock edit-campaign %}

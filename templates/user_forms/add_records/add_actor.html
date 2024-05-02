@@ -1,0 +1,48 @@
+{% extends 'base_template.html' %}
+
+{% block add_actor %}
+
+<div id="addActor-Form">
+<h1>Add Actor</h1>
+<form method="post">
+{% csrf_token %}
+<table name="addActor_form">
+    <tr>
+        <th>
+            {{addActor_form.name.label_tag}}
+        </th>
+        <td>
+           {{addActor_form.name}}
+        </td>
+        <th>
+           {{addActor_form.characters.label_tag}}
+        </th>
+        <td>
+           {{addActor_form.characters}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            {{addActor_form.link.label_tag}}
+        </th>
+        <td>
+            {{addActor_form.link}}
+        </td>
+        <th>
+            {{addActor_form.image_url.label_tag}}
+        </th>
+        <td>
+           {{addActor_form.image_url}}
+        </td>
+    </tr>
+    <tr>
+        <th>Blurb:</th>
+        <td colspan="4">{{addActor_form.blurb}}</td>
+    </tr>
+</table>
+<button type="submit" name="submitActor">Add Actor</button>
+</form>
+<br><br>
+</div>
+{{addActor_form.media}}
+{% endblock add_actor %}

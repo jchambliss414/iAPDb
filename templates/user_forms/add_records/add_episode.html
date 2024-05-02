@@ -1,0 +1,67 @@
+{% extends 'base_template.html' %}
+
+{% block add_episode %}
+
+<div id="addEpisode-Form">
+<h1>Add Episode</h1>
+<form method="post">
+{% csrf_token %}
+<table name="addEpisode_form">
+    <tr>
+        <th>
+            {{form.title.label_tag}}
+        </th>
+        <td>
+           {{form.title}}
+        </td>
+        <th>
+           {{form.medium.label_tag}}
+        </th>
+        <td>
+           {{form.medium}}
+        </td>
+        <th>
+           {{form.ep_count.label_tag}}
+        </th>
+        <td>
+           {{form.ep_count}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            {{form.runtime.label_tag}}
+        </th>
+        <td>
+            {{form.runtime}}
+        </td>
+        <th>
+            {{form.airdate.label_tag}}
+        </th>
+        <td>
+            {{form.airdate}}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            {{form.link.label_tag}}
+        </th>
+        <td>
+            {{form.link}}
+        </td>
+        <th>
+            {{form.image_url.label_tag}}
+        </th>
+        <td>
+           {{form.image_url}}
+        </td>
+    </tr>
+    <tr>
+        <th>Blurb:</th>
+        <td colspan="4">{{form.blurb}}</td>
+    </tr>
+</table>
+<button type="submit" name="submitEpisode">Add Episode</button>
+</form>
+</div>
+
+{% endblock add_episode%}

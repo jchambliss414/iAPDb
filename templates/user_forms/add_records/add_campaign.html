@@ -1,0 +1,73 @@
+{% extends 'base_template.html' %}
+
+{% block add_campaign %}
+
+<div id="addCampaign-Form">
+    <h1>Add Campaign</h1>
+    <form method="post">
+    {% csrf_token %}
+    <table name="addCampaign_form">
+        <tr>
+            <th>
+                {{addCampaign_form.title.label_tag}}
+            </th>
+            <td>
+               {{addCampaign_form.title}}
+            </td>
+            <th>
+               {{addCampaign_form.medium.label_tag}}
+            </th>
+            <td>
+               {{addCampaign_form.medium}}
+            </td>
+            <th>
+               {{addCampaign_form.system.label_tag}}
+            </th>
+            <td>
+               {{addCampaign_form.system}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                {{addCampaign_form.party.label_tag}}
+            </th>
+            <td>
+               {{addCampaign_form.party}}
+            </td>
+            <th>
+                {{addCampaign_form.guests.label_tag}}
+            </th>
+            <td>
+               {{addCampaign_form.guests}}
+            </td>
+            <th>
+                {{addCampaign_form.gm.label_tag}}
+            </th>
+            <td>
+                {{addCampaign_form.gm}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                {{addCampaign_form.website.label_tag}}
+            </th>
+            <td>
+               {{addCampaign_form.website}}
+            </td>
+            <th>
+                {{addCampaign_form.image_url.label_tag}}
+            </th>
+            <td>
+               {{addCampaign_form.image_url}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{addCampaign_form.blurb.label_tag}}</th>
+            <td colspan="5">{{addCampaign_form.blurb}}</td>
+        </tr>
+    </table>
+    <button type="submit" name="submitCampaign">Add Campaign</button>
+    </form>
+</div>
+{{addCampaign_form.media}}
+{% endblock add_campaign %}
