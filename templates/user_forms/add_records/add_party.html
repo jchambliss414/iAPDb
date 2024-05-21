@@ -14,12 +14,14 @@
         <td colspan="3">
            {{addParty_form.name}}
         </td>
+        <th rowspan="4">{{addParty_form.blurb.label_tag}}</th>
+        <td rowspan="4">{{addParty_form.blurb}}</td>
     </tr>
     <tr>
         <th>
            {{addParty_form.members.label_tag}}
         </th>
-        <td colspan="3">
+        <td>
            {{addParty_form.members}}
         </td>
     </tr>
@@ -30,16 +32,14 @@
         <td>
            {{addParty_form.fandom_page}}
         </td>
+    </tr>
+    <tr>
         <th>
             {{addParty_form.image_url.label_tag}}
         </th>
         <td>
            {{addParty_form.image_url}}
         </td>
-    </tr>
-    <tr>
-        <th>{{addParty_form.blurb.label_tag}}</th>
-        <td colspan="3">{{addParty_form.blurb}}</td>
     </tr>
 </table>
 <button type="submit" name="submitParty">Add Party</button>

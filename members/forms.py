@@ -1,13 +1,35 @@
 from django.contrib.auth.forms import UserCreationForm,gettext
 from django.contrib.auth.models import User
 from django import forms
-from django_select2.forms import Select2MultipleWidget
+from django_select2.forms import Select2MultipleWidget, Select2Widget
 from database import models
 from ckeditor.fields import RichTextFormField
 from django_select2 import forms as s2forms
 from django.forms import FileField, Form, ModelForm
 
 
+# ---------------- Authentication --------------------------------
+class RegisterUserForm(UserCreationForm):
+    email = forms.EmailField()
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=50)
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+
+
+class LoginForm(UserCreationForm):
+    email = forms.EmailField()
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=50)
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+
+
+# ---------------- Widgets --------------------------------
 class ActorWidget(s2forms.ModelSelect2MultipleWidget):
     search_fields = [
         "name__icontains",
@@ -50,48 +72,20 @@ class PublisherWidget(s2forms.ModelSelect2MultipleWidget):
     ]
 
 
-class RegisterUserForm(UserCreationForm):
-    email = forms.EmailField()
-    first_name = forms.CharField(max_length=50)
-    last_name = forms.CharField(max_length=50)
-
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 
-class LoginForm(UserCreationForm):
-    email = forms.EmailField()
-    first_name = forms.CharField(max_length=50)
-    last_name = forms.CharField(max_length=50)
-
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
-
-
-class SendNotificationForm(forms.ModelForm):
-    subject = forms.CharField(max_length=255)
-    message = forms.CharField(widget=forms.Textarea, required=True)
-
-
-class ComposeMessageForm(forms.Form):
-    sender = forms.ModelChoiceField(queryset=User.objects.all(),
-                                    widget= forms.HiddenInput)
-    recipients = forms.ModelMultipleChoiceField(queryset=User.objects.all(), widget=Select2MultipleWidget)
-    subject = forms.CharField(max_length=255)
-    content = forms.CharField(widget=forms.Textarea)
-
-    def save(self, commit):
-        pass
-
-
+# ---------------- Edit Forms --------------------------------
 class ActorEditForm(forms.ModelForm):
     class Meta:
         model = models.Actor
-        fields = ['name', 'characters', 'link', 'image_url', 'blurb']
+        fields = ['name', 'characters', 'link', 'image_url', 'blurb', 'gm_campaigns']
         widgets = {
             "characters": PCWidget(
+                {'data-width': '300px'}
+            ),
+            "gm_campaigns": CampaignWidget(
                 {'data-width': '300px'}
             ),
         }
@@ -100,28 +94,26 @@ class ActorEditForm(forms.ModelForm):
 class CampaignEditForm(forms.ModelForm):
     class Meta:
         model = models.Campaign
-        fields = ['title', 'medium', 'gm', 'blurb', 'link', 'produced_by', 'image_url', 'party', 'guests', 'system']
+        fields = ['title', 'medium', 'progress', 'gm', 'blurb', 'link', 'image_url', 'party', 'guest_pcs', 'system',
+                  'type', 'produced_by']
         widgets = {
-            "produced_by": ProducerWidget(
-                {'data-width': '300px'}
-            ),
             "gm": ActorWidget(
                 {'data-width': '300px'}
             ),
             "party": PartyWidget(
                 {'data-width': '300px'}
             ),
-            "guests": PCWidget(
+            "guest_pcs": PCWidget(
                 {'data-width': '300px'}
             ),
             "system": SystemWidget(
                 {'data-width': '300px'}
             ),
+            "produced_by": ProducerWidget(
+                {'data-width': '300px'}
+            ),
+            "medium": Select2MultipleWidget,
         }
-
-
-class DateInput(forms.DateInput):
-    input_type = 'date'
 
 
 class EpisodeEditForm(forms.ModelForm):
@@ -136,11 +128,12 @@ class EpisodeEditForm(forms.ModelForm):
 class ProducerEditForm(forms.ModelForm):
     class Meta:
         model = models.Producer
-        fields = ['name', 'link', 'campaigns', 'blurb', 'image_url']
+        fields = ['name', 'link', 'campaigns', 'blurb', 'image_url', 'medium']
         widgets = {
             "campaigns": CampaignWidget(
                 {'data-width': '300px'}
             ),
+            "medium": Select2MultipleWidget,
         }
 
 
@@ -189,20 +182,21 @@ class PCEditForm(forms.ModelForm):
         }
 
 
-class UploadForm(Form):
-    episodes_file = FileField()
-
 class PartyEditForm(forms.ModelForm):
     class Meta:
         model = models.Party
-        fields = ['name', 'members', 'fandom_page', 'image_url', 'blurb']
+        fields = ['name', 'members', 'campaigns', 'fandom_page', 'image_url', 'blurb']
         widgets = {
             "members": PCWidget(
+                {'data-width': '300px'}
+            ),
+            "campaigns": CampaignWidget(
                 {'data-width': '300px'}
             ),
         }
 
 
+# ---------------- Add Forms --------------------------------
 class AddActorForm(forms.ModelForm):
     class Meta:
         model = models.Actor
@@ -212,9 +206,6 @@ class AddActorForm(forms.ModelForm):
                 {'data-width': '300px'}
             ),
         }
-
-
-
 
 
 class AddEpisodeForm(forms.ModelForm):
@@ -232,7 +223,8 @@ class AddEpisodeForm(forms.ModelForm):
 class AddCampaignForm(forms.ModelForm):
     class Meta:
         model = models.Campaign
-        fields = ['title', 'medium', 'gm', 'blurb', 'link', 'image_url', 'party', 'guests', 'system']
+        fields = ['title', 'medium', 'progress', 'gm', 'blurb', 'link', 'image_url', 'party', 'guest_pcs', 'system',
+                  'type', 'produced_by']
         widgets = {
             "gm": ActorWidget(
                 {'data-width': '300px'}
@@ -240,12 +232,16 @@ class AddCampaignForm(forms.ModelForm):
             "party": PartyWidget(
                 {'data-width': '300px'}
             ),
-            "guests": PCWidget(
+            "guest_pcs": PCWidget(
                 {'data-width': '300px'}
             ),
             "system": SystemWidget(
                 {'data-width': '300px'}
             ),
+            "produced_by": ProducerWidget(
+                {'data-width': '300px'}
+            ),
+            "medium": Select2MultipleWidget,
         }
 
 
@@ -316,3 +312,9 @@ class AddPublisherForm(forms.ModelForm):
                 {'data-width': '300px'}
             )
         }
+
+
+# ---------------- Archived for later --------------------------------
+class UploadForm(Form):
+    episodes_file = FileField()
+

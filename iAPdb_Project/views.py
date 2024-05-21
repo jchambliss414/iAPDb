@@ -130,31 +130,3 @@ def elements_test_page(request):
                                                             'party': party,
                                                             'system': system,
                                                             'publisher': publisher})
-
-
-def campaign_model_test(request):
-    return render(request, 'test_pages/model_pages/campaign_model.html')
-
-
-def actor_model_test(request):
-    return render(request, 'test_pages/model_pages/actor_model.html')
-
-
-def pc_model_test(request):
-    return render(request, 'test_pages/model_pages/pc_model.html')
-
-
-def party_model_test(request):
-    return render(request, 'test_pages/model_pages/party_model.html')
-
-
-def producer_model_test(request):
-    return render(request, 'test_pages/model_pages/producer_model.html')
-
-
-def system_model_test(request):
-    return render(request, 'test_pages/model_pages/system_model.html')
-
-
-def publisher_model_test(request):
-    return render(request, 'test_pages/model_pages/publisher_model.html')

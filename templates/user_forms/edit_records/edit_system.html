@@ -2,40 +2,77 @@
 
 {% block edit-system %}
 <div id="editSystem-Form">
-<h1>Edit System</h1>
-<form method="post">
-{% csrf_token %}
-<table name="editSystem-table">
-    <tr>
-        <th>
-            {{form.name.label_tag}}
-        </th>
-        <td>
-           {{form.name}}
-        </td>
-        <th>
-            {{form.website.label_tag}}
-        </th>
-        <td>
-           {{form.website}}
-        </td>
-    </tr>
-    <tr>
-        <th>
-            {{form.image_url.label_tag}}
-        </th>
-        <td>
-           {{form.image_url}}
-        </td>
-    </tr>
-    <tr>
-        <th>{{form.blurb.label_tag}}</th>
-        <td colspan="4">{{form.blurb}}</td>
-    </tr>
-</table>
-<button type="submit" name="submitSystem">Edit System</button>
-</form>
-<br><br>
+<h1>Edit System - <u>{{ system.name }}</u></h1>
+<div class="row">
+    <div class="col-5">
+        <div class="card dark-background" style="max-width: 95%; height: 400px">
+            <div class="row" style="max-width: 100%; height: inherit">
+                <div class="col-md-5 my-auto">
+                    <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ system.image_url }}>
+                </div>
+                <div class="col-md-7 my-auto">
+                    <div class="card-body" style="height: inherit">
+                        <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/systems/{{ system.id }}>{{ system.name }}</a></h3>
+                            <p class="subtitle">
+                                {% if system.published_by.all %}
+                                    (Published By: {% for publisher in system.published_by.all|slice:"0:3" %}
+                                        {% if forloop.counter < 3%}
+                                            <a style="position: relative;" class="stretched-link" href=/database/publisher/{{ publisher.id }}>{{ publisher.name }}</a>{% if not forloop.last %},{% endif %}
+                                        {% elif forloop.counter >= 3 %}
+                                            <a style="position: relative;" class="stretched-link" href=/database/systems/{{ system.id }}>and more...</a>
+                                        {% endif %}
+                                    {% endfor %})
+                                <br>
+                                {% endif %}
+                                (Campaigns in Database: {{ system.campaigns.all.count }})
+                            </p>
+                        <p class="card-text">{{ system.blurb }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-7">
+        <form method="post">
+        {% csrf_token %}
+        <table name="editSystem-table">
+            <tr>
+                <th>
+                    {{form.name.label_tag}}
+                </th>
+                <td>
+                   {{form.name}}
+                </td>
+                <th>
+                    {{form.link.label_tag}}
+                </th>
+                <td>
+                   {{form.link}}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    {{form.published_by.label_tag}}
+                </th>
+                <td>
+                   {{form.published_by}}
+                </td>
+                <th>
+                    {{form.image_url.label_tag}}
+                </th>
+                <td>
+                   {{form.image_url}}
+                </td>
+            </tr>
+            <tr>
+                <th>{{form.blurb.label_tag}}</th>
+                <td colspan="4">{{form.blurb}}</td>
+            </tr>
+        </table>
+        <button type="submit" name="editSystem">Submit Changes</button>
+        </form>
+    </div>
+</div>
 </div>
 {{form.media}}
 {% endblock edit-system %}

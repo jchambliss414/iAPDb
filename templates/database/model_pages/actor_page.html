@@ -15,13 +15,18 @@
         <div class="col-5">
             <h1 class="dark">{{ actor.name }}</h1>
             <img class="model-img" src={{ actor.image_url }}>
-            <a class="subtitle" href='#'>Edit Actor</a>
+            <a class="subtitle" href='{% url 'edit_model' entity='actor' ent_id=actor.id %}'>Edit Actor</a>
             <p class="dark">{{ actor.blurb }}</p>
         </div>
         <div class="col-7">
-        <div class="card-buttons">
-            <button>Follow Actor</button>
-        </div>
+            <form class="card-buttons" method="post">
+                {% csrf_token %}
+                    {% if request.user.profile in actor.followers.all %}
+                        <button name="unfollowActor" value={{ actor.id }}>Unfollow Actor</button>
+                    {% else %}
+                        <button name="followActor" value={{ actor.id }}>Follow Actor</button>
+                    {% endif %}
+            </form>
         <!--    Nav Bar              -->
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">

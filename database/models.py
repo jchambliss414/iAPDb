@@ -194,7 +194,7 @@ class Campaign(models.Model):
 
     title = models.CharField(max_length=2083, blank=True, null=True)
     party = models.ManyToManyField('Party', through='CampaignParty', blank=True)
-    guests = models.ManyToManyField('PC', through=CampaignGuests, blank=True)
+    guest_pcs = models.ManyToManyField('PC', through=CampaignGuests, blank=True)
     gm = models.ManyToManyField('Actor', through='CampaignGMs', blank=True, related_name='campaign_gms')
     system = models.ManyToManyField('System', through='CampaignSystem', blank=True, related_name='campaign_systems')
     produced_by = models.ManyToManyField('Producer', through=ProducerCampaigns, blank=True,
@@ -202,7 +202,7 @@ class Campaign(models.Model):
     progress = models.CharField(max_length=100, choices=progress_choices, blank=True, null=True)
     medium = MultiSelectField(choices=medium_choices, blank=True, null=True, max_length=100)
     type = models.CharField(max_length=100, choices=type_choices, blank=True, null=True)
-    Watchlist_profiles = models.ManyToManyField('Profile', through=Watchlist, blank=True,
+    watchlist_profiles = models.ManyToManyField('Profile', through=Watchlist, blank=True,
                                                   related_name='towatch_campaign')
     watchinglist_profiles = models.ManyToManyField('Profile', through=WatchingList, blank=True,
                                                    related_name='watching_campaign')
@@ -248,12 +248,10 @@ class Episode(models.Model):
 
 
 class Notification(models.Model):
-    sender = models.ManyToManyField('Producer' or 'Actor' or 'Campaign')
-    sent_by = models.CharField(max_length=20, null=True)
-    receiver = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
+    receiver = models.ForeignKey('Profile', blank=True, on_delete=models.CASCADE)
     subject = models.CharField(max_length=50, blank=False, null=False, default='[Subject]')
     message = models.TextField(max_length=2000, blank=False, null=False)
-    timestamp = models.DateField(auto_now=True)
+    timestamp = models.DateTimeField(auto_now=True)
     read_status = models.BooleanField(default=False)
 
     class Meta:

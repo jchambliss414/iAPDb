@@ -14,6 +14,10 @@
             <td>
                {{addProducer_form.name}}
             </td>
+            <th rowspan="4">{{addProducer_form.blurb.label_tag}}</th>
+            <td rowspan="4">{{addProducer_form.blurb}}</td>
+        </tr>
+        <tr>
             <th>
                {{addProducer_form.medium.label_tag}}
             </th>
@@ -23,21 +27,19 @@
         </tr>
         <tr>
             <th>
-                {{addProducer_form.website.label_tag}}
+                {{addProducer_form.link.label_tag}}
             </th>
             <td>
-               {{addProducer_form.website}}
+               {{addProducer_form.link}}
             </td>
+        </tr>
+        <tr>
             <th>
                 {{addProducer_form.image_url.label_tag}}
             </th>
             <td>
                {{addProducer_form.image_url}}
             </td>
-        </tr>
-        <tr>
-            <th>{{addProducer_form.blurb.label_tag}}</th>
-            <td colspan="4">{{addProducer_form.blurb}}</td>
         </tr>
     </table>
     <button type="submit" name="submitProducer">Add Producer</button>

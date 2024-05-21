@@ -9,10 +9,10 @@
 <table name="addEpisode_form">
     <tr>
         <th>
-            {{form.title.label_tag}}
+            {{form.title.label_tag}}/Ep. #
         </th>
         <td>
-           {{form.title}}
+           {{form.title}} {{form.ep_count}}
         </td>
         <th>
            {{form.medium.label_tag}}
@@ -20,12 +20,8 @@
         <td>
            {{form.medium}}
         </td>
-        <th>
-           {{form.ep_count.label_tag}}
-        </th>
-        <td>
-           {{form.ep_count}}
-        </td>
+        <th rowspan="3">Blurb:</th>
+        <td rowspan="3">{{form.blurb}}</td>
     </tr>
     <tr>
         <th>
@@ -54,10 +50,6 @@
         <td>
            {{form.image_url}}
         </td>
-    </tr>
-    <tr>
-        <th>Blurb:</th>
-        <td colspan="4">{{form.blurb}}</td>
     </tr>
 </table>
 <button type="submit" name="submitEpisode">Add Episode</button>

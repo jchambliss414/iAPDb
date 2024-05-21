@@ -4,9 +4,8 @@
 <h1>Actor Page</h1>
 
 <div class="body-container">
-
+    <a href={% url 'add_model' entity='actor' %} class="database-header-link">Add New Actor(s)</a>
     {% for actor in actors %}
-        <br>
         <div class="card dark-background" style="max-width: 95%; height: 400px">
             <div class="row" style="max-width: 100%; height: inherit">
                 <div class="col-md-5 card-col my-auto" style="height: inherit">

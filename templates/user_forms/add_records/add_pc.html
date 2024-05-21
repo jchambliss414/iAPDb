@@ -4,6 +4,7 @@
 
 <div id="addPC-Form">
 <h1>Add PC</h1>
+<div id="addPC-Form">
 <form method="post">
 {% csrf_token %}
 <table name="addPC_form">
@@ -20,6 +21,8 @@
         <td>
             {{addPC_form.played_by}}
         </td>
+        <th rowspan="2">Blurb:</th>
+        <td rowspan="2" colspan="2">{{addPC_form.blurb}}</td>
     </tr>
     <tr>
         <th>
@@ -35,13 +38,11 @@
            {{addPC_form.image_url}}
         </td>
     </tr>
-    <tr>
-        <th>{{addPC_form.blurb.label_tag}}</th>
-        <td colspan="3">{{addPC_form.blurb}}</td>
-    </tr>
 </table>
 <button type="submit" name="submitPC">Add PC</button>
 </form>
+<br><br>
+</div>
 <br><br>
 </div>
 {{addPC_form.media}}

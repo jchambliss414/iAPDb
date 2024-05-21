@@ -21,28 +21,15 @@ import iAPdb_Project.views as project_views
 
 urlpatterns = [
     path('', views.database_home),
-    path('campaigns/', views.campaign_database),
-    path('actors/', views.actor_database),
-    path('pcs/', views.pc_database),
-    path('parties/', views.party_database),
-    path('producers/', views.producer_database),
-    path('systems/', views.system_database),
-    path('publishers/', views.publisher_database),
-    path('<str:entity>/<int:ent_id>/', views.model_pages, name="model_page"),
-
+    path('<str:entity>/', views.database_pages, name="database_page"),
+    path('<str:entity>/<int:ent_id>', views.model_pages, name="model_page"),
 
     path('search_results/', project_views.search_results, name="search_results"),
 
-
-    # path('add_new_records', views.add_new_records, name='add_new_records'),
-    path('add_actor/', views.add_new_actor, name='add_actor'),
-    path('add_campaign/', views.add_new_campaign, name='add_campaign'),
-    path('add_publisher/', views.add_new_publisher, name='add_publisher'),
-    path('add_system/', views.add_new_system, name='add_system'),
-    path('add_producer/', views.add_new_producer, name='add_producer'),
-    path('add_party/', views.add_new_party, name='add_party'),
-    path('add_pc/', views.add_new_pc, name='add_pc'),
-    path('add_episode/<int:campaign_id>', views.add_new_episode, name='add_episode'),
+    path('add_new_records', views.add_new_records, name='add_new_records'),
+    path('add/<str:entity>/', views.add_new_model, name='add_model'),
+    path('edit/<str:entity>/<int:ent_id>/', views.edit_model, name='edit_model'),
+    path('campaigns/<int:campaign_id>/add_episode/', views.add_new_episode, name='add_episode'),
 
     # path('edit_producer/<int:producer_id>', views.edit_producer, name='edit_producer'),
     # path('edit_actor/<int:actor_id>', views.edit_actor, name='edit_actor'),

@@ -4,7 +4,39 @@
     <h1>User Homepage for <u>{{ user }}</u></h1>
 
     <div class="body-container">
-        <section>
+        <section name="unread_inbox">
+            <h1 class="dark">Unread Notifications</h1>
+            <table>
+                {% for notification in unread_notifications %}
+                    {% if forloop.counter <= 5%}
+                        <tr>
+                            <th>{{ forloop.counter }}.</th>
+                            <td>
+                                <a href={% url 'message' user_id=user.id message_id=notification.id %}>
+                                    {{ notification.subject }}
+                                </a>
+                            </td>
+                        <td>{{ notification.timestamp }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+                <a href="{% url 'inbox' user_id=user.id %}">
+                    {% if unread_notifications.all.count > 5 %}
+                        <h6 class="dark" style="margin: 1% 0 0 0">
+                            {{ unread_notifications.all.count|add:"-5" }} More Unread Notification(s)
+                        </h6>
+                    {% else %}
+                        <h5 class="dark" style="margin: 1% 0 0 0">
+                            Go to Inbox
+                        </h5>
+                    {% endif %}
+                </a>
+
+        </section>
+        <br>
+        <hr>
+        <section name="watchlists">
             <h1 class="dark">Watchlists</h1>
             <!--    Nav Bar              -->
             <nav>
@@ -21,7 +53,6 @@
                     </button>
                 </div>
             </nav>
-
             <!--    Content      -->
             <form method="post">
             {% csrf_token %}
@@ -39,7 +70,7 @@
                                     <div class="card">
                                         <div class="card-body-md">
                                             <div class="card-title with_subtitle overflow-1">
-                                                {{ campaign.title }}
+                                                <a href='{% url 'model_page' entity='campaigns' ent_id=campaign.id %}'>{{ campaign.title }}</a>
                                             </div>
                                             <img class="card-img_sm-rect" src={{ campaign.image_url }}>
                                             <button class="card-button-sm" name="WatchlistToWatching" type="submit" value={{campaign.id}}>Move to Watching
@@ -65,7 +96,7 @@
                                     <div class="card">
                                         <div class="card-body-md">
                                             <div class="card-title with_subtitle overflow-1">
-                                                {{ campaign.title }}
+                                                <a href='{% url 'model_page' entity='campaigns' ent_id=campaign.id %}'>{{ campaign.title }}</a>
                                             </div>
                                             <img class="card-img_sm-rect" src={{ campaign.image_url }}>
                                             <button class="card-button-sm" name="WatchingToWatched" type="submit" value={{campaign.id}}>Move to Watched
@@ -90,7 +121,7 @@
                                     <div class="card">
                                         <div class="card-body-md">
                                             <div class="card-title with_subtitle overflow-1">
-                                                {{ campaign.title }}
+                                                <a href='{% url 'model_page' entity='campaigns' ent_id=campaign.id %}'>{{ campaign.title }}</a>
                                             </div>
                                             <img class="card-img_sm-rect" src={{ campaign.image_url }}>
                                             <button class="card-button-sm" name="RemoveWatched" type="submit" value={{campaign.id}}>Remove From List
@@ -108,7 +139,7 @@
         <br>
         <hr>
 
-        <section>
+        <section name="following_list">
             <h1 class="dark">Following</h1>
             <!--    Nav Bar              -->
             <nav>
@@ -125,7 +156,6 @@
                     </button>
                 </div>
             </nav>
-
             <!--    Content      -->
             <form method="post">
             {% csrf_token %}
@@ -143,7 +173,7 @@
                                     <div class="card">
                                         <div class="card-body-md">
                                             <div class="card-title with_subtitle overflow-1">
-                                                {{ campaign.title }}
+                                                <a href='{% url 'model_page' entity='campaigns' ent_id=campaign.id %}'>{{ campaign.title }}</a>
                                             </div>
                                             <img class="card-img_sm-rect" src={{ campaign.image_url }}>
                                             <button class="card-button-sm" name="UnfollowCampaign" type="submit"
@@ -168,7 +198,7 @@
                                     <div class="card">
                                         <div class="card-body-md">
                                             <div class="card-title with_subtitle overflow-1">
-                                                {{ actor.name }}
+                                                <a href='{% url 'model_page' entity='actors' ent_id=actor.id %}'>{{ actor.name }}</a>
                                             </div>
                                             <img class="card-img_sm-rect" src={{ actor.image_url }}>
                                             <button class="card-button-sm" name="UnfollowActor" type="submit"
@@ -193,7 +223,7 @@
                                     <div class="card">
                                         <div class="card-body-md">
                                             <div class="card-title with_subtitle overflow-1">
-                                                {{ producer.name }}
+                                                <a href='{% url 'model_page' entity='producers' ent_id=producer.id %}'>{{ producer.name }}</a>
                                             </div>
                                             <img class="card-img_sm-rect" src={{ producer.image_url }}>
                                             <button class="card-button-sm" name="UnfollowProducer" type="submit"

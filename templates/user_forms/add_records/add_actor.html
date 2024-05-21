@@ -4,6 +4,7 @@
 
 <div id="addActor-Form">
 <h1>Add Actor</h1>
+<div id="addActor-Form">
 <form method="post">
 {% csrf_token %}
 <table name="addActor_form">
@@ -20,6 +21,8 @@
         <td>
            {{addActor_form.characters}}
         </td>
+        <th rowspan="2">Blurb:</th>
+        <td rowspan="2" colspan="2">{{addActor_form.blurb}}</td>
     </tr>
     <tr>
         <th>
@@ -36,12 +39,12 @@
         </td>
     </tr>
     <tr>
-        <th>Blurb:</th>
-        <td colspan="4">{{addActor_form.blurb}}</td>
     </tr>
 </table>
 <button type="submit" name="submitActor">Add Actor</button>
 </form>
+<br><br>
+</div>
 <br><br>
 </div>
 {{addActor_form.media}}

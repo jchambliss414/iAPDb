@@ -15,7 +15,7 @@
         <div class="col-5">
             <h1 class="dark">{{ pc.name }}</h1>
             <img class="model-img" src={{ pc.image_url }}>
-            <a class="subtitle" href='#'>Edit PC</a>
+            <a class="subtitle" href='{% url 'edit_model' entity='pc' ent_id=pc.id %}'>Edit PC</a>
             <p class="dark">{{ pc.blurb }}</p>
         </div>
         <div class="col-7">

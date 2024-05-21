@@ -1,0 +1,6 @@
+{% extends 'base_template.html' %}
+
+{% block read_message %}
+    <h3>{{ message.subject }} | {{ message.timestamp }}</h3>
+    <p>{{ message.message }}</p>
+{% endblock read_message %}

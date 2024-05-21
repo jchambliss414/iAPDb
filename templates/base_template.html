@@ -17,6 +17,14 @@
 <body>
 {% include 'navbar.html'%}
 
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <p class="alert_message">{{ message }}</p><br>
+    {% endfor %}
+</div>
+{% endif %}
+
 {% block database_main %}
 {% endblock database_main %}
 
@@ -62,6 +70,14 @@
 {% block user_home %}
 {% endblock user_home %}
 
+{% block inbox %}
+{% endblock inbox %}
+
+{% block read_message %}
+{% endblock read_message %}
+
+
+
 <div name="user_forms">
     {% block add_actor %}
     {% endblock add_actor %}
@@ -71,6 +87,9 @@
 
     {% block add_pc %}
     {% endblock add_pc %}
+
+    {% block add_party %}
+    {% endblock add_party %}
 
     {% block add_producer %}
     {% endblock add_producer %}
@@ -93,6 +112,9 @@
     {% block edit-pc %}
     {% endblock edit-pc %}
 
+    {% block edit-party %}
+    {% endblock edit-party %}
+
     {% block edit-producer %}
     {% endblock edit-producer %}
 
@@ -102,6 +124,9 @@
     {% block edit-system %}
     {% endblock edit-system %}
 
+    {% block add_episode %}
+    {% endblock add_episode %}
+
     {% block producer-campaigns %}
     {% endblock producer-campaigns %}
 
@@ -110,6 +135,10 @@
 
     {% block campaign-episodes %}
     {% endblock campaign-episodes %}
+
+    {% block add_new_record %}
+    {% endblock add_new_record %}
+
 
 </div>
 

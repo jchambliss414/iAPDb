@@ -3,351 +3,379 @@
 
 <div>
     <h1>Welcome to the Database Addition Page</h1>
-    <br>
-    <h2>
+    <h3>
         Due to the multi-sided relationships inherent in keeping a database like this,
         the process of adding all your records can be tedious. We are working on a more streamlined approach<br>
-    </h2>
-    <br>
+    </h3>
     <p style="font-size: x-large">Use the buttons below to reveal forms for adding individual records.<br>
         If a field in the record you're trying to add doesn't have a record in our database yet
         (i.e. You're adding a PC but the Actor who plays them is not in our database),
         feel free to leave it empty, and you can edit it once you've added that Actor to the database, or add that Actor
         using the appropriate form and refresh the page.
     </p>
-    <form method="post">
-    {% csrf_token %}
-    <button type="button" name="addActor" onclick="toggle_addActorForm()">Add Actor</button>
-    <button type="button" name="addPC" onclick="toggle_addPCForm()">Add PC</button>
-    <button type="button" name="addParty" onclick="toggle_addPartyForm()">Add Party</button>
-    <button type="button" name="addCampaign" onclick="toggle_addCampaignForm()">Add Campaign</button>
-    <button type="button" name="addProducer" onclick="toggle_addProducerForm()">Add Producer</button>
-    <button type="button" name="addSystem" onclick="toggle_addSystemForm()">Add System</button>
-    <button type="button" name="addPublisher" onclick="toggle_addPublisherForm()">Add Publisher</button>
-</form>
+
 </div>
 
-<div id="addActor-Form" style="display: none">
-<h1>Add Actor</h1>
-<form method="post">
-{% csrf_token %}
-<table name="addActor_form">
-    <tr>
-        <th>
-            {{addActor_form.name.label_tag}}
-        </th>
-        <td>
-           {{addActor_form.name}}
-        </td>
-        <th>
-           {{addActor_form.characters.label_tag}}
-        </th>
-        <td>
-           {{addActor_form.characters}}
-        </td>
-    </tr>
-    <tr>
-        <th>
-            {{addActor_form.link.label_tag}}
-        </th>
-        <td>
-            {{addActor_form.link}}
-        </td>
-        <th>
-            {{addActor_form.image_url.label_tag}}
-        </th>
-        <td>
-           {{addActor_form.image_url}}
-        </td>
-    </tr>
-    <tr>
-        <th>Blurb:</th>
-        <td colspan="4">{{addActor_form.blurb}}</td>
-    </tr>
-</table>
-<button type="submit" name="submitActor">Add Actor</button>
-</form>
-<br><br>
-</div>
+<nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-campaigns-tab" data-bs-toggle="tab" data-bs-target="#nav-campaigns" type="button" role="tab" aria-controls="nav-campaigns" aria-selected="true">Campaigns</button>
+            <button class="nav-link" id="nav-actors-tab" data-bs-toggle="tab" data-bs-target="#nav-actors" type="button" role="tab" aria-controls="nav-actors" aria-selected="true">Actors</button>
+            <button class="nav-link" id="nav-pcs-tab" data-bs-toggle="tab" data-bs-target="#nav-pcs" type="button" role="tab" aria-controls="nav-pcs" aria-selected="true">PCs</button>
+            <button class="nav-link" id="nav-parties-tab" data-bs-toggle="tab" data-bs-target="#nav-parties" type="button" role="tab" aria-controls="nav-parties" aria-selected="true">Parties</button>
+            <button class="nav-link" id="nav-producers-tab" data-bs-toggle="tab" data-bs-target="#nav-producers" type="button" role="tab" aria-controls="nav-producers" aria-selected="true">Producers</button>
+            <button class="nav-link" id="nav-systems-tab" data-bs-toggle="tab" data-bs-target="#nav-systems" type="button" role="tab" aria-controls="nav-systems" aria-selected="true">Systems</button>
+            <button class="nav-link" id="nav-publishers-tab" data-bs-toggle="tab" data-bs-target="#nav-publishers" type="button" role="tab" aria-controls="nav-publishers" aria-selected="true">Publishers</button>
+        </div>
+    </nav>
+<!--    Content      -->
+    <div class="tab-content" id="nav-tabContent">
 
-<div id="addPC-Form" style="display: none">
-<h1>Add PC</h1>
-<form method="post">
-{% csrf_token %}
-<table name="addPC_form">
-    <tr>
-        <th>
-            {{addPC_form.name.label_tag}}
-        </th>
-        <td>
-           {{addPC_form.name}}
-        </td>
-        <th>
-            {{addPC_form.played_by.label_tag}}
-        </th>
-        <td>
-            {{addPC_form.played_by}}
-        </td>
-    </tr>
-    <tr>
-        <th>
-            {{addPC_form.fandom_page.label_tag}}
-        </th>
-        <td>
-           {{addPC_form.fandom_page}}
-        </td>
-        <th>
-            {{addPC_form.image_url.label_tag}}
-        </th>
-        <td>
-           {{addPC_form.image_url}}
-        </td>
-    </tr>
-    <tr>
-        <th>{{addPC_form.blurb.label_tag}}</th>
-        <td colspan="3">{{addPC_form.blurb}}</td>
-    </tr>
-</table>
-<button type="submit" name="submitPC">Add PC</button>
-</form>
-<br><br>
-</div>
+    <!--        Campaigns       -->
+        <div class="tab-pane fade show active" id="nav-campaigns" role="tabpanel" aria-labelledby="nav-campaigns-tab" tabindex="0">
+            <div id="addCampaign-Form">
+                <form method="post">
+                    {% csrf_token %}
+                    <table name="addCampaign_form">
+                        <tr>
+                            <th>
+                                {{addCampaign_form.title.label_tag}}
+                            </th>
+                            <td>
+                               {{addCampaign_form.title}}
+                            </td>
+                            <th>
+                               {{addCampaign_form.system.label_tag}}
+                            </th>
+                            <td>
+                               {{addCampaign_form.system}}
+                            </td>
+                            <th>
+                               {{addCampaign_form.produced_by.label_tag}}
+                            </th>
+                            <td>
+                               {{addCampaign_form.produced_by}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Progress/Type
+                            </th>
+                            <td>
+                                {{ addCampaign_form.progress }} {{ addCampaign_form.type }}
+                            </td>
+                            <th>
+                                Medium:
+                            </th>
+                            <td>
+                                {{ addCampaign_form.medium }}
+                            </td>
+                            <th rowspan="2">{{addCampaign_form.blurb.label_tag}}</th>
+                            <td colspan="2" rowspan="2">{{addCampaign_form.blurb}}</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{addCampaign_form.link.label_tag}}
+                            </th>
+                            <td>
+                               {{addCampaign_form.link}}
+                            </td>
+                            <th>
+                                {{addCampaign_form.image_url.label_tag}}
+                            </th>
+                            <td>
+                               {{addCampaign_form.image_url}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{addCampaign_form.party.label_tag}}
+                            </th>
+                            <td>
+                               {{addCampaign_form.party}}
+                            </td>
+                            <th>
+                                {{addCampaign_form.guest_pcs.label_tag}}
+                            </th>
+                            <td>
+                               {{addCampaign_form.guest_pcs }}
+                            </td>
+                            <th>
+                                {{addCampaign_form.gm.label_tag}}
+                            </th>
+                            <td>
+                                {{addCampaign_form.gm}}
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="submit" name="submitCampaign">Add Campaign</button>
+                    </form>
+            <br><br>
+            </div>
+        </div>
+    <!--        Actors       -->
+        <div class="tab-pane fade" id="nav-actors" role="tabpanel" aria-labelledby="nav-actors-tab" tabindex="0">
+            <div id="addActor-Form">
+            <form method="post">
+            {% csrf_token %}
+            <table name="addActor_form">
+                <tr>
+                    <th>
+                        {{addActor_form.name.label_tag}}
+                    </th>
+                    <td>
+                       {{addActor_form.name}}
+                    </td>
+                    <th>
+                       {{addActor_form.characters.label_tag}}
+                    </th>
+                    <td>
+                       {{addActor_form.characters}}
+                    </td>
+                    <th rowspan="2">Blurb:</th>
+                    <td rowspan="2" colspan="2">{{addActor_form.blurb}}</td>
+                </tr>
+                <tr>
+                    <th>
+                        {{addActor_form.link.label_tag}}
+                    </th>
+                    <td>
+                        {{addActor_form.link}}
+                    </td>
+                    <th>
+                        {{addActor_form.image_url.label_tag}}
+                    </th>
+                    <td>
+                       {{addActor_form.image_url}}
+                    </td>
+                </tr>
+                <tr>
+                </tr>
+            </table>
+            <button type="submit" name="submitActor">Add Actor</button>
+            </form>
+            <br><br>
+            </div>
+        </div>
+    <!--        PCs       -->
+        <div class="tab-pane fade" id="nav-pcs" role="tabpanel" aria-labelledby="nav-pcs-tab" tabindex="0">
+            <div id="addPC-Form">
+            <form method="post">
+            {% csrf_token %}
+            <table name="addPC_form">
+                <tr>
+                    <th>
+                        {{addPC_form.name.label_tag}}
+                    </th>
+                    <td>
+                       {{addPC_form.name}}
+                    </td>
+                    <th>
+                        {{addPC_form.played_by.label_tag}}
+                    </th>
+                    <td>
+                        {{addPC_form.played_by}}
+                    </td>
+                    <th rowspan="2">Blurb:</th>
+                    <td rowspan="2" colspan="2">{{addPC_form.blurb}}</td>
+                </tr>
+                <tr>
+                    <th>
+                        {{addPC_form.fandom_page.label_tag}}
+                    </th>
+                    <td>
+                       {{addPC_form.fandom_page}}
+                    </td>
+                    <th>
+                        {{addPC_form.image_url.label_tag}}
+                    </th>
+                    <td>
+                       {{addPC_form.image_url}}
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" name="submitPC">Add PC</button>
+            </form>
+            <br><br>
+            </div>
+        </div>
+    <!--        Parties       -->
+        <div class="tab-pane fade" id="nav-parties" role="tabpanel" aria-labelledby="nav-parties-tab" tabindex="0">
+            <div id="addParty-Form">
+            <form method="post">
+            {% csrf_token %}
+            <table name="addParty_form">
+                <tr>
+                    <th>
+                        {{addParty_form.name.label_tag}}
+                    </th>
+                    <td colspan="3">
+                       {{addParty_form.name}}
+                    </td>
+                    <th rowspan="4">{{addParty_form.blurb.label_tag}}</th>
+                    <td rowspan="4">{{addParty_form.blurb}}</td>
+                </tr>
+                <tr>
+                    <th>
+                       {{addParty_form.members.label_tag}}
+                    </th>
+                    <td>
+                       {{addParty_form.members}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{addParty_form.fandom_page.label_tag}}
+                    </th>
+                    <td>
+                       {{addParty_form.fandom_page}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{addParty_form.image_url.label_tag}}
+                    </th>
+                    <td>
+                       {{addParty_form.image_url}}
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" name="submitParty">Add Party</button>
+            </form>
+            <br><br>
+            </div>
+        </div>
+    <!--        Producers       -->
+        <div class="tab-pane fade" id="nav-producers" role="tabpanel" aria-labelledby="nav-producers-tab" tabindex="0">
+            <div id="addProducer-Form">
+                <form method="post">
+                {% csrf_token %}
+                <table name="addProducer-table">
+                    <tr>
+                        <th>
+                            {{addProducer_form.name.label_tag}}
+                        </th>
+                        <td>
+                           {{addProducer_form.name}}
+                        </td>
+                        <th rowspan="4">{{addProducer_form.blurb.label_tag}}</th>
+                        <td rowspan="4">{{addProducer_form.blurb}}</td>
+                    </tr>
+                    <tr>
+                        <th>
+                           {{addProducer_form.medium.label_tag}}
+                        </th>
+                        <td>
+                           {{addProducer_form.medium}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{addProducer_form.link.label_tag}}
+                        </th>
+                        <td>
+                           {{addProducer_form.link}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{addProducer_form.image_url.label_tag}}
+                        </th>
+                        <td>
+                           {{addProducer_form.image_url}}
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit" name="submitProducer">Add Producer</button>
+                </form>
+            <br><br>
+            </div>
+        </div>
+    <!--        Systems       -->
+        <div class="tab-pane fade" id="nav-systems" role="tabpanel" aria-labelledby="nav-systems-tab" tabindex="0">
+            <div id="addSystem-Form">
+                <form method="post">
+                {% csrf_token %}
+                <table name="addSystem-table">
+                    <tr>
+                        <th>
+                            {{addSystem_form.name.label_tag}}
+                        </th>
+                        <td>
+                           {{addSystem_form.name}}
+                        </td>
+                        <th rowspan="4">{{addSystem_form.blurb.label_tag}}</th>
+                        <td rowspan="4">{{addSystem_form.blurb}}</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{addSystem_form.published_by.label_tag}}
+                        </th>
+                        <td>
+                           {{addSystem_form.published_by}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{addSystem_form.link.label_tag}}
+                        </th>
+                        <td>
+                           {{addSystem_form.link}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ addSystem_form.image_url.label_tag }}
+                        </th>
+                        <td>
+                            {{ addSystem_form.image_url }}
+                        </td>
+                    </tr>          
+                </table>
+                <button type="submit" name="submitSystem">Add System</button>
+                </form>
+            <br><br>
+            </div>
+        </div>
+    <!--        Publishers       -->
+        <div class="tab-pane fade" id="nav-publishers" role="tabpanel" aria-labelledby="nav-publishers-tab" tabindex="0">
+            <div id="addPublisher-Form">
+                <form method="post">
+                {% csrf_token %}
+                <table name="addPublisher-table">
+                    <tr>
+                        <th>
+                            {{addPublisher_form.name.label_tag}}
+                        </th>
+                        <td>
+                           {{addPublisher_form.name}}
+                        </td>
+                        <th rowspan="3">{{addPublisher_form.blurb.label_tag}}</th>
+                        <td rowspan="3">{{addPublisher_form.blurb}}</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{addPublisher_form.link.label_tag}}
+                        </th>
+                        <td>
+                           {{addPublisher_form.link}}
+                    </tr>
+                    <tr>
+                        </td>
+                        <th>
+                            {{addPublisher_form.image_url.label_tag}}
+                        </th>
+                        <td>
+                           {{addPublisher_form.image_url}}
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit" name="submitPublisher">Add Publisher</button>
+                </form>
+            <br><br>
+            </div>
+        </div>
 
-<div id="addParty-Form" style="display: none">
-<h1>Add Party</h1>
-<form method="post">
-{% csrf_token %}
-<table name="addParty_form">
-    <tr>
-        <th>
-            {{addParty_form.name.label_tag}}
-        </th>
-        <td colspan="3">
-           {{addParty_form.name}}
-        </td>
-    </tr>
-    <tr>
-        <th>
-           {{addParty_form.members.label_tag}}
-        </th>
-        <td colspan="3">
-           {{addParty_form.members}}
-        </td>
-    </tr>
-    <tr>
-        <th>
-            {{addParty_form.fandom_page.label_tag}}
-        </th>
-        <td>
-           {{addParty_form.fandom_page}}
-        </td>
-        <th>
-            {{addParty_form.image_url.label_tag}}
-        </th>
-        <td>
-           {{addParty_form.image_url}}
-        </td>
-    </tr>
-    <tr>
-        <th>{{addParty_form.blurb.label_tag}}</th>
-        <td colspan="3">{{addParty_form.blurb}}</td>
-    </tr>
-</table>
-<button type="submit" name="submitParty">Add Party</button>
-</form>
-<br><br>
-</div>
-
-<div id="addCampaign-Form" style="display: none">
-    <h1>Add Campaign</h1>
-    <form method="post">
-    {% csrf_token %}
-    <table name="addCampaign-table">
-        <tr>
-            <th>
-                {{addCampaign_form.title.label_tag}}
-            </th>
-            <td>
-               {{addCampaign_form.title}}
-            </td>
-            <th>
-               {{addCampaign_form.medium.label_tag}}
-            </th>
-            <td>
-               {{addCampaign_form.medium}}
-            </td>
-            <th>
-               {{addCampaign_form.system.label_tag}}
-            </th>
-            <td>
-               {{addCampaign_form.system}}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {{addCampaign_form.party.label_tag}}
-            </th>
-            <td>
-               {{addCampaign_form.party}}
-            </td>
-            <th>
-                {{addCampaign_form.guests.label_tag}}
-            </th>
-            <td>
-               {{addCampaign_form.guests}}
-            </td>
-            <th>
-                {{addCampaign_form.gm.label_tag}}
-            </th>
-            <td>
-                {{addCampaign_form.gm}}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {{addCampaign_form.website.label_tag}}
-            </th>
-            <td>
-               {{addCampaign_form.website}}
-            </td>
-            <th>
-                {{addCampaign_form.image_url.label_tag}}
-            </th>
-            <td>
-               {{addCampaign_form.image_url}}
-            </td>
-        </tr>
-        <tr>
-            <th>{{addCampaign_form.blurb.label_tag}}</th>
-            <td colspan="5">{{addCampaign_form.blurb}}</td>
-        </tr>
-    </table>
-    <button type="submit" name="submitCampaign">Add Campaign</button>
-    </form>
-<br><br>
-</div>
-
-<div id="addProducer-Form" style="display: none">
-    <h1>Add Producer</h1>
-    <form method="post">
-    {% csrf_token %}
-    <table name="addProducer-table">
-        <tr>
-            <th>
-                {{addProducer_form.name.label_tag}}
-            </th>
-            <td>
-               {{addProducer_form.name}}
-            </td>
-            <th>
-               {{addProducer_form.medium.label_tag}}
-            </th>
-            <td>
-               {{addProducer_form.medium}}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {{addProducer_form.website.label_tag}}
-            </th>
-            <td>
-               {{addProducer_form.website}}
-            </td>
-            <th>
-                {{addProducer_form.image_url.label_tag}}
-            </th>
-            <td>
-               {{addProducer_form.image_url}}
-            </td>
-        </tr>
-        <tr>
-            <th>{{addProducer_form.blurb.label_tag}}</th>
-            <td colspan="4">{{addProducer_form.blurb}}</td>
-        </tr>
-    </table>
-    <button type="submit" name="submitProducer">Add Producer</button>
-    </form>
-<br><br>
-</div>
-
-<div id="addSystem-Form" style="display: none">
-    <h1>Add System</h1>
-    <form method="post">
-    {% csrf_token %}
-    <table name="addSystem-table">
-        <tr>
-            <th>
-                {{addSystem_form.name.label_tag}}
-            </th>
-            <td>
-               {{addSystem_form.name}}
-            </td>
-            <th>
-                {{addSystem_form.website.label_tag}}
-            </th>
-            <td>
-               {{addSystem_form.website}}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {{addSystem_form.image_url.label_tag}}
-            </th>
-            <td>
-               {{addSystem_form.image_url}}
-            </td>            <th>
-                {{addSystem_form.published_by.label_tag}}
-            </th>
-            <td>
-               {{addSystem_form.published_by}}
-            </td>
-        </tr>
-        <tr>
-            <th>{{addSystem_form.blurb.label_tag}}</th>
-            <td colspan="4">{{addSystem_form.blurb}}</td>
-        </tr>
-    </table>
-    <button type="submit" name="submitSystem">Add System</button>
-    </form>
-<br><br>
-</div>
-
-<div id="addPublisher-Form" style="display: none">
-    <h1>Add Publisher</h1>
-    <form method="post">
-    {% csrf_token %}
-    <table name="addPublisher-table">
-        <tr>
-            <th>
-                {{addPublisher_form.name.label_tag}}
-            </th>
-            <td>
-               {{addPublisher_form.name}}
-            </td>
-            <th>
-                {{addPublisher_form.website.label_tag}}
-            </th>
-            <td>
-               {{addPublisher_form.website}}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {{addPublisher_form.image_url.label_tag}}
-            </th>
-            <td>
-               {{addPublisher_form.image_url}}
-            </td>
-        </tr>
-        <tr>
-            <th>{{addPublisher_form.blurb.label_tag}}</th>
-            <td colspan="4">{{addPublisher_form.blurb}}</td>
-        </tr>
-    </table>
-    <button type="submit" name="submitPublisher">Add Publisher</button>
-    </form>
-<br><br>
-</div>
+    </div>
 
 
 {{addCampaign_form.media}}

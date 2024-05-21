@@ -2,46 +2,105 @@
 
 {% block edit-party %}
 <div id="editParty-Form">
-<h1>Edit Party</h1>
-<form method="post">
-{% csrf_token %}
-<table name="editParty_form">
-    <tr>
-        <th>
-            {{form.name.label_tag}}
-        </th>
-        <td>
-           {{form.name}}
-        </td>
-        <th>
-           {{form.members.label_tag}}
-        </th>
-        <td>
-           {{form.members}}
-        </td>
-    </tr>
-    <tr>
-        <th>
-            {{form.fandom_page.label_tag}}
-        </th>
-        <td>
-            {{form.fandom_page}}
-        </td>
-        <th>
-            {{form.image_url.label_tag}}
-        </th>
-        <td>
-           {{form.image_url}}
-        </td>
-    </tr>
-    <tr>
-        <th>Blurb:</th>
-        <td colspan="4">{{form.blurb}}</td>
-    </tr>
-</table>
-<button type="submit">Edit Party</button>
-</form>
-<br><br>
+    <h1>Edit Party - <u>{{ party.name }}</u></h1>
+    <div class="row">
+        <div class="col-6">
+            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                <div class="row" style="max-width: 100%; height: inherit">
+                    <div class="col-md-5 my-auto">
+                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ party.image_url }}>
+                    </div>
+                    <div class="col-md-7 my-auto">
+                        <div class="card-body" style="height: inherit">
+                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/parties/{{ party.id }}>{{ party.name }}</a></h3>
+                            {% if party.campaigns.all %}
+                                <p class="subtitle">(
+                                    {% for campaign in party.campaigns.all|slice:"0:3" %}
+                                        {% if forloop.counter < 3%}
+                                            <a style="position: relative;" class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last %},{% endif %}
+                                        {% elif forloop.counter >= 3 %}
+                                            <a style="position: relative;" class="stretched-link" href=/database/parties/{{ party.id }}>and more...</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                )</p>
+                            {% endif %}
+                            <p class="card-text">{{ party.blurb }}</p>
+                            <div class="row">
+                                <h5>Members:</h5>
+                                <div class="grid_one-row">
+                                    {% for pc in party.members.all %}
+                                        <div style="position: relative;" class="card_sm">
+                                            <div class="card-header" style="text-align: center">
+                                                <a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a>
+                                            </div>
+                                            <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
+                                        </div>
+                                    {% endfor %}
+                                    {% for campaign in pc.guest_of.all %}
+                                        <div style="position: relative;" class="card_sm">
+                                            <div class="card-header" style="text-align: center">
+                                                <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                            </div>
+                                            <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <form method="post">
+            {% csrf_token %}
+            <table name="editParty_form">
+                <tr>
+                    <th>
+                        {{form.name.label_tag}}
+                    </th>
+                    <td colspan="3">
+                       {{form.name}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                       {{form.members.label_tag}}
+                    </th>
+                    <td>
+                       {{form.members}}
+                    </td>
+                    <th rowspan="2">Blurb:</th>
+                    <td rowspan="2">{{form.blurb}}</td>
+                </tr>
+                <tr>
+                    <th>
+                       {{form.campaigns.label_tag}}
+                    </th>
+                    <td>
+                       {{form.campaigns}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{form.fandom_page.label_tag}}
+                    </th>
+                    <td>
+                        {{form.fandom_page}}
+                    </td>
+                    <th>
+                        {{form.image_url.label_tag}}
+                    </th>
+                    <td>
+                       {{form.image_url}}
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" name="editParty">Submit Changes</button>
+            </form>
+        </div>
+    </div>
 </div>
 {{form.media}}
 {% endblock edit-party %}

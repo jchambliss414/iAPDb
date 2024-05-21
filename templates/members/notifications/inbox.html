@@ -1,0 +1,37 @@
+{% extends 'base_template.html' %}
+{% block inbox %}
+    <h1>This is the Inbox for <u>{{ user }}</u></h1>
+    <div class="body-container">
+        <br>
+        <section name="unreadMessages">
+        <h2 class="dark">Unread Messages</h2>
+            <table style="margin: auto">
+                {% for notification in unread_notifications %}
+                    <tr>
+                        <th>{{ forloop.counter }}.</th>
+                        <td>
+                            <a href={% url 'message' user_id=user.id message_id=notification.id %}>{{ notification.subject }}</a>
+                        </td>
+                        <td>{{ notification.timestamp }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </section>
+        <br>
+        <hr>
+        <section name="readMessages">
+        <h2 class="dark">Read Messages</h2>
+            <table style="margin: auto">
+                {% for notification in read_notifications %}
+                    <tr>
+                        <th>{{ forloop.counter }}.</th>
+                        <td>
+                            <a href={% url 'message' user_id=user.id message_id=notification.id %}>{{ notification.subject }}</a>
+                        </td>
+                        <td>{{ notification.timestamp }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </section>
+    </div>
+{% endblock inbox %}

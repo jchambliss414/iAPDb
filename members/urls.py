@@ -7,4 +7,6 @@ urlpatterns = [
     path('logout', views.logout_user, name='logout'),
     path('register', views.register_user, name='register_user'),
     path('<int:user_id>', views.user_homepage, name='user_home'),
+    path('<int:user_id>/inbox', views.inbox, name='inbox'),
+    path('<int:user_id>/message/<int:message_id>', views.read_message, name='message'),
 ]

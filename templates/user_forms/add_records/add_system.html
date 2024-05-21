@@ -14,20 +14,11 @@
             <td>
                {{addSystem_form.name}}
             </td>
-            <th>
-                {{addSystem_form.website.label_tag}}
-            </th>
-            <td>
-               {{addSystem_form.website}}
-            </td>
+            <th rowspan="4">{{addSystem_form.blurb.label_tag}}</th>
+            <td rowspan="4">{{addSystem_form.blurb}}</td>
         </tr>
         <tr>
             <th>
-                {{addSystem_form.image_url.label_tag}}
-            </th>
-            <td>
-               {{addSystem_form.image_url}}
-            </td>            <th>
                 {{addSystem_form.published_by.label_tag}}
             </th>
             <td>
@@ -35,8 +26,20 @@
             </td>
         </tr>
         <tr>
-            <th>{{addSystem_form.blurb.label_tag}}</th>
-            <td colspan="4">{{addSystem_form.blurb}}</td>
+            <th>
+                {{addSystem_form.link.label_tag}}
+            </th>
+            <td>
+               {{addSystem_form.link}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                {{ addSystem_form.image_url.label_tag }}
+            </th>
+            <td>
+                {{ addSystem_form.image_url }}
+            </td>
         </tr>
     </table>
     <button type="submit" name="submitSystem">Add System</button>

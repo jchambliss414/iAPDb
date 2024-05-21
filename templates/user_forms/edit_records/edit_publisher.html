@@ -2,46 +2,78 @@
 
 {% block edit-publisher %}
 <div id="editPublisher-Form">
-<h1>Edit Publisher</h1>
-<form method="post">
-{% csrf_token %}
-<table name="editPublisher-table">
-    <tr>
-        <th>
-            {{form.name.label_tag}}
-        </th>
-        <td>
-           {{form.name}}
-        </td>
-        <th>
-            {{form.website.label_tag}}
-        </th>
-        <td>
-           {{form.website}}
-        </td>
-    </tr>
-    <tr>
-        <th>
-            {{form.image_url.label_tag}}
-        </th>
-        <td>
-           {{form.image_url}}
-        </td>
-        <th>
-            {{form.systems.label_tag}}
-        </th>
-        <td>
-           {{form.systems}}
-        </td>
-    </tr>
-    <tr>
-        <th>{{form.blurb.label_tag}}</th>
-        <td colspan="4">{{form.blurb}}</td>
-    </tr>
-</table>
-<button type="submit" name="submitPublisher">Edit Publisher</button>
-</form>
-<br><br>
+<h1>Edit Publisher - <u>{{ publisher.name }}</u></h1>
+<div class="row">
+    <div class="col-5">
+        <div class="card dark-background" style="max-width: 95%; height: 400px">
+            <div class="row" style="max-width: 100%; height: inherit">
+                <div class="col-md-5 my-auto">
+                    <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ publisher.image_url }}>
+                </div>
+                <div class="col-md-7 my-auto">
+                    <div class="card-body" style="height: inherit">
+                        <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/publishers/{{ publisher.id }}>{{ publisher.name }}</a></h3>
+                        <p class="card-text">{{ publisher.blurb }}</p>
+                        <div class="row">
+                            <h5>Systems:</h5>
+                            <div class="grid_one-row">
+                                {% for system in publisher.systems.all %}
+                                    <div style="position: relative;" class="card_sm">
+                                        <div class="card-header" style="text-align: center">
+                                            <a class="stretched-link" href=/database/systems/{{ system.id }}>{{ system.name }}</a>
+                                        </div>
+                                        <div class="card-body"><img class="card-img_sm" src={{ system.image_url }}></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-7">
+        <form method="post">
+        {% csrf_token %}
+        <table name="editPublisher-table">
+            <tr>
+                <th>
+                    {{form.name.label_tag}}
+                </th>
+                <td>
+                   {{form.name}}
+                </td>
+                <th>
+                    {{form.link.label_tag}}
+                </th>
+                <td>
+                   {{form.link}}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    {{form.image_url.label_tag}}
+                </th>
+                <td>
+                   {{form.image_url}}
+                </td>
+                <th>
+                    {{form.systems.label_tag}}
+                </th>
+                <td>
+                   {{form.systems}}
+                </td>
+            </tr>
+            <tr>
+                <th>{{form.blurb.label_tag}}</th>
+                <td colspan="4">{{form.blurb}}</td>
+            </tr>
+        </table>
+        <button type="submit" name="editPublisher">Submit Changes</button>
+        </form>
+    </div>
+</div>
 </div>
 {{form.media}}
 {% endblock edit-publisher %}

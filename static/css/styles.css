@@ -9,6 +9,10 @@ h1, h2, h3, h4, h5, h6, p, li {
     color: #262322 !important;
 }
 
+.light-background {
+    background-color: #4ab08e!important;
+}
+
 .dark-background {
     background-color: #262322 !important;
 }
@@ -39,13 +43,12 @@ a:visited {
   color: #4ab08e !important;
 }
 
-a.database-header-link:link {color: #2d2929!important;}
-a.database-header-link:visited {color: #262322!important;}
-a.database-header-link{
+a.database-header-link:link {
+    color: #2d2929!important;
     display: flex;
     justify-content: flex-end;
-    margin: 1%
-}
+    margin: 1%}
+a.database-header-link:visited {color: #262322!important;}
 
 body {
     background-color: #262322 !important;
@@ -62,6 +65,18 @@ hr {
     border: 1px solid #262322;
     padding: 0;
     margin: 0;
+}
+
+.select2-selection__choice, .select2-search {
+    color: #262322!important;
+}
+
+p.alert_message {
+    background-color: aquamarine;
+    color: #262322 !important;
+    width: fit-content;
+    padding-left: 1%;
+    padding-right: 1%;
 }
 
     /* -------------- Tables and Elements --------------*/

@@ -15,7 +15,7 @@
         <div class="col-5">
             <h1 class="dark">{{ campaign.title }}</h1>
             <img class="model-img" src={{ campaign.image_url }}>
-            <a class="subtitle" href='#'>Edit Campaign</a>
+            <a class="subtitle" href='{% url 'edit_model' entity='campaign' ent_id=campaign.id %}'>Edit Campaign</a>
             <p class="dark">{{ campaign.blurb }}</p>
         </div>
         <div class="col-7">
@@ -31,11 +31,20 @@
             <div class="tab-content" id="nav-tabContent">
             <!--        Details       -->
                 <div class="tab-pane fade show active" id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab" tabindex="0">
-                    <div class="card-buttons">
-                        <button>Follow Campaign</button>
+                <form class="card-buttons" method="post">
+                    {% csrf_token %}
+                        {% if request.user.profile in campaign.followers.all %}
+                            <button name="unfollowCampaign" value={{ campaign.id }}>Unfollow Campaign</button>
+                        {% else %}
+                            <button name="followCampaign" value={{ campaign.id }}>Follow Campaign</button>
+                        {% endif %}
                         &nbsp
-                        <button>Add to Watchlist</button>
-                    </div>
+                        {% if campaign in request.user.profile.campaigns_to_watch.all %}
+                            <button name="watchlistCampaignRemove" value={{ campaign.id }}>Remove from Watchlist</button>
+                        {% else %}
+                            <button name="watchlistCampaign" value={{ campaign.id }}>Add to Watchlist</button>
+                        {% endif %}
+                </form>
                     <table style="width: 95%; display: table;margin: 2%">
                         <tr>
                             <th colspan="2" style="text-align: center;">
@@ -134,7 +143,7 @@
                             {% endfor %}
                         {% endfor %}
                     <h2 class="dark">Guest PCs</h2>
-                        {% for pc in campaign.guests.all %}
+                        {% for pc in campaign.guest_pcs.all %}
                             <div class="card_md rounded-start dark-background">
                                 <div class="row" style="max-width: 100%; height: inherit; position: relative; ">
                                     <div class="col-md-5 my-auto">
@@ -154,6 +163,22 @@
             <!--        Episodes       -->
                 <div class="tab-pane fade" id="nav-episodes" role="tabpanel" aria-labelledby="nav-episodes-tab" tabindex="0">
                     <h1>Episodes</h1>
+                    <a href='add_episode/' class="database-header-link">Add New Episode(s)</a>
+                    {% for episode in episodes %}
+                        <div class="d-flex justify-content-center">
+                            <div class="card" style="width: 75%;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-center">
+                                        <h5 class="card-title">{{episode.title}}</h5>
+                                    </div><br>
+                                    <div class="d-flex justify-content-between">
+                                        <a href=/database/episodes/{{episode.id}}><img class="card-image" src={{episode.image_url}} width="250px"></a>
+                                        <p class="card-text">{{episode.blurb|safe}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

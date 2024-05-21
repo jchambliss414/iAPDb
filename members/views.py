@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from database import models
 from members.forms import RegisterUserForm
 
 
+@login_required(login_url="/members/login")
 def members_list(request):
     return render(request, 'members_list.html')
 
@@ -48,9 +50,12 @@ def logout_user(request):
     return redirect('/')
 
 
+@login_required(login_url="/members/login")
 def user_homepage(request, user_id):
     profile = get_object_or_404(models.Profile, user=user_id)
     user = profile.user
+    notifications = models.Notification.objects.filter(receiver=profile)
+    unread_notifications = notifications.filter(read_status=False)
 
     watchlist = profile.campaigns_to_watch.all()
     watchinglist = profile.campaigns_watching.all()
@@ -107,6 +112,32 @@ def user_homepage(request, user_id):
                'have_watchedlist': have_watchedlist,
                'watchinglist': watchinglist,
                'watchlist': watchlist,
+               'notifications': notifications,
+               'unread_notifications': unread_notifications,
                }
 
     return render(request, 'members/user_home.html', context)
+
+
+@login_required(login_url="/members/login")
+def inbox(request, user_id):
+    user = get_object_or_404(models.Profile, id=user_id)
+    notifications = models.Notification.objects.filter(receiver=user)
+    unread_notifications = notifications.filter(read_status=False)
+    read_notifications = notifications.filter(read_status=True)
+
+    context = {'user': user, 'notifications': notifications, 'unread_notifications': unread_notifications,
+               'read_notifications': read_notifications}
+    return render(request, 'members/notifications/inbox.html', context)
+
+
+@login_required(login_url="/members/login")
+def read_message(request, user_id, message_id):
+    message = get_object_or_404(models.Notification, id=message_id)
+    message.read_status = True
+    message.save()
+
+
+
+    context = {'message': message}
+    return render(request, "members/notifications/read_message.html", context)

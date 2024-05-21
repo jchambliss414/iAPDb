@@ -2,78 +2,132 @@
 
 {% block edit-campaign %}
 <div id="EditCampaign-Form">
-    <h1>Edit Campaign</h1>
-    <form method="post">
-    {% csrf_token %}
-    <table name="editCampaign-table">
-        <tr>
-            <th>
-                {{form.title.label_tag}}
-            </th>
-            <td>
-               {{form.title}}
-            </td>
-            <th>
-               {{form.system.label_tag}}
-            </th>
-            <td>
-               {{form.system}}
-            </td>
-            <th>
-               {{form.medium.label_tag}}
-            </th>
-            <td>
-               {{form.medium}}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {{form.produced_by.label_tag}}
-            </th>
-            <td>
-                {{form.produced_by}}
-            </td>
-            <th>
-                {{form.gm.label_tag}}
-            </th>
-            <td>
-                {{form.gm}}
-            </td>
-            <th>
-                {{form.party.label_tag}}
-            </th>
-            <td>
-               {{form.party}}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {{form.website.label_tag}}
-            </th>
-            <td>
-               {{form.website}}
-            </td>
-            <th>
-                {{form.image_url.label_tag}}
-            </th>
-            <td>
-               {{form.image_url}}
-            </td>
-            <th>
-                {{form.guests.label_tag}}
-            </th>
-            <td>
-               {{form.guests}}
-            </td>
-        </tr>
-        <tr>
-            <th>{{form.blurb.label_tag}}</th>
-            <td colspan="5">{{form.blurb}}</td>
-        </tr>
-    </table>
-    <button type="submit" name="submit">Submit</button>
-    </form>
-<br><br>
+    <h1>Edit Campaign - <u>{{ campaign.title }}</u></h1>
+    <div class="row">
+        <div class="col-5">
+            <div class="card dark-background" style="max-width: 95%;">
+                <div class="row g-0">
+                    <div class="col-md-6 my-auto">
+                        <img class="img-fluid rounded-start" style="height: 250px; width: 100%; object-fit: cover" src={{ campaign.image_url }}>
+                    </div>
+                    <div class="col-md-6 my-auto" style="justify-content: center">
+                        <div class="card-body">
+                            <h3 class="card-title"><a class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a></h3>
+                            <table style="margin: auto auto 3%;">
+                                <tr>
+                                    <td colspan="2" style="text-align: center">{{ campaign.progress }}</td>
+                                    <td colspan="2" style="text-align: center">{{ campaign.medium }} - {{ campaign.type }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Produced by:</th>
+                                    <td colspan="3">
+                                        {% for producer in campaign.produced_by.all %}
+                                            <a style="position: relative;" class="stretched-link" href=producers/{{ producer.id }}>{{ producer.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>System(s):</th>
+                                    <td colspan="3">
+                                        {% for system in campaign.system.all %}
+                                            <a style="position: relative;" class="stretched-link" href=systems/{{ system.id }}>{{ system.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            </table>
+                            {% if campaign.blurb %}<p class="card-text">{{ campaign.blurb }}</p>{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-7">
+            <form method="post">
+                {% csrf_token %}
+                <table name="editCampaign-table">
+                    <tr>
+                        <th>
+                            {{form.title.label_tag}}
+                        </th>
+                        <td>
+                           {{form.title}}
+                        </td>
+                        <th>
+                            {{ form.progress.label_tag }}
+                        </th>
+                        <td>
+                            {{ form.progress }}
+                        </td>
+                        <th rowspan="3">{{form.blurb.label_tag}}</th>
+                        <td rowspan="3">{{form.blurb}}</td>
+                    </tr>
+                    <tr>
+                        <th>
+                           {{form.medium.label_tag}}
+                        </th>
+                        <td>
+                           {{form.medium}}
+                        </td>
+                        <th>
+                           {{form.type.label_tag}}
+                        </th>
+                        <td>
+                           {{form.type}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                           {{form.system.label_tag}}
+                        </th>
+                        <td>
+                           {{form.system}}
+                        </td>
+                        <th>
+                            {{form.produced_by.label_tag}}
+                        </th>
+                        <td>
+                            {{form.produced_by}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{form.gm.label_tag}}
+                        </th>
+                        <td>
+                            {{form.gm}}
+                        </td>
+                        <th>
+                            {{form.party.label_tag}}
+                        </th>
+                        <td>
+                           {{form.party}}
+                        </td>
+                        <th>
+                            {{form.guest_pcs.label_tag}}
+                        </th>
+                        <td>
+                           {{form.guest_pcs}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{form.link.label_tag}}
+                        </th>
+                        <td>
+                           {{form.link}}
+                        </td>
+                        <th>
+                            {{form.image_url.label_tag}}
+                        </th>
+                        <td>
+                           {{form.image_url}}
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit" name="editCampaign">Submit Changes</button>
+            </form>
+        </div>
+    </div>
 </div>
 {{form.media}}
 {% endblock edit-campaign %}

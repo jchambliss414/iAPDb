@@ -14,24 +14,24 @@
             <td>
                {{addPublisher_form.name}}
             </td>
-            <th>
-                {{addPublisher_form.website.label_tag}}
-            </th>
-            <td>
-               {{addPublisher_form.website}}
-            </td>
+            <th rowspan="3">{{addPublisher_form.blurb.label_tag}}</th>
+            <td rowspan="3">{{addPublisher_form.blurb}}</td>
         </tr>
         <tr>
+            <th>
+                {{addPublisher_form.link.label_tag}}
+            </th>
+            <td>
+               {{addPublisher_form.link}}
+        </tr>
+        <tr>
+            </td>
             <th>
                 {{addPublisher_form.image_url.label_tag}}
             </th>
             <td>
                {{addPublisher_form.image_url}}
             </td>
-        </tr>
-        <tr>
-            <th>{{addPublisher_form.blurb.label_tag}}</th>
-            <td colspan="4">{{addPublisher_form.blurb}}</td>
         </tr>
     </table>
     <button type="submit" name="submitPublisher">Add Publisher</button>

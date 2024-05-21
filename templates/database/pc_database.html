@@ -4,9 +4,8 @@
 <h1>PC Page</h1>
 
 <div class="body-container">
-
+    <a href={% url 'add_model' entity='pc' %} class="database-header-link">Add New PC(s)</a>
     {% for pc in pcs %}
-        <br>
         <div class="card dark-background" style="max-width: 95%; height: 400px">
             <div class="row" style="max-width: 100%; height: inherit">
                 <div class="col-md-5 my-auto">

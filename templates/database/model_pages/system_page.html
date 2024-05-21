@@ -15,7 +15,7 @@
         <div class="col-5">
             <h1 class="dark">{{ system.name }}</h1>
             <img class="model-img" src={{ system.image_url }}>
-            <a class="subtitle" href='#'>Edit System</a>
+            <a class="subtitle" href='{% url 'edit_model' entity='system' ent_id=system.id %}'>Edit System</a>
             <p class="dark">{{ system.blurb }}</p>
         </div>
         <div class="col-7">
