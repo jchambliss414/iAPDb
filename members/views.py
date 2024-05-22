@@ -131,13 +131,35 @@ def inbox(request, user_id):
     return render(request, 'members/notifications/inbox.html', context)
 
 
+def CRUD_event_notification(c_t, event_type, var):
+    # notification handler for CRUDEvent 'Create'
+    # Create
+    if event_type == 1:
+        pass
+    # Update
+    elif event_type == 2:
+        pass
+        # for key in dict.keys():
+        #     print(f"{key.title()} changed from \"{var[key][0]}\" to \"{var[key][1]}\"")
+    # M2M Add
+    elif event_type == 6:
+        content_type = str(c_t).replace('Database | ', '')
+        instance = get_object_or_404(getattr(models, content_type), id=var.object_id)
+        print(f"There's been an update to {content_type} \"{instance}\"\n{var.changed_fields}")
+    # M2M Remove
+    elif event_type == 8:
+        pass
 @login_required(login_url="/members/login")
 def read_message(request, user_id, message_id):
     message = get_object_or_404(models.Notification, id=message_id)
-    message.read_status = True
-    message.save()
-
-
-
+    if not message.read_status:
+        message.read_status = True
+        message.save()
+    if request.method == 'POST':
+        if 'mark_unread' in request.POST:
+            if message.read_status:
+                message.read_status = False
+                message.save()
+            return inbox(request, user_id)
     context = {'message': message}
     return render(request, "members/notifications/read_message.html", context)

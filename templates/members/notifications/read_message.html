@@ -3,4 +3,9 @@
 {% block read_message %}
     <h3>{{ message.subject }} | {{ message.timestamp }}</h3>
     <p>{{ message.message }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button name="mark_unread" value="unread">Mark As Unread</button>
+    </form>
 {% endblock read_message %}

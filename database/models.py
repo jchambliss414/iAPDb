@@ -258,7 +258,7 @@ class Notification(models.Model):
         verbose_name = 'Notification'
 
     def __str__(self):
-        return f"{self.subject} | ({self.timestamp})"
+        return f"{self.subject}"
 
 
 class Party(models.Model):

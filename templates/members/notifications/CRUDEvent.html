@@ -1,0 +1,6 @@
+{% extends 'base_template.html' %}
+
+{% block crudevent %}
+    <h3>{{ message.subject }} | {{ message.timestamp }}</h3>
+    <p>{{ message.message }}</p>
+{% endblock crudevent %}

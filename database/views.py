@@ -215,7 +215,7 @@ def add_new_model(request, entity):
                 submit_record(request, 'campaign')
                 # Render success message
                 messages.success(request, "Campaign Successfully Added")
-                return redirect('add_campaign')
+                return redirect('add_model', 'campaign')
         return render(request, 'user_forms/add_records/add_campaign.html', {'addCampaign_form': addCampaign_form})
 
     if entity == 'actor':
@@ -288,12 +288,12 @@ def edit_model(request, entity, ent_id):
                 if form.is_valid():
                     form.save()
                     # Notify Followers
-                    for user in campaign.followers.all():
-                        models.Notification.objects.create(
-                            receiver=user,
-                            subject=campaign.title + "'s page has been updated",
-                            message="A new update has been made to " + campaign.title + "'s page. See below for details"
-                        )
+                    # for user in campaign.followers.all():
+                    #     models.Notification.objects.create(
+                    #         receiver=user,
+                    #         subject=campaign.title + "'s page has been updated",
+                    #         message="A new update has been made to " + campaign.title + "'s page. See below for details"
+                    #     )
                     # Render success message
                     messages.success(request, "Campaign Successfully Updated")
                     return redirect("model_page", entity='campaigns', ent_id=ent_id)
@@ -324,7 +324,7 @@ def edit_model(request, entity, ent_id):
                         )
                     # Render success message
                     messages.success(request, "Actor Successfully Updated")
-                    return redirect("model_page", entity='actor', ent_id=ent_id)
+                    return redirect("model_page", entity='actors', ent_id=ent_id)
                 else:
                     # Render failure message
                     messages.error(request, "Failed to Update Campaign")
@@ -384,12 +384,12 @@ def edit_model(request, entity, ent_id):
                 if form.is_valid():
                     form.save()
                     # Notify Followers
-                    for user in producer.followers.all():
-                        models.Notification.objects.create(
-                            receiver=user,
-                            subject=producer.name + "'s page has been updated",
-                            message="A new update has been made to " + producer.name + "'s page. See below for details"
-                        )
+                    # for user in producer.followers.all():
+                    #     models.Notification.objects.create(
+                    #         receiver=user,
+                    #         subject=producer.name + "'s page has been updated",
+                    #         message="A new update has been made to " + producer.name + "'s page. See below for details"
+                    #     )
                     # Render success message
                     messages.success(request, "Producer Successfully Updated")
                     return redirect("model_page", entity='producers', ent_id=ent_id)
@@ -464,12 +464,12 @@ def add_new_episode(request, campaign_id):
             )
 
             # Notify Followers of the Campaign
-            for user in campaign.campaign_followers.all():
-                models.Notification.objects.create(
-                    receiver=user,
-                    subject="New Episode added to " + campaign.title,
-                    message="A new episode titled " + episode.title + " was just added to " + campaign.title
-                )
+            # for user in campaign.campaign_followers.all():
+            #     models.Notification.objects.create(
+            #         receiver=user,
+            #         subject="New Episode added to " + campaign.title,
+            #         message="A new episode titled " + episode.title + " was just added to " + campaign.title
+            #     )
             return redirect('model_page', entity='campaigns', ent_id=campaign_id)
     return render(request, 'user_forms/add_records/add_episode.html', {'form': form})
 
@@ -504,24 +504,24 @@ def submit_record(request, entity):
         campaign.produced_by.set(producer_objects)
 
         # Notify Followers of the Producers
-        for producer in producer_objects:
-            for user in producer.followers.all():
-                models.Notification.objects.create(
-                    receiver=user,
-                    subject="New campaign from  " + producer.name + "  added to database.",
-                    message="A new campaign (" + campaign.title + " ) produced by " + producer.name +
-                            " was just added to the database"
-                )
+        # for producer in producer_objects:
+        #     for user in producer.followers.all():
+        #         models.Notification.objects.create(
+        #             receiver=user,
+        #             subject="New campaign from  " + producer.name + "  added to database.",
+        #             message="A new campaign (" + campaign.title + " ) produced by " + producer.name +
+        #                     " was just added to the database"
+        #         )
 
         # Notify Followers of the GM
-        for gm in gm_objects:
-            for user in gm.followers.all():
-                models.Notification.objects.create(
-                    receiver=user,
-                    subject="New campaign GM'd by " + gm.name + " added to database.",
-                    message="A new campaign (" + campaign.title + " ) GM'd by " + gm.name +
-                            " was just added to the database"
-                )
+        # for gm in gm_objects:
+        #     for user in gm.followers.all():
+        #         models.Notification.objects.create(
+        #             receiver=user,
+        #             subject="New campaign GM'd by " + gm.name + " added to database.",
+        #             message="A new campaign (" + campaign.title + " ) GM'd by " + gm.name +
+        #                     " was just added to the database"
+        #         )
     if entity == 'actor':
         models.Actor.objects.create(
             name=request.POST['name'],
@@ -543,13 +543,13 @@ def submit_record(request, entity):
         # Set the 'played_by' field with the related Actor objects
         pc.played_by.set(played_by_actors)
         # Notify Followers of the Actor
-        for actor in played_by_actors:
-            for user in actor.followers.all():
-                models.Notification.objects.create(
-                    receiver=user,
-                    subject="New PC played by " + actor.name + " added to database",
-                    message="A new player character played by " + actor.name + " was just added to our database."
-                )
+        # for actor in played_by_actors:
+        #     for user in actor.followers.all():
+        #         models.Notification.objects.create(
+        #             receiver=user,
+        #             subject="New PC played by " + actor.name + " added to database",
+        #             message="A new player character played by " + actor.name + " was just added to our database."
+        #         )
 
     if entity == 'party':
         member_ids = request.POST.getlist('members')
