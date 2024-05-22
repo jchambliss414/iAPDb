@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'database.apps.DatabaseConfig',
     'django_select2',
     'easyaudit',
+    'ckeditor',
 
 ]
 

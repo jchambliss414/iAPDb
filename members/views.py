@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from database import models
 from members.forms import RegisterUserForm
+import string
 
 
 @login_required(login_url="/members/login")
@@ -123,15 +124,68 @@ def user_homepage(request, user_id):
 def inbox(request, user_id):
     user = get_object_or_404(models.Profile, id=user_id)
     notifications = models.Notification.objects.filter(receiver=user)
-    unread_notifications = notifications.filter(read_status=False)
-    read_notifications = notifications.filter(read_status=True)
+    unread_notifications = notifications.filter(read_status=False).order_by('-timestamp')
+    read_notifications = notifications.filter(read_status=True).order_by('-timestamp')
 
     context = {'user': user, 'notifications': notifications, 'unread_notifications': unread_notifications,
                'read_notifications': read_notifications}
     return render(request, 'members/notifications/inbox.html', context)
 
 
-def CRUD_event_notification(c_t, event_type, var):
+def CRUD_m2m_key_handler(content_type, instance, cfs):
+    changes = {}
+    key_list = []
+    if content_type == 'Campaign':
+        for key in cfs:
+            if key == 'gm':
+                actor_list = []
+                for actor_id in cfs[key]:
+                    actor = get_object_or_404(models.Actor, id=actor_id)
+                    actor_list.append(actor.name)
+                changes.update({"gm": actor_list})
+                key_list.append("GMs")
+                actor_list_formatted = []
+                for actor in actor_list:
+                    actor_list_formatted.append(f"{actor}<br>")
+            elif key == 'system':
+                system_list = []
+                for system_id in cfs[key]:
+                    system = get_object_or_404(models.System, id=system_id)
+                    system_list.append(system)
+                changes.update({"system": system_list})
+                key_list.append("Systems")
+            elif key == 'produced_by':
+                producer_list = []
+                for producer_id in cfs[key]:
+                    producer = get_object_or_404(models.Producer, id=producer_id)
+                    producer_list.append(producer)
+                changes.update({"producer": producer_list})
+                key_list.append("Producers")
+            elif key == 'party':
+                party_list = []
+                for party_id in cfs[key]:
+                    party = get_object_or_404(models.Party, id=party_id)
+                    party_list.append(party)
+                changes.update({"party": party_list})
+                key_list.append("Parties")
+            elif key == 'guest_pcs':
+                guest_list = []
+                for guest_id in cfs[key]:
+                    guest = get_object_or_404(models.PC, id=guest_id)
+                    guest_list.append(guest)
+                changes.update({"guest": guest_list})
+                key_list.append("Guest PCs")
+
+
+
+        # models.Notification.objects.create(
+        #     receiver=get_object_or_404(models.Profile, id=1),
+        #     subject=f"New {key_list} added to {content_type} \"{instance}\"",
+        #     message=f"The following changes were made to \"{instance}\" <br> {changes['gm']}"
+        # )
+
+
+def CRUD_event_notification(event_type, c_t, crud_event, cfs):
     # notification handler for CRUDEvent 'Create'
     # Create
     if event_type == 1:
@@ -140,26 +194,98 @@ def CRUD_event_notification(c_t, event_type, var):
     elif event_type == 2:
         pass
         # for key in dict.keys():
-        #     print(f"{key.title()} changed from \"{var[key][0]}\" to \"{var[key][1]}\"")
+        #     print(f"{key.title()} changed from \"{crud_event[key][0]}\" to \"{crud_event[key][1]}\"")
     # M2M Add
     elif event_type == 6:
         content_type = str(c_t).replace('Database | ', '')
-        instance = get_object_or_404(getattr(models, content_type), id=var.object_id)
-        print(f"There's been an update to {content_type} \"{instance}\"\n{var.changed_fields}")
+        instance = get_object_or_404(getattr(models, content_type), id=crud_event.object_id)
+        print(f"There's been an update to {content_type} \"{instance}\"")
+        # CRUD_m2m_key_handler(content_type, instance, cfs)
+        # for key in cfs.keys():
+            # print(f"{cfs[key][0]} added as a {key.title()} for {content_type} \"{instance}\"")
+            # print(key.title())
+        models.CRUD_Update_Notification.objects.create(
+            id=getattr(crud_event, 'id'),
+            event_type=getattr(crud_event, 'event_type'),
+            object_repr=getattr(crud_event, 'object_repr'),
+            object_json_repr=getattr(crud_event, 'object_json_repr'),
+            changed_fields=getattr(crud_event, 'changed_fields'),
+            content_type_id=getattr(crud_event, 'content_type_id'),
+            object_id=getattr(crud_event, 'object_id'),
+            user_id=getattr(crud_event, 'user_id'),
+            datetime=getattr(crud_event, 'datetime'),
+            user_pk_as_string=getattr(crud_event, 'user_pk_as_string'),
+        )
+
     # M2M Remove
     elif event_type == 8:
         pass
+
+
+def read_crud_update(request, update_id):
+    crud_event = get_object_or_404(models.CRUD_Update_Notification, id=update_id)
+    if 'database.campaign' in crud_event.object_json_repr:
+        instance_type = "Campaign"
+        instance_type_model = "campaigns"
+    if 'party' in crud_event.changed_fields:
+        changed_field_name = "Party/Parties"
+        changed_field_model = models.Party
+        changed_field_type = "party"
+        changed_field_type_model = "parties"
+    elif 'guest_pcs' in crud_event.changed_fields:
+        changed_field_name = "Guest PC(s)"
+        changed_field_model = models.PC
+        changed_field_type = "guest_pcs"
+        changed_field_type_model = "pcs"
+    elif 'gm' in crud_event.changed_fields:
+        changed_field_name = "GM(s)"
+        changed_field_model = models.Actor
+        changed_field_type = "gm"
+        changed_field_type_model = "actors"
+    elif 'system' in crud_event.changed_fields:
+        changed_field_name = "System(s)"
+        changed_field_model = models.System
+        changed_field_type = "system"
+        changed_field_type_model = "systems"
+    elif 'produced_by' in crud_event.changed_fields:
+        changed_field_name = "Producer(s)"
+        changed_field_model = models.Producer
+        changed_field_type = "produced_by"
+        changed_field_type_model = "producers"
+    changed_ids = str(crud_event.changed_fields)
+    new_punctuations = string.punctuation.replace(",", '')
+    for punctuation in new_punctuations:
+        changed_ids = changed_ids.replace(punctuation, '').replace(changed_field_type, '').replace(" ","")
+    changed_id_list = changed_ids.split(",")
+    changed_instances = []
+    for instance_id in changed_id_list:
+        instance = get_object_or_404(changed_field_model, id=instance_id)
+        changed_instances.append(instance)
+
+    context = {
+        'crud_event': crud_event,
+        'instance_type': instance_type,
+        'instance_type_model': instance_type_model,
+        'changed_field_type': changed_field_type,
+        'changed_field_name': changed_field_name,
+        'changed_id_list': changed_id_list,
+        'changed_instances': changed_instances,
+        'changed_field_type_model': changed_field_type_model,
+    }
+    return render(request, "members/notifications/CRUDEvent.html", context)
+
+
 @login_required(login_url="/members/login")
-def read_message(request, user_id, message_id):
-    message = get_object_or_404(models.Notification, id=message_id)
-    if not message.read_status:
-        message.read_status = True
-        message.save()
+def read_notification(request, user_id, notification_id):
+    notification = get_object_or_404(models.Notification, id=notification_id)
+    if not notification.read_status:
+        notification.read_status = True
+        notification.save()
     if request.method == 'POST':
         if 'mark_unread' in request.POST:
-            if message.read_status:
-                message.read_status = False
-                message.save()
+            if notification.read_status:
+                notification.read_status = False
+                notification.save()
             return inbox(request, user_id)
-    context = {'message': message}
+    context = {'notification': notification}
     return render(request, "members/notifications/read_message.html", context)

@@ -1,6 +1,19 @@
 {% extends 'base_template.html' %}
 
 {% block crudevent %}
-    <h3>{{ message.subject }} | {{ message.timestamp }}</h3>
-    <p>{{ message.message }}</p>
+    {% if crud_event.event_type == 6 %}
+        <h3>
+            The following {{ changed_field_name }} have been added to {{ instance_type }}
+            '<a href=/database/{{ instance_type_model }}/{{ crud_event.object_id }}>{{ crud_event.object_repr }}</a>'
+        </h3>
+    {% endif %}
+    <p>
+        <ul>
+            {% for item in changed_instances %}
+                <li>
+                    <a href=/database/{{ changed_field_type_model }}/{{ item.id }}>{{ item.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </p>
 {% endblock crudevent %}

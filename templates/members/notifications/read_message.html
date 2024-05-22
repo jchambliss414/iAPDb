@@ -1,8 +1,8 @@
 {% extends 'base_template.html' %}
 
 {% block read_message %}
-    <h3>{{ message.subject }} | {{ message.timestamp }}</h3>
-    <p>{{ message.message }}</p>
+    <h3>{{ notification.subject }} | {{ notification.timestamp }}</h3>
+    <p>{{ notification.message|safe }}</p>
 
     <form method="post">
         {% csrf_token %}

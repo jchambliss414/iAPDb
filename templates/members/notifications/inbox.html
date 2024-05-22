@@ -1,4 +1,5 @@
 {% extends 'base_template.html' %}
+{% load tz %}
 {% block inbox %}
     <h1>This is the Inbox for <u>{{ user }}</u></h1>
     <div class="body-container">
@@ -10,7 +11,7 @@
                     <tr>
                         <th>{{ forloop.counter }}.</th>
                         <td>
-                            <a href={% url 'message' user_id=user.id message_id=notification.id %}>{{ notification.subject }}</a>
+                            <a href={% url 'notification' user_id=user.id notification_id=notification.id %}>{{ notification.subject }}</a>
                         </td>
                         <td>{{ notification.timestamp }}</td>
                     </tr>
@@ -26,7 +27,7 @@
                     <tr>
                         <th>{{ forloop.counter }}.</th>
                         <td>
-                            <a href={% url 'message' user_id=user.id message_id=notification.id %}>{{ notification.subject }}</a>
+                            <a href={% url 'notification' user_id=user.id notification_id=notification.id %}>{{ notification.subject }}</a>
                         </td>
                         <td>{{ notification.timestamp }}</td>
                     </tr>

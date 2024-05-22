@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 from django.db.models.signals import post_save
-
+from ckeditor.fields import RichTextField
 
 # ---------------------------------------- create profile on user signup ----------------------------------------
 def create_user_profile(sender, instance, created, **kwargs):
@@ -250,8 +250,8 @@ class Episode(models.Model):
 class Notification(models.Model):
     receiver = models.ForeignKey('Profile', blank=True, on_delete=models.CASCADE)
     subject = models.CharField(max_length=50, blank=False, null=False, default='[Subject]')
-    message = models.TextField(max_length=2000, blank=False, null=False)
-    timestamp = models.DateTimeField(auto_now=True)
+    message = RichTextField(max_length=5000, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
     read_status = models.BooleanField(default=False)
 
     class Meta:
@@ -259,6 +259,24 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.subject}"
+
+
+class CRUD_Update_Notification(models.Model):
+    event_type = models.SmallIntegerField(blank=True, null=True)
+    object_repr = models.TextField(blank=True, null=True)
+    object_json_repr = models.TextField(blank=True, null=True)
+    datetime = models.DateTimeField(blank=True, null=True)
+    content_type_id = models.IntegerField(blank=True, null=True)
+    user_id = models.IntegerField(blank=True, null=True)
+    user_pk_as_string = models.CharField(max_length=255, blank=True, null=True)
+    changed_fields = models.TextField(blank=True, null=True)
+    object_id = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'CRUD Update Notification'
+
+    def __str__(self):
+        return f"CRUDEvent object {self.id}"
 
 
 class Party(models.Model):
