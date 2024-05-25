@@ -262,21 +262,23 @@ class Notification(models.Model):
 
 
 class CRUD_Update_Notification(models.Model):
+    receiver = models.ForeignKey('Profile', blank=True, on_delete=models.CASCADE, null=True)
+    subject = models.CharField(max_length=50, blank=False, null=False, default='[Subject]')
+    read_status = models.BooleanField(default=False)
     event_type = models.SmallIntegerField(blank=True, null=True)
-    object_repr = models.TextField(blank=True, null=True)
-    object_json_repr = models.TextField(blank=True, null=True)
+    instance_name_str = models.TextField(blank=True, null=True)
+    instance_basic_fields_str = models.TextField(blank=True, null=True)
     datetime = models.DateTimeField(blank=True, null=True)
     content_type_id = models.IntegerField(blank=True, null=True)
     user_id = models.IntegerField(blank=True, null=True)
-    user_pk_as_string = models.CharField(max_length=255, blank=True, null=True)
-    changed_fields = models.TextField(blank=True, null=True)
-    object_id = models.CharField(max_length=255, blank=True, null=True)
+    field_with_addition = models.TextField(blank=True, null=True)
+    updated_instance_id = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         verbose_name = 'CRUD Update Notification'
 
     def __str__(self):
-        return f"CRUDEvent object {self.id}"
+        return f"{self.subject}"
 
 
 class Party(models.Model):

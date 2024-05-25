@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from database import models
 from members.forms import RegisterUserForm
@@ -55,7 +56,7 @@ def logout_user(request):
 def user_homepage(request, user_id):
     profile = get_object_or_404(models.Profile, user=user_id)
     user = profile.user
-    notifications = models.Notification.objects.filter(receiver=profile)
+    notifications = models.CRUD_Update_Notification.objects.filter(receiver=profile)
     unread_notifications = notifications.filter(read_status=False)
 
     watchlist = profile.campaigns_to_watch.all()
@@ -123,9 +124,9 @@ def user_homepage(request, user_id):
 @login_required(login_url="/members/login")
 def inbox(request, user_id):
     user = get_object_or_404(models.Profile, id=user_id)
-    notifications = models.Notification.objects.filter(receiver=user)
-    unread_notifications = notifications.filter(read_status=False).order_by('-timestamp')
-    read_notifications = notifications.filter(read_status=True).order_by('-timestamp')
+    notifications = models.CRUD_Update_Notification.objects.filter(receiver=user)
+    unread_notifications = notifications.filter(read_status=False).order_by('-datetime')
+    read_notifications = notifications.filter(read_status=True).order_by('-datetime')
 
     context = {'user': user, 'notifications': notifications, 'unread_notifications': unread_notifications,
                'read_notifications': read_notifications}
@@ -177,15 +178,7 @@ def CRUD_m2m_key_handler(content_type, instance, cfs):
                 key_list.append("Guest PCs")
 
 
-
-        # models.Notification.objects.create(
-        #     receiver=get_object_or_404(models.Profile, id=1),
-        #     subject=f"New {key_list} added to {content_type} \"{instance}\"",
-        #     message=f"The following changes were made to \"{instance}\" <br> {changes['gm']}"
-        # )
-
-
-def CRUD_event_notification(event_type, c_t, crud_event, cfs):
+def CRUD_event_notification(event_type, c_t, crud_event):
     # notification handler for CRUDEvent 'Create'
     # Create
     if event_type == 1:
@@ -199,63 +192,88 @@ def CRUD_event_notification(event_type, c_t, crud_event, cfs):
     elif event_type == 6:
         content_type = str(c_t).replace('Database | ', '')
         instance = get_object_or_404(getattr(models, content_type), id=crud_event.object_id)
-        print(f"There's been an update to {content_type} \"{instance}\"")
-        # CRUD_m2m_key_handler(content_type, instance, cfs)
-        # for key in cfs.keys():
-            # print(f"{cfs[key][0]} added as a {key.title()} for {content_type} \"{instance}\"")
-            # print(key.title())
-        models.CRUD_Update_Notification.objects.create(
-            id=getattr(crud_event, 'id'),
-            event_type=getattr(crud_event, 'event_type'),
-            object_repr=getattr(crud_event, 'object_repr'),
-            object_json_repr=getattr(crud_event, 'object_json_repr'),
-            changed_fields=getattr(crud_event, 'changed_fields'),
-            content_type_id=getattr(crud_event, 'content_type_id'),
-            object_id=getattr(crud_event, 'object_id'),
-            user_id=getattr(crud_event, 'user_id'),
-            datetime=getattr(crud_event, 'datetime'),
-            user_pk_as_string=getattr(crud_event, 'user_pk_as_string'),
-        )
+        instance_str = str(instance)
+        if content_type is "Campaign" or "Actor" or "Producer":
+            for user in instance.followers.all():
+                models.CRUD_Update_Notification.objects.create(
+                    receiver=user,
+                    subject=instance_str + "'s page has been updated",
+                    id=getattr(crud_event, 'id'),
+                    event_type=getattr(crud_event, 'event_type'),
+                    instance_name_str=getattr(crud_event, 'object_repr'),
+                    instance_basic_fields_str=getattr(crud_event, 'object_json_repr'),
+                    field_with_addition=getattr(crud_event, 'changed_fields'),
+                    content_type_id=getattr(crud_event, 'content_type_id'),
+                    updated_instance_id=getattr(crud_event, 'object_id'),
+                    user_id=getattr(crud_event, 'user_id'),
+                    datetime=getattr(crud_event, 'datetime'),
+                )
 
     # M2M Remove
     elif event_type == 8:
         pass
 
 
-def read_crud_update(request, update_id):
-    crud_event = get_object_or_404(models.CRUD_Update_Notification, id=update_id)
-    if 'database.campaign' in crud_event.object_json_repr:
+def read_crud_update(request, notification_id):
+    crud_event = get_object_or_404(models.CRUD_Update_Notification, id=notification_id)
+    if not crud_event.read_status:
+        crud_event.read_status = True
+        crud_event.save()
+    if "database.campaign" in crud_event.instance_basic_fields_str:
         instance_type = "Campaign"
         instance_type_model = "campaigns"
-    if 'party' in crud_event.changed_fields:
+    if "database.actor" in crud_event.instance_basic_fields_str:
+        instance_type = "Actor"
+        instance_type_model = "actors"
+    if "database.pc" in crud_event.instance_basic_fields_str:
+        instance_type = "PC"
+        instance_type_model = "pcs"
+    if "database.producer" in crud_event.instance_basic_fields_str:
+        instance_type = "Producer"
+        instance_type_model = "producers"
+    if "database.party" in crud_event.instance_basic_fields_str:
+        instance_type = "Party"
+        instance_type_model = "parties"
+    if "database.publisher" in crud_event.instance_basic_fields_str:
+        instance_type = "Publisher"
+        instance_type_model = "publishers"
+    if "database.system" in crud_event.instance_basic_fields_str:
+        instance_type = "System"
+        instance_type_model = "systems"
+    if 'campaign' in crud_event.field_with_addition:
+        changed_field_name = "Campaign(s)"
+        changed_field_model = models.Campaign
+        changed_field_type = "campaign"
+        changed_field_type_model = "parties"
+    elif 'party' in crud_event.field_with_addition:
         changed_field_name = "Party/Parties"
         changed_field_model = models.Party
         changed_field_type = "party"
         changed_field_type_model = "parties"
-    elif 'guest_pcs' in crud_event.changed_fields:
+    elif 'guest_pcs' in crud_event.field_with_addition:
         changed_field_name = "Guest PC(s)"
         changed_field_model = models.PC
         changed_field_type = "guest_pcs"
         changed_field_type_model = "pcs"
-    elif 'gm' in crud_event.changed_fields:
+    elif 'gm' in crud_event.field_with_addition:
         changed_field_name = "GM(s)"
         changed_field_model = models.Actor
         changed_field_type = "gm"
         changed_field_type_model = "actors"
-    elif 'system' in crud_event.changed_fields:
+    elif 'system' in crud_event.field_with_addition:
         changed_field_name = "System(s)"
         changed_field_model = models.System
         changed_field_type = "system"
         changed_field_type_model = "systems"
-    elif 'produced_by' in crud_event.changed_fields:
+    elif 'produced_by' in crud_event.field_with_addition:
         changed_field_name = "Producer(s)"
         changed_field_model = models.Producer
         changed_field_type = "produced_by"
         changed_field_type_model = "producers"
-    changed_ids = str(crud_event.changed_fields)
+    changed_ids = str(crud_event.field_with_addition)
     new_punctuations = string.punctuation.replace(",", '')
     for punctuation in new_punctuations:
-        changed_ids = changed_ids.replace(punctuation, '').replace(changed_field_type, '').replace(" ","")
+        changed_ids = changed_ids.replace(punctuation, '').replace(changed_field_type, '').replace(" ", "")
     changed_id_list = changed_ids.split(",")
     changed_instances = []
     for instance_id in changed_id_list:

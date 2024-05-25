@@ -4,7 +4,7 @@
     {% if crud_event.event_type == 6 %}
         <h3>
             The following {{ changed_field_name }} have been added to {{ instance_type }}
-            '<a href=/database/{{ instance_type_model }}/{{ crud_event.object_id }}>{{ crud_event.object_repr }}</a>'
+            '<a href=/database/{{ instance_type_model }}/{{ crud_event.updated_instance_id }}>{{ crud_event.instance_name_str }}</a>'
         </h3>
     {% endif %}
     <p>

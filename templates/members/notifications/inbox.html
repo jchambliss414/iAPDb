@@ -11,9 +11,9 @@
                     <tr>
                         <th>{{ forloop.counter }}.</th>
                         <td>
-                            <a href={% url 'notification' user_id=user.id notification_id=notification.id %}>{{ notification.subject }}</a>
+                            <a href={% url 'notification' notification_id=notification.id %}>{{ notification.subject }}</a>
                         </td>
-                        <td>{{ notification.timestamp }}</td>
+                        <td>{{ notification.datetime }}</td>
                     </tr>
                 {% endfor %}
             </table>
@@ -27,9 +27,9 @@
                     <tr>
                         <th>{{ forloop.counter }}.</th>
                         <td>
-                            <a href={% url 'notification' user_id=user.id notification_id=notification.id %}>{{ notification.subject }}</a>
+                            <a href={% url 'notification' notification_id=notification.id %}>{{ notification.subject }}</a>
                         </td>
-                        <td>{{ notification.timestamp }}</td>
+                        <td>{{ notification.datetime }}</td>
                     </tr>
                 {% endfor %}
             </table>
