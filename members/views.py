@@ -179,7 +179,6 @@ def CRUD_m2m_key_handler(content_type, instance, cfs):
 
 
 def CRUD_event_notification(event_type, c_t, crud_event):
-    # notification handler for CRUDEvent 'Create'
     # Create
     if event_type == 1:
         pass
@@ -193,21 +192,55 @@ def CRUD_event_notification(event_type, c_t, crud_event):
         content_type = str(c_t).replace('Database | ', '')
         instance = get_object_or_404(getattr(models, content_type), id=crud_event.object_id)
         instance_str = str(instance)
+        fields_w_additions = getattr(crud_event, 'changed_fields')
+
         if content_type is "Campaign" or "Actor" or "Producer":
-            for user in instance.followers.all():
-                models.CRUD_Update_Notification.objects.create(
-                    receiver=user,
-                    subject=instance_str + "'s page has been updated",
-                    id=getattr(crud_event, 'id'),
-                    event_type=getattr(crud_event, 'event_type'),
-                    instance_name_str=getattr(crud_event, 'object_repr'),
-                    instance_basic_fields_str=getattr(crud_event, 'object_json_repr'),
-                    field_with_addition=getattr(crud_event, 'changed_fields'),
-                    content_type_id=getattr(crud_event, 'content_type_id'),
-                    updated_instance_id=getattr(crud_event, 'object_id'),
-                    user_id=getattr(crud_event, 'user_id'),
-                    datetime=getattr(crud_event, 'datetime'),
-                )
+            if "follower" in fields_w_additions:
+                pass
+            else:
+                for user in instance.followers.all():
+                    models.CRUD_Update_Notification.objects.create(
+                        receiver=user,
+                        subject=instance_str + "'s page has been updated",
+                        id=getattr(crud_event, 'id'),
+                        event_type=getattr(crud_event, 'event_type'),
+                        instance_name_str=getattr(crud_event, 'object_repr'),
+                        instance_basic_fields_str=getattr(crud_event, 'object_json_repr'),
+                        field_with_addition=getattr(crud_event, 'changed_fields'),
+                        content_type_id=getattr(crud_event, 'content_type_id'),
+                        updated_instance_id=getattr(crud_event, 'object_id'),
+                        user_id=getattr(crud_event, 'user_id'),
+                        datetime=getattr(crud_event, 'datetime'),
+                    )
+                if "gm" in fields_w_additions:
+                    changed_ids = str(fields_w_additions)
+                    changed_field_type = "gm"
+                    changed_field_model = models.Actor
+                    new_punctuations = string.punctuation.replace(",", '')
+                    for punctuation in new_punctuations:
+                        changed_ids = changed_ids.replace(punctuation, '').replace(changed_field_type, '').replace(" ",
+                                                                                                                   "")
+                    changed_id_list = changed_ids.split(",")
+                    changed_instances = []
+                    for instance_id in changed_id_list:
+                        actor = get_object_or_404(changed_field_model, id=instance_id)
+                        changed_instances.append(actor)
+                    print(changed_instances)
+                    for actor in changed_instances:
+                        for user in actor.followers.all():
+                            models.CRUD_Update_Notification.objects.create(
+                                receiver=user,
+                                subject=str(actor.name) + "'s page has been updated",
+                                event_type=601,
+                                instance_name_str=str(actor),
+                                instance_basic_fields_str="database.actor",
+                                field_with_addition="campaign " + str(getattr(crud_event, 'object_id')),
+                                content_type_id=getattr(crud_event, 'object_id'),
+                                updated_instance_id=actor.id,
+                                user_id=getattr(crud_event, 'user_id'),
+                                datetime=getattr(crud_event, 'datetime'),
+                            )
+
 
     # M2M Remove
     elif event_type == 8:
@@ -244,7 +277,7 @@ def read_crud_update(request, notification_id):
         changed_field_name = "Campaign(s)"
         changed_field_model = models.Campaign
         changed_field_type = "campaign"
-        changed_field_type_model = "parties"
+        changed_field_type_model = "campaigns"
     elif 'party' in crud_event.field_with_addition:
         changed_field_name = "Party/Parties"
         changed_field_model = models.Party
@@ -273,7 +306,8 @@ def read_crud_update(request, notification_id):
     changed_ids = str(crud_event.field_with_addition)
     new_punctuations = string.punctuation.replace(",", '')
     for punctuation in new_punctuations:
-        changed_ids = changed_ids.replace(punctuation, '').replace(changed_field_type, '').replace(" ", "")
+        changed_ids = changed_ids.replace(punctuation, '')
+    changed_ids = changed_ids.replace(changed_field_type, '').replace(" ", "")
     changed_id_list = changed_ids.split(",")
     changed_instances = []
     for instance_id in changed_id_list:
@@ -291,19 +325,3 @@ def read_crud_update(request, notification_id):
         'changed_field_type_model': changed_field_type_model,
     }
     return render(request, "members/notifications/CRUDEvent.html", context)
-
-
-@login_required(login_url="/members/login")
-def read_notification(request, user_id, notification_id):
-    notification = get_object_or_404(models.Notification, id=notification_id)
-    if not notification.read_status:
-        notification.read_status = True
-        notification.save()
-    if request.method == 'POST':
-        if 'mark_unread' in request.POST:
-            if notification.read_status:
-                notification.read_status = False
-                notification.save()
-            return inbox(request, user_id)
-    context = {'notification': notification}
-    return render(request, "members/notifications/read_message.html", context)

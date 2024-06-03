@@ -163,7 +163,7 @@
             <!--        Episodes       -->
                 <div class="tab-pane fade" id="nav-episodes" role="tabpanel" aria-labelledby="nav-episodes-tab" tabindex="0">
                     <h1>Episodes</h1>
-                    <a href='add_episode/' class="database-header-link">Add New Episode(s)</a>
+                    <a href={% url 'add_episode' campaign_id=campaign.id %} class="database-header-link">Add New Episode(s)</a>
                     {% for episode in episodes %}
                         <div class="d-flex justify-content-center">
                             <div class="card" style="width: 75%;">

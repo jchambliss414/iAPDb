@@ -212,9 +212,11 @@ def add_new_model(request, entity):
         addCampaign_form = forms.AddCampaignForm(request.POST)
         if request.method == 'POST':
             if 'submitCampaign' in request.POST:
-                submit_record(request, 'campaign')
-                # Render success message
-                messages.success(request, "Campaign Successfully Added")
+                # submit_record(request, 'campaign')
+                addCampaign_form.save()
+                if addCampaign_form.is_valid():
+                    # Render success message
+                    messages.success(request, "Campaign Successfully Added")
                 return redirect('add_model', 'campaign')
         return render(request, 'user_forms/add_records/add_campaign.html', {'addCampaign_form': addCampaign_form})
 
@@ -222,10 +224,15 @@ def add_new_model(request, entity):
         addActor_form = forms.AddActorForm(request.POST)
         if request.method == 'POST':
             if 'submitActor' in request.POST:
-                submit_record(request, 'actor')
-                # Render success message
-                messages.success(request, "Actor Successfully Added")
-                return redirect('add_actor')
+                if addActor_form.is_valid():
+                    submit_record(request, 'actor')
+                    # Render success message
+                    messages.success(request, "Actor Successfully Added")
+                    return redirect('add_model', 'actor')
+                else:
+                    # Render fail message
+                    messages.error(request, "Actor Failed to Add")
+                    return redirect('add_model', 'actor')
         return render(request, 'user_forms/add_records/add_actor.html', {'addActor_form': addActor_form})
 
     if entity == 'pc':
@@ -235,7 +242,7 @@ def add_new_model(request, entity):
                 submit_record(request, 'pc')
                 # Render success message
                 messages.success(request, "PC Successfully Added")
-                return redirect('add_pc')
+                return redirect('add_model', 'pc')
         return render(request, 'user_forms/add_records/add_pc.html', {'addPC_form': addPC_form})
 
     if entity == 'party':
@@ -245,7 +252,7 @@ def add_new_model(request, entity):
                 submit_record(request, 'party')
                 # Render success message
                 messages.success(request, "Party Successfully Added")
-                return redirect('add_party')
+                return redirect('add_model', 'party')
         return render(request, 'user_forms/add_records/add_party.html', {'addParty_form': addParty_form})
 
     if entity == 'producer':
@@ -255,7 +262,7 @@ def add_new_model(request, entity):
                 submit_record(request, 'producer')
                 # Render success message
                 messages.success(request, "Producer Successfully Added")
-                return redirect('add_producer')
+                return redirect('add_model', 'producer')
         return render(request, 'user_forms/add_records/add_producer.html', {'addProducer_form': addProducer_form})
 
     if entity == 'publisher':
@@ -265,7 +272,7 @@ def add_new_model(request, entity):
                 submit_record(request, 'publisher')
                 # Render success message
                 messages.success(request, "Publisher Successfully Added")
-                return redirect('add_publisher')
+                return redirect('add_model', 'publisher')
         return render(request, 'user_forms/add_records/add_publisher.html', {'addPublisher_form': addPublisher_form})
 
     if entity == 'system':
@@ -274,7 +281,7 @@ def add_new_model(request, entity):
             submit_record(request, 'system')
             # Render success message
             messages.success(request, "System Successfully Added")
-            return redirect('add_system')
+            return redirect('add_model', 'system')
         return render(request, 'user_forms/add_records/add_system.html', {'addSystem_form': addSystem_form})
 
 
@@ -451,25 +458,9 @@ def add_new_episode(request, campaign_id):
 
     if request.method == 'POST':
         if 'submitEpisode' in request.POST:
-            episode = models.Episode.objects.create(
-                title=request.POST['title'],
-                link=request.POST['link'],
-                image_url=request.POST['image_url'],
-                blurb=request.POST['blurb'],
-                airdate=request.POST['airdate'],
-                medium=request.POST['medium'],
-                in_campaign=campaign,
-                runtime=parse_duration(request.POST['runtime']),
-                ep_count=request.POST['ep_count']
-            )
-
-            # Notify Followers of the Campaign
-            # for user in campaign.campaign_followers.all():
-            #     models.Notification.objects.create(
-            #         receiver=user,
-            #         subject="New Episode added to " + campaign.title,
-            #         message="A new episode titled " + episode.title + " was just added to " + campaign.title
-            #     )
+            episode = form.save(commit=False)
+            episode.in_campaign = campaign
+            episode.save()
             return redirect('model_page', entity='campaigns', ent_id=campaign_id)
     return render(request, 'user_forms/add_records/add_episode.html', {'form': form})
 
@@ -503,32 +494,26 @@ def submit_record(request, entity):
         campaign.guest_pcs.set(guest_pc_objects)
         campaign.produced_by.set(producer_objects)
 
-        # Notify Followers of the Producers
-        # for producer in producer_objects:
-        #     for user in producer.followers.all():
-        #         models.Notification.objects.create(
-        #             receiver=user,
-        #             subject="New campaign from  " + producer.name + "  added to database.",
-        #             message="A new campaign (" + campaign.title + " ) produced by " + producer.name +
-        #                     " was just added to the database"
-        #         )
-
-        # Notify Followers of the GM
-        # for gm in gm_objects:
-        #     for user in gm.followers.all():
-        #         models.Notification.objects.create(
-        #             receiver=user,
-        #             subject="New campaign GM'd by " + gm.name + " added to database.",
-        #             message="A new campaign (" + campaign.title + " ) GM'd by " + gm.name +
-        #                     " was just added to the database"
-        #         )
     if entity == 'actor':
-        models.Actor.objects.create(
+        # Get the IDs of the m2m objects you're looking to add
+        pc_ids = request.POST.getlist('characters')
+        gm_campaign_ids = request.POST.getlist('gm_campaigns')
+
+        # Create a query set of Party objects from the list of IDs
+        pc_objects = models.PC.objects.filter(id__in=pc_ids)
+        gm_campaign_objects = models.Campaign.objects.filter(id__in=gm_campaign_ids)
+
+        # Create and save the Actor object
+        actor = models.Actor.objects.create(
             name=request.POST['name'],
             link=request.POST['link'],
             image_url=request.POST['image_url'],
             blurb=request.POST['blurb'],
         )
+        # Set the many-to-many fields with the related objects
+        actor.characters.set(pc_objects)
+        actor.gm_campaigns.set(gm_campaign_objects)
+
     if entity == 'pc':
         played_by_ids = request.POST.getlist('played_by')
         # Create a query set of Actor objects from the list of IDs
@@ -583,7 +568,7 @@ def submit_record(request, entity):
         )
 
         # Set the 'played_by' field with the related Actor objects
-        producer.campaigns.set(campaigns)
+        producer.campaigns.set(campaign_ids)
     if entity == 'publisher':
         system_ids = request.POST.getlist('systems')
 

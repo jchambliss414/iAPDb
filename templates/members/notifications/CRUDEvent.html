@@ -4,7 +4,12 @@
     {% if crud_event.event_type == 6 %}
         <h3>
             The following {{ changed_field_name }} have been added to {{ instance_type }}
-            '<a href=/database/{{ instance_type_model }}/{{ crud_event.updated_instance_id }}>{{ crud_event.instance_name_str }}</a>'
+            '<a href=/database/{{ instance_type_model }}/{{ crud_event.content_type_id }}>{{ crud_event.instance_name_str }}</a>'
+        </h3>
+    {% elif crud_event.event_type == 601 %}
+        <h3>
+            <a href=/database/{{ instance_type_model }}/{{ crud_event.updated_instance_id }}>{{ crud_event.instance_name_str }}</a>
+            has been added as a GM for the {{ changed_field_name }} '<a href=/database/{{ changed_field_type_model }}/{{ changed_instances.0.id }}>{{ changed_instances.0.title }}</a>'
         </h3>
     {% endif %}
     <p>

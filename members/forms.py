@@ -200,9 +200,12 @@ class PartyEditForm(forms.ModelForm):
 class AddActorForm(forms.ModelForm):
     class Meta:
         model = models.Actor
-        fields = ["name", "characters", "image_url", "link", "blurb"]
+        fields = ["name", "characters", "gm_campaigns", "image_url", "link", "blurb"]
         widgets = {
             "characters": PCWidget(
+                {'data-width': '300px'}
+            ),
+            "gm_campaigns": CampaignWidget(
                 {'data-width': '300px'}
             ),
         }

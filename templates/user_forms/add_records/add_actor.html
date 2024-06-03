@@ -16,16 +16,6 @@
            {{addActor_form.name}}
         </td>
         <th>
-           {{addActor_form.characters.label_tag}}
-        </th>
-        <td>
-           {{addActor_form.characters}}
-        </td>
-        <th rowspan="2">Blurb:</th>
-        <td rowspan="2" colspan="2">{{addActor_form.blurb}}</td>
-    </tr>
-    <tr>
-        <th>
             {{addActor_form.link.label_tag}}
         </th>
         <td>
@@ -39,6 +29,22 @@
         </td>
     </tr>
     <tr>
+        <th>
+           {{addActor_form.characters.label_tag}}
+        </th>
+        <td>
+           {{addActor_form.characters}}
+        </td>
+        <th rowspan="2">Blurb:</th>
+        <td rowspan="2" colspan="3">{{addActor_form.blurb}}</td>
+    </tr>
+    <tr>
+        <th>
+           {{addActor_form.gm_campaigns.label_tag}}
+        </th>
+        <td>
+           {{addActor_form.gm_campaigns}}
+        </td>
     </tr>
 </table>
 <button type="submit" name="submitActor">Add Actor</button>

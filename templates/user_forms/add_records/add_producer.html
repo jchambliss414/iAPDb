@@ -14,10 +14,6 @@
             <td>
                {{addProducer_form.name}}
             </td>
-            <th rowspan="4">{{addProducer_form.blurb.label_tag}}</th>
-            <td rowspan="4">{{addProducer_form.blurb}}</td>
-        </tr>
-        <tr>
             <th>
                {{addProducer_form.medium.label_tag}}
             </th>
@@ -32,6 +28,8 @@
             <td>
                {{addProducer_form.link}}
             </td>
+            <th rowspan="3">{{addProducer_form.blurb.label_tag}}</th>
+            <td rowspan="3">{{addProducer_form.blurb}}</td>
         </tr>
         <tr>
             <th>
@@ -39,6 +37,14 @@
             </th>
             <td>
                {{addProducer_form.image_url}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                {{addProducer_form.campaigns.label_tag}}
+            </th>
+            <td>
+               {{addProducer_form.campaigns}}
             </td>
         </tr>
     </table>
