@@ -4,6 +4,7 @@ from multiselectfield import MultiSelectField
 from django.db.models.signals import post_save
 from ckeditor.fields import RichTextField
 
+
 # ---------------------------------------- create profile on user signup ----------------------------------------
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -203,7 +204,7 @@ class Campaign(models.Model):
     medium = MultiSelectField(choices=medium_choices, blank=True, null=True, max_length=100)
     type = models.CharField(max_length=100, choices=type_choices, blank=True, null=True)
     watchlist_profiles = models.ManyToManyField('Profile', through=Watchlist, blank=True,
-                                                  related_name='towatch_campaign')
+                                                related_name='towatch_campaign')
     watchinglist_profiles = models.ManyToManyField('Profile', through=WatchingList, blank=True,
                                                    related_name='watching_campaign')
     watchedlist_profiles = models.ManyToManyField('Profile', through=HaveWatchedList, blank=True,
@@ -245,40 +246,6 @@ class Episode(models.Model):
 
     def __str__(self):
         return self.title or '(Untitled)'
-
-
-class Notification(models.Model):
-    receiver = models.ForeignKey('Profile', blank=True, on_delete=models.CASCADE)
-    subject = models.CharField(max_length=50, blank=False, null=False, default='[Subject]')
-    message = RichTextField(max_length=5000, blank=True, null=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    read_status = models.BooleanField(default=False)
-
-    class Meta:
-        verbose_name = 'Notification'
-
-    def __str__(self):
-        return f"{self.subject}"
-
-
-class CRUD_Update_Notification(models.Model):
-    receiver = models.ForeignKey('Profile', blank=True, on_delete=models.CASCADE, null=True)
-    subject = models.CharField(max_length=50, blank=False, null=False, default='[Subject]')
-    read_status = models.BooleanField(default=False)
-    event_type = models.SmallIntegerField(blank=True, null=True)
-    instance_name_str = models.TextField(blank=True, null=True)
-    instance_basic_fields_str = models.TextField(blank=True, null=True)
-    datetime = models.DateTimeField(blank=True, null=True)
-    content_type_id = models.IntegerField(blank=True, null=True)
-    user_id = models.IntegerField(blank=True, null=True)
-    field_with_addition = models.TextField(blank=True, null=True)
-    updated_instance_id = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        verbose_name = 'CRUD Update Notification'
-
-    def __str__(self):
-        return f"{self.subject}"
 
 
 class Party(models.Model):

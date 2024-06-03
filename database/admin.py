@@ -181,8 +181,6 @@ admin.site.register(
 admin.site.register(models.Actor, ActorAdmin)
 admin.site.register(models.Campaign, CampaignAdmin)
 admin.site.register(models.Episode, EpisodeAdmin)
-admin.site.register(models.Notification, NotificationAdmin)
-admin.site.register(models.CRUD_Update_Notification, CRUDNotificationAdmin)
 admin.site.register(models.Party, PartyAdmin)
 admin.site.register(models.PC, PCAdmin)
 admin.site.register(models.Publisher, PublisherAdmin)

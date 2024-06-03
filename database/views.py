@@ -157,49 +157,64 @@ def model_pages(request, entity, ent_id):
 
 @login_required(login_url="/members/login")
 def add_new_records(request):
+    system_form = forms.AddSystemForm
+    publisher_form = forms.AddPublisherForm
+    producer_form = forms.AddProducerForm
+    party_form = forms.AddPartyForm
+    pc_form = forms.AddPCForm
+    actor_form = forms.AddActorForm
+    campaign_form = forms.AddCampaignForm
+
     context = {
-        'addCampaign_form': forms.AddCampaignForm,
-        'addActor_form': forms.AddActorForm,
-        'addPC_form': forms.AddPCForm,
-        'addParty_form': forms.AddPartyForm,
-        'addProducer_form': forms.AddProducerForm,
-        'addPublisher_form': forms.AddPublisherForm,
-        'addSystem_form': forms.AddSystemForm,
+        'addCampaign_form': campaign_form,
+        'addActor_form': actor_form,
+        'addPC_form': pc_form,
+        'addParty_form': party_form,
+        'addProducer_form': producer_form,
+        'addPublisher_form': publisher_form,
+        'addSystem_form': system_form,
     }
 
     if request.method == 'POST':
         if 'submitPC' in request.POST:
-            submit_record(request, 'pc')
-            # Render success message
-            messages.success(request, "PC Successfully Added")
-            return render(request, 'user_forms/add_records/add_new_records.html', context)
+            if pc_form.is_valid():
+                pc_form.save()
+                # Render success message
+                messages.success(request, "PC Successfully Added")
+                return render(request, 'user_forms/add_records/add_new_records.html', context)
         if 'submitActor' in request.POST:
-            submit_record(request, 'actor')
+            if actor_form.is_valid():
+                actor_form.save()
             # Render success message
             messages.success(request, "Actor Successfully Added")
             return render(request, 'user_forms/add_records/add_new_records.html', context)
         if 'submitParty' in request.POST:
-            submit_record(request, 'party')
+            if party_form.is_valid():
+                party_form.save()
             # Render success message
             messages.success(request, "Party Successfully Added")
             return render(request, 'user_forms/add_records/add_new_records.html', context)
         if 'submitProducer' in request.POST:
-            submit_record(request, 'producer')
+            if producer_form.is_valid():
+                producer_form.save()
             # Render success message
             messages.success(request, "Producer Successfully Added")
             return render(request, 'user_forms/add_records/add_new_records.html', context)
         if 'submitPublisher' in request.POST:
-            submit_record(request, 'publisher')
+            if publisher_form.is_valid():
+                publisher_form.save()
             # Render success message
             messages.success(request, "Publisher Successfully Added")
             return render(request, 'user_forms/add_records/add_new_records.html', context)
         if 'submitCampaign' in request.POST:
-            submit_record(request, 'campaign')
+            if campaign_form.is_valid():
+                campaign_form.save()
             # Render success message
             messages.success(request, "Campaign Successfully Added")
             return render(request, 'user_forms/add_records/add_new_records.html', context)
         if 'submitSystem' in request.POST:
-            submit_record(request, 'system')
+            if system_form.is_valid():
+                system_form.save()
             # Render success message
             messages.success(request, "System Successfully Added")
             return render(request, 'user_forms/add_records/add_new_records.html', context)
@@ -209,80 +224,78 @@ def add_new_records(request):
 @login_required(login_url="/members/login")
 def add_new_model(request, entity):
     if entity == 'campaign':
-        addCampaign_form = forms.AddCampaignForm(request.POST)
+        campaign_form = forms.AddCampaignForm(request.POST)
         if request.method == 'POST':
             if 'submitCampaign' in request.POST:
-                # submit_record(request, 'campaign')
-                addCampaign_form.save()
-                if addCampaign_form.is_valid():
-                    # Render success message
-                    messages.success(request, "Campaign Successfully Added")
+                if campaign_form.is_valid():
+                    campaign_form.save()
+                # Render success message
+                messages.success(request, "Campaign Successfully Added")
                 return redirect('add_model', 'campaign')
-        return render(request, 'user_forms/add_records/add_campaign.html', {'addCampaign_form': addCampaign_form})
+        return render(request, 'user_forms/add_records/add_campaign.html', {'addCampaign_form': campaign_form})
 
     if entity == 'actor':
-        addActor_form = forms.AddActorForm(request.POST)
+        actor_form = forms.AddActorForm(request.POST)
         if request.method == 'POST':
             if 'submitActor' in request.POST:
-                if addActor_form.is_valid():
-                    submit_record(request, 'actor')
-                    # Render success message
-                    messages.success(request, "Actor Successfully Added")
-                    return redirect('add_model', 'actor')
-                else:
-                    # Render fail message
-                    messages.error(request, "Actor Failed to Add")
-                    return redirect('add_model', 'actor')
-        return render(request, 'user_forms/add_records/add_actor.html', {'addActor_form': addActor_form})
+                if actor_form.is_valid():
+                    actor_form.save()
+                # Render success message
+                messages.success(request, "Actor Successfully Added")
+        return render(request, 'user_forms/add_records/add_actor.html', {'addActor_form': actor_form})
 
     if entity == 'pc':
-        addPC_form = forms.AddPCForm(request.POST)
+        pc_form = forms.AddPCForm(request.POST)
         if request.method == 'POST':
             if 'submitPC' in request.POST:
-                submit_record(request, 'pc')
+                if pc_form.is_valid():
+                    pc_form.save()
                 # Render success message
                 messages.success(request, "PC Successfully Added")
-                return redirect('add_model', 'pc')
-        return render(request, 'user_forms/add_records/add_pc.html', {'addPC_form': addPC_form})
+        return render(request, 'user_forms/add_records/add_pc.html', {'addPC_form': pc_form})
 
     if entity == 'party':
-        addParty_form = forms.AddPartyForm(request.POST)
+        party_form = forms.AddPartyForm(request.POST)
         if request.method == 'POST':
             if 'submitParty' in request.POST:
-                submit_record(request, 'party')
+                if party_form.is_valid():
+                    party_form.save()
                 # Render success message
                 messages.success(request, "Party Successfully Added")
                 return redirect('add_model', 'party')
-        return render(request, 'user_forms/add_records/add_party.html', {'addParty_form': addParty_form})
+        return render(request, 'user_forms/add_records/add_party.html', {'addParty_form': party_form})
 
     if entity == 'producer':
-        addProducer_form = forms.AddProducerForm(request.POST)
+        producer_form = forms.AddProducerForm(request.POST)
         if request.method == 'POST':
             if 'submitProducer' in request.POST:
-                submit_record(request, 'producer')
+                if producer_form.is_valid():
+                    producer_form.save()
                 # Render success message
                 messages.success(request, "Producer Successfully Added")
                 return redirect('add_model', 'producer')
-        return render(request, 'user_forms/add_records/add_producer.html', {'addProducer_form': addProducer_form})
+        return render(request, 'user_forms/add_records/add_producer.html', {'addProducer_form': producer_form})
 
     if entity == 'publisher':
-        addPublisher_form = forms.AddPublisherForm(request.POST)
+        publisher_form = forms.AddPublisherForm(request.POST)
         if request.method == 'POST':
             if 'submitPublisher' in request.POST:
-                submit_record(request, 'publisher')
+                if publisher_form.is_valid():
+                    publisher_form.save()
                 # Render success message
                 messages.success(request, "Publisher Successfully Added")
                 return redirect('add_model', 'publisher')
-        return render(request, 'user_forms/add_records/add_publisher.html', {'addPublisher_form': addPublisher_form})
+        return render(request, 'user_forms/add_records/add_publisher.html', {'addPublisher_form': publisher_form})
 
     if entity == 'system':
-        addSystem_form = forms.AddSystemForm(request.POST)
+        system_form = forms.AddSystemForm(request.POST)
         if 'submitSystem' in request.POST:
-            submit_record(request, 'system')
+            if system_form.is_valid():
+                system_form.save()
             # Render success message
             messages.success(request, "System Successfully Added")
             return redirect('add_model', 'system')
-        return render(request, 'user_forms/add_records/add_system.html', {'addSystem_form': addSystem_form})
+        return render(request, 'user_forms/add_records/add_system.html', {'addSystem_form': system_form})
 
 
 @login_required(login_url="/members/login")
@@ -463,141 +476,3 @@ def add_new_episode(request, campaign_id):
             episode.save()
             return redirect('model_page', entity='campaigns', ent_id=campaign_id)
     return render(request, 'user_forms/add_records/add_episode.html', {'form': form})
-
-
-def submit_record(request, entity):
-    if entity == 'campaign':
-        # Get the IDs of the objects you're looking to add
-        party_ids = request.POST.getlist('party')
-        gm_ids = request.POST.getlist('gm')
-        guest_pc_ids = request.POST.getlist('guest_pcs')
-        producer_ids = request.POST.getlist('produced_by')
-
-        # Create a query set of Party objects from the list of IDs
-        party_objects = models.Party.objects.filter(id__in=party_ids)
-        gm_objects = models.Actor.objects.filter(id__in=gm_ids)
-        guest_pc_objects = models.PC.objects.filter(id__in=guest_pc_ids)
-        producer_objects = models.Producer.objects.filter(id__in=producer_ids)
-
-        # Create and save the Campaign object
-        campaign = models.Campaign.objects.create(
-            title=request.POST['title'],
-            medium=request.POST['medium'],
-            link=request.POST['link'],
-            image_url=request.POST['image_url'],
-            blurb=request.POST['blurb'],
-        )
-
-        # Set the many-to-many fields with the related objects
-        campaign.party.set(party_objects)
-        campaign.gm.set(gm_objects)
-        campaign.guest_pcs.set(guest_pc_objects)
-        campaign.produced_by.set(producer_objects)
-
-    if entity == 'actor':
-        # Get the IDs of the m2m objects you're looking to add
-        pc_ids = request.POST.getlist('characters')
-        gm_campaign_ids = request.POST.getlist('gm_campaigns')
-
-        # Create a query set of Party objects from the list of IDs
-        pc_objects = models.PC.objects.filter(id__in=pc_ids)
-        gm_campaign_objects = models.Campaign.objects.filter(id__in=gm_campaign_ids)
-
-        # Create and save the Actor object
-        actor = models.Actor.objects.create(
-            name=request.POST['name'],
-            link=request.POST['link'],
-            image_url=request.POST['image_url'],
-            blurb=request.POST['blurb'],
-        )
-        # Set the many-to-many fields with the related objects
-        actor.characters.set(pc_objects)
-        actor.gm_campaigns.set(gm_campaign_objects)
-
-    if entity == 'pc':
-        played_by_ids = request.POST.getlist('played_by')
-        # Create a query set of Actor objects from the list of IDs
-        played_by_actors = models.Actor.objects.filter(id__in=played_by_ids)
-        # Create and save the PC object
-        pc = models.PC.objects.create(
-            name=request.POST['name'],
-            fandom_page=request.POST['fandom_page'],
-            image_url=request.POST['image_url'],
-            blurb=request.POST['blurb'],
-        )
-        # Set the 'played_by' field with the related Actor objects
-        pc.played_by.set(played_by_actors)
-        # Notify Followers of the Actor
-        # for actor in played_by_actors:
-        #     for user in actor.followers.all():
-        #         models.Notification.objects.create(
-        #             receiver=user,
-        #             subject="New PC played by " + actor.name + " added to database",
-        #             message="A new player character played by " + actor.name + " was just added to our database."
-        #         )
-
-    if entity == 'party':
-        member_ids = request.POST.getlist('members')
-
-        # Create a query set of Actor objects from the list of IDs
-        member_pcs = models.PC.objects.filter(id__in=member_ids)
-
-        # Create and save the PC object
-        party = models.Party.objects.create(
-            name=request.POST['name'],
-            fandom_page=request.POST['fandom_page'],
-            image_url=request.POST['image_url'],
-            blurb=request.POST['blurb'],
-        )
-
-        # Set the 'played_by' field with the related Actor objects
-        party.members.set(member_pcs)
-    if entity == 'producer':
-        campaign_ids = request.POST.getlist('campaigns')
-
-        # Create a query set of Actor objects from the list of IDs
-        campaigns = models.Producer.objects.filter(id__in=campaign_ids)
-
-        # Create and save the PC object
-        producer = models.Producer.objects.create(
-            name=request.POST['name'],
-            medium=request.POST['medium'],
-            link=request.POST['link'],
-            image_url=request.POST['image_url'],
-            blurb=request.POST['blurb'],
-        )
-
-        # Set the 'played_by' field with the related Actor objects
-        producer.campaigns.set(campaign_ids)
-    if entity == 'publisher':
-        system_ids = request.POST.getlist('systems')
-
-        # Create a query set of Actor objects from the list of IDs
-        systems = models.System.objects.filter(id__in=system_ids)
-
-        # Create and save the PC object
-        publisher = models.Publisher.objects.create(
-            name=request.POST['name'],
-            link=request.POST['link'],
-            image_url=request.POST['image_url'],
-            blurb=request.POST['blurb'],
-        )
-
-        # Set the 'played_by' field with the related Actor objects
-        publisher.systems.set(systems)
-    if entity == 'system':
-        publisher_ids = request.POST.getlist('publisher')
-
-        # Create a query set of Actor objects from the list of IDs
-        publisher = models.Producer.objects.filter(id__in=publisher_ids)
-
-        # Create and save the PC object
-        system = models.System.objects.create(
-            name=request.POST['name'],
-            link=request.POST['link'],
-            image_url=request.POST['image_url'],
-            blurb=request.POST['blurb'],
-        )
-
-        # Set the 'played_by' field with the related Actor objects
-        system.published_by.set(publisher)

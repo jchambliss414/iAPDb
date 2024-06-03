@@ -7,7 +7,4 @@ urlpatterns = [
     path('logout', views.logout_user, name='logout'),
     path('register', views.register_user, name='register_user'),
     path('<int:user_id>', views.user_homepage, name='user_home'),
-    path('<int:user_id>/inbox', views.inbox, name='inbox'),
-    # path('<int:user_id>/notification/<int:notification_id>', views.read_notification, name='notification'),
-    path('crud_event/<int:notification_id>', views.read_crud_update, name='notification'),
 ]
