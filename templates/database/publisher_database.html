@@ -15,7 +15,7 @@
                 <div class="col-md-7 my-auto">
                     <div class="card-body" style="height: inherit">
                         <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/publishers/{{ publisher.id }}>{{ publisher.name }}</a></h3>
-                        <p class="card-text">{{ publisher.blurb }}</p>
+                        <p class="card-text">{{ publisher.blurb|safe}}</p>
                         <div class="row">
                             <h5>Systems:</h5>
                             <div class="grid_one-row">

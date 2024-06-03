@@ -16,7 +16,7 @@
             <h1 class="dark">{{ actor.name }}</h1>
             <img class="model-img" src={{ actor.image_url }}>
             <a class="subtitle" href='{% url 'edit_model' entity='actor' ent_id=actor.id %}'>Edit Actor</a>
-            <p class="dark">{{ actor.blurb }}</p>
+            <p class="dark">{{ actor.blurb|safe}}</p>
         </div>
         <div class="col-7">
             <form class="card-buttons" method="post">
@@ -67,7 +67,7 @@
                                                 {% endif %}
                                             </small>
                                         </p>
-                                        <p class="card-text">{{ pc.blurb }}</p>
+                                        <p class="card-text">{{ pc.blurb|safe}}</p>
 
                                     </div>
                                 </div>
@@ -108,7 +108,7 @@
                                                     {% endif %}
                                                 </small>
                                             </p>
-                                            <p class="card-text">{{ campaign.blurb }}</p>
+                                            <p class="card-text">{{ campaign.blurb|safe}}</p>
 
                                         </div>
                                     </div>

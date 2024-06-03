@@ -15,7 +15,7 @@
                     <div class="card-body" style="height: inherit">
                         <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/producers/{{ producer.id }}>{{ producer.name }}</a></h3>
                         {% if producer.medium %}<p class="subtitle">({{ producer.medium }})</p>{% endif %}
-                        <p class="card-text">{{ producer.blurb }}</p>
+                        <p class="card-text">{{ producer.blurb|safe}}</p>
                         <div class="row">
                             <h5>Campaigns:</h5>
                             <div class="grid_one-row">

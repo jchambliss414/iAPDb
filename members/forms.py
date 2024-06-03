@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django_select2.forms import Select2MultipleWidget, Select2Widget
 from database import models
-from ckeditor.fields import RichTextFormField
+from django_ckeditor_5.fields import CKEditor5Widget
 from django_select2 import forms as s2forms
 from django.forms import FileField, Form, ModelForm
 
@@ -88,6 +88,8 @@ class ActorEditForm(forms.ModelForm):
             "gm_campaigns": CampaignWidget(
                 {'data-width': '300px'}
             ),
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -113,6 +115,8 @@ class CampaignEditForm(forms.ModelForm):
                 {'data-width': '300px'}
             ),
             "medium": Select2MultipleWidget,
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -121,7 +125,9 @@ class EpisodeEditForm(forms.ModelForm):
         model = models.Episode
         fields = ['title', 'medium', 'blurb', 'link', 'in_campaign', 'runtime', 'airdate', 'image_url', 'ep_count']
         widgets = {
-            "airdate": DateInput()
+            "airdate": DateInput(),
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -134,6 +140,8 @@ class ProducerEditForm(forms.ModelForm):
                 {'data-width': '300px'}
             ),
             "medium": Select2MultipleWidget,
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -148,6 +156,8 @@ class PublisherEditForm(forms.ModelForm):
             "systems": SystemWidget(
                 {'data-width': '300px'}
             ),
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -162,6 +172,8 @@ class SystemEditForm(forms.ModelForm):
             "published_by": PublisherWidget(
                 {'data-width': '300px'}
             ),
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -179,6 +191,8 @@ class PCEditForm(forms.ModelForm):
             "guest_of": CampaignWidget(
                 {'data-width': '300px'}
             ),
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -193,6 +207,8 @@ class PartyEditForm(forms.ModelForm):
             "campaigns": CampaignWidget(
                 {'data-width': '300px'}
             ),
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -208,6 +224,8 @@ class AddActorForm(forms.ModelForm):
             "gm_campaigns": CampaignWidget(
                 {'data-width': '300px'}
             ),
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -219,7 +237,9 @@ class AddEpisodeForm(forms.ModelForm):
             "in_campaign": CampaignWidget(
                 {'data-width': '300px'}
             ),
-            "airdate": DateInput
+            "airdate": DateInput,
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -244,7 +264,11 @@ class AddCampaignForm(forms.ModelForm):
             "produced_by": ProducerWidget(
                 {'data-width': '300px'}
             ),
-            "medium": Select2MultipleWidget,
+            "medium": Select2MultipleWidget(
+                {'data-width': '300px'}
+            ),
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -255,6 +279,8 @@ class AddProducerForm(forms.ModelForm):
         widgets = {
             "campaigns": CampaignWidget(
                 {'data-width': '300px'}
+            ),
+            "blurb": CKEditor5Widget(
             )
         }
 
@@ -269,6 +295,8 @@ class AddSystemForm(forms.ModelForm):
             ),
             "published_by": PublisherWidget(
                 {'data-width': '300px'}
+            ),
+            "blurb": CKEditor5Widget(
             )
         }
 
@@ -281,6 +309,8 @@ class AddPartyForm(forms.ModelForm):
             "members": PCWidget(
                 {'data-width': '300px'}
             ),
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -295,6 +325,8 @@ class AddPCForm(forms.ModelForm):
             "guest_of": CampaignWidget(
                 {'data-width': '300px'}
             ),
+            "blurb": CKEditor5Widget(
+            )
         }
 
 
@@ -313,6 +345,8 @@ class AddPublisherForm(forms.ModelForm):
         widgets = {
             "systems": SystemWidget(
                 {'data-width': '300px'}
+            ),
+            "blurb": CKEditor5Widget(
             )
         }
 

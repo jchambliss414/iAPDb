@@ -16,7 +16,7 @@
             <h1 class="dark">{{ pc.name }}</h1>
             <img class="model-img" src={{ pc.image_url }}>
             <a class="subtitle" href='{% url 'edit_model' entity='pc' ent_id=pc.id %}'>Edit PC</a>
-            <p class="dark">{{ pc.blurb }}</p>
+            <p class="dark">{{ pc.blurb|safe}}</p>
         </div>
         <div class="col-7">
             <div class="card-buttons">
@@ -32,7 +32,7 @@
                         <div class="col-md-7 my-auto">
                             <div class="card-body" style="height: inherit; position: relative;">
                                 <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/actors/{{ actor.id }}>{{ actor.name }}</a></h3>
-                                <p class="card-text">{{ actor.blurb }}</p>
+                                <p class="card-text">{{ actor.blurb|safe}}</p>
                             </div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                                             {% endfor %}
                                         </small>
                                     </p>
-                                    <p class="card-text">{{ campaign.blurb }}</p>
+                                    <p class="card-text">{{ campaign.blurb|safe}}</p>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                                             {% endfor %}
                                         </small>
                                     </p>
-                                    <p class="card-text">{{ campaign.blurb }}</p>
+                                    <p class="card-text">{{ campaign.blurb|safe}}</p>
 
                                 </div>
                             </div>

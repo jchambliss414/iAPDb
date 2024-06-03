@@ -2,8 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 from django.db.models.signals import post_save
-from ckeditor.fields import RichTextField
-
+from django_ckeditor_5.fields import CKEditor5Field
 
 # ---------------------------------------- create profile on user signup ----------------------------------------
 def create_user_profile(sender, instance, created, **kwargs):
@@ -246,6 +245,25 @@ class Episode(models.Model):
 
     def __str__(self):
         return self.title or '(Untitled)'
+
+
+class Notification(models.Model):
+    n_type_list = [
+        ('CRUD_event', 'CRUD_event')
+    ]
+
+    notification_type = MultiSelectField(choices=n_type_list, blank=True, null=True, max_length=100)
+    receiver = models.ForeignKey('Profile', blank=True, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=50, blank=False, null=False, default='[Subject]')
+    message = models.TextField(max_length=5000, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    read_status = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Notification'
+
+    def __str__(self):
+        return self.subject or '(Untitled)'
 
 
 class Party(models.Model):

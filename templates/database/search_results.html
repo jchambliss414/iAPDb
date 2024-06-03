@@ -44,7 +44,7 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    {% if result.blurb %}<p class="card-text">{{ result.blurb }}</p>{% endif %}
+                                    {% if result.blurb %}<p class="card-text">{{ result.blurb|safe}}</p>{% endif %}
                                 </div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                             <div class="col-md-7 card-col my-auto">
                                 <div class="card-body" style="height: inherit">
                                     <h3 class="card-title"><a class="stretched-link" href=actors/{{ result.id }}>{{ result.name }}</a></h3>
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
 
                                     {% if result.gm_campaigns.all and result.characters.all %}
                                         <div class="row">
@@ -181,7 +181,7 @@
                                             {% endfor %}
                                         )</p>
                                     {% endif %}
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
                                     <div class="row">
                                         <h5>Members:</h5>
                                         <div class="grid_one-row">
@@ -224,7 +224,7 @@
                                 <div class="card-body" style="height: inherit">
                                     <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ result.id }}>{{ result.name }}</a></h3>
                                     {% if result.member_of.all %}<p class="subtitle"><a style="position: relative;" class="stretched-link" href=/database/parties/{{ result.member_of.all.0.id }}>({{ result.member_of.all.0 }})</a></p>{% endif %}
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
                                     <div class="row">
                                         <h5>Featured In:</h5>
                                         <div class="grid_one-row">
@@ -269,7 +269,7 @@
                                 <div class="card-body" style="height: inherit">
                                     <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/producers/{{ result.id }}>{{ result.name }}</a></h3>
                                     {% if result.medium %}<p class="subtitle">({{ result.medium }})</p>{% endif %}
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
                                     <div class="row">
                                         <h5>Campaigns:</h5>
                                         <div class="grid_one-row">
@@ -303,7 +303,7 @@
                             <div class="col-md-7 my-auto">
                                 <div class="card-body" style="height: inherit">
                                     <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/publishers/{{ result.id }}>{{ result.name }}</a></h3>
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
                                     <div class="row">
                                         <h5>Systems:</h5>
                                         <div class="grid_one-row">
@@ -350,7 +350,7 @@
                                             {% endif %}
                                             (Campaigns in Database: {{ result.campaigns.all.count }})
                                         </p>
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
                                         <div class="row featured_campaigns">
                                             <h5>Featured Campaigns:</h5>
                                             <div class="grid_one-row">
@@ -406,7 +406,7 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    {% if result.blurb %}<p class="card-text">{{ result.blurb }}</p>{% endif %}
+                                    {% if result.blurb %}<p class="card-text">{{ result.blurb|safe}}</p>{% endif %}
                                 </div>
                             </div>
                         </div>
@@ -423,7 +423,7 @@
                             <div class="col-md-7 card-col my-auto">
                                 <div class="card-body" style="height: inherit">
                                     <h3 class="card-title"><a class="stretched-link" href=actors/{{ result.id }}>{{ result.name }}</a></h3>
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
 
                                     {% if result.gm_campaigns.all and result.characters.all %}
                                         <div class="row">
@@ -537,7 +537,7 @@
                                             {% endfor %}
                                         )</p>
                                     {% endif %}
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
                                     <div class="row">
                                         <h5>Members:</h5>
                                         <div class="grid_one-row">
@@ -577,7 +577,7 @@
                                 <div class="card-body" style="height: inherit">
                                     <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ result.id }}>{{ result.name }}</a></h3>
                                     {% if result.member_of.all %}<p class="subtitle"><a style="position: relative;" class="stretched-link" href=/database/parties/{{ result.member_of.all.0.id }}>({{ result.member_of.all.0 }})</a></p>{% endif %}
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
                                     <div class="row">
                                         <h5>Featured In:</h5>
                                         <div class="grid_one-row">
@@ -619,7 +619,7 @@
                                 <div class="card-body" style="height: inherit">
                                     <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/producers/{{ result.id }}>{{ result.name }}</a></h3>
                                     {% if result.medium %}<p class="subtitle">({{ result.medium }})</p>{% endif %}
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
                                     <div class="row">
                                         <h5>Campaigns:</h5>
                                         <div class="grid_one-row">
@@ -650,7 +650,7 @@
                             <div class="col-md-7 my-auto">
                                 <div class="card-body" style="height: inherit">
                                     <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/publishers/{{ result.id }}>{{ result.name }}</a></h3>
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
                                     <div class="row">
                                         <h5>Systems:</h5>
                                         <div class="grid_one-row">
@@ -694,7 +694,7 @@
                                             {% endif %}
                                             (Campaigns in Database: {{ result.campaigns.all.count }})
                                         </p>
-                                    <p class="card-text">{{ result.blurb }}</p>
+                                    <p class="card-text">{{ result.blurb|safe}}</p>
                                         <div class="row featured_campaigns">
                                             <h5>Featured Campaigns:</h5>
                                             <div class="grid_one-row">

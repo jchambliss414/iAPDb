@@ -16,7 +16,7 @@
             <h1 class="dark">{{ producer.name }}</h1>
             <img class="model-img" src={{ producer.image_url }}>
             <a class="subtitle" href='{% url 'edit_model' entity='producer' ent_id=producer.id %}'>Edit Producer</a>
-            <p class="dark">{{ producer.blurb }}</p>
+            <p class="dark">{{ producer.blurb|safe}}</p>
         </div> 
         <div class="col-7">
             <form class="card-buttons" method="post">
@@ -46,7 +46,7 @@
                                         {% endfor %})
                                     </small>
                                 </p>
-                                <p class="card-text">{{ campaign.blurb }}</p>
+                                <p class="card-text">{{ campaign.blurb|safe}}</p>
 
                             </div>
                         </div>

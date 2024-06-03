@@ -16,7 +16,7 @@
             <h1 class="dark">{{ publisher.name }}</h1>
             <img class="model-img" src={{ publisher.image_url }}>
             <a class="subtitle" href='{% url 'edit_model' entity='publisher' ent_id=publisher.id %}'>Edit Publisher</a>
-            <p class="dark">{{ publisher.blurb }}</p>
+            <p class="dark">{{ publisher.blurb|safe}}</p>
         </div>
         <div class="col-7">
             <div class="card-buttons">
@@ -32,7 +32,7 @@
                         <div class="col-md-7 my-auto">
                             <div class="card-body" style="height: inherit; position: relative;">
                                 <h4 class="card-title with_subtitle overflow-1"><a class="stretched-link" href=/database/systems/{{ system.id }}>{{ system.name }}</a></h4>
-                                <p class="card-text">{{ system.blurb }}</p>
+                                <p class="card-text">{{ system.blurb|safe}}</p>
 
                             </div>
                         </div>

@@ -15,20 +15,6 @@
                    {{addCampaign_form.title}}
                 </td>
                 <th>
-                   {{addCampaign_form.system.label_tag}}
-                </th>
-                <td>
-                   {{addCampaign_form.system}}
-                </td>
-                <th>
-                   {{addCampaign_form.produced_by.label_tag}}
-                </th>
-                <td>
-                   {{addCampaign_form.produced_by}}
-                </td>
-            </tr>
-            <tr>
-                <th>
                     Progress/Type
                 </th>
                 <td>
@@ -39,22 +25,6 @@
                 </th>
                 <td>
                     {{ addCampaign_form.medium }}
-                </td>
-                <th rowspan="2">{{addCampaign_form.blurb.label_tag}}</th>
-                <td colspan="2" rowspan="2">{{addCampaign_form.blurb}}</td>
-            </tr>
-            <tr>
-                <th>
-                    {{addCampaign_form.link.label_tag}}
-                </th>
-                <td>
-                   {{addCampaign_form.link}}
-                </td>
-                <th>
-                    {{addCampaign_form.image_url.label_tag}}
-                </th>
-                <td>
-                   {{addCampaign_form.image_url}}
                 </td>
             </tr>
             <tr>
@@ -76,6 +46,38 @@
                 <td>
                     {{addCampaign_form.gm}}
                 </td>
+            </tr>
+            <tr>
+                <th>
+                   {{addCampaign_form.system.label_tag}}
+                </th>
+                <td>
+                   {{addCampaign_form.system}}
+                </td>
+                <th>
+                   {{addCampaign_form.produced_by.label_tag}}
+                </th>
+                <td>
+                   {{addCampaign_form.produced_by}}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    {{addCampaign_form.link.label_tag}}
+                </th>
+                <td>
+                   {{addCampaign_form.link}}
+                </td>
+                <th>
+                    {{addCampaign_form.image_url.label_tag}}
+                </th>
+                <td>
+                   {{addCampaign_form.image_url}}
+                </td>
+            </tr>
+            <tr>
+                <th>{{addCampaign_form.blurb.label_tag}}</th>
+                <td colspan="3">{{addCampaign_form.blurb}}</td>
             </tr>
         </table>
         <button type="submit" name="submitCampaign">Add Campaign</button>

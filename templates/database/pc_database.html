@@ -15,7 +15,7 @@
                     <div class="card-body" style="height: inherit">
                         <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a></h3>
                         {% if pc.member_of.all %}<p class="subtitle"><a style="position: relative;" class="stretched-link" href=/database/parties/{{ pc.member_of.all.0.id }}>({{ pc.member_of.all.0 }})</a></p>{% endif %}
-                        <p class="card-text">{{ pc.blurb }}</p>
+                        <p class="card-text">{{ pc.blurb|safe}}</p>
                         <div class="row">
                             <h5>Featured In:</h5>
                             <div class="grid_one-row">

@@ -16,7 +16,7 @@
             <h1 class="dark">{{ campaign.title }}</h1>
             <img class="model-img" src={{ campaign.image_url }}>
             <a class="subtitle" href='{% url 'edit_model' entity='campaign' ent_id=campaign.id %}'>Edit Campaign</a>
-            <p class="dark">{{ campaign.blurb }}</p>
+            <p class="dark">{{ campaign.blurb|safe }}</p>
         </div>
         <div class="col-7">
         <!--    Nav Bar              -->
@@ -114,7 +114,7 @@
                                 <div class="col-md-7 my-auto">
                                     <div class="card-body" style="height: inherit; position: relative;">
                                         <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/actors/{{ actor.id }}>{{ actor.name }}</a></h3>
-                                        <p class="card-text">{{ actor.blurb }}</p>
+                                        <p class="card-text">{{ actor.blurb|safe }}</p>
 
                                     </div>
                                 </div>
@@ -134,7 +134,7 @@
                                             <div class="card-body" style="height: inherit;">
                                                 <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a></h3>
                                                 <p class="subtitle">(Portrayed By - <a style="position: relative;" class="stretched-link" href=/database/actors/{{ pc.played_by.all.0.id }}>{{ pc.played_by.all.0.name }}</a>)</p>
-                                                <p class="card-text">{{ pc.blurb }}</p>
+                                                <p class="card-text">{{ pc.blurb|safe }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -152,7 +152,7 @@
                                     <div class="col-md-7 my-auto">
                                         <div class="card-body" style="height: inherit;">
                                             <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a></h3>
-                                            <p class="card-text">{{ pc.blurb }}</p>
+                                            <p class="card-text">{{ pc.blurb|safe }}</p>
                                         </div>
                                     </div>
                                 </div>

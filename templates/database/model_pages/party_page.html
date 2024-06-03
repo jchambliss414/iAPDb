@@ -16,7 +16,7 @@
             <h1 class="dark">{{ party.name }}</h1>
             <img class="model-img" src={{ party.image_url }}>
             <a class="subtitle" href='{% url 'edit_model' entity='party' ent_id=party.id %}'>Edit Party</a>
-            <p class="dark">{{ party.blurb }}</p>
+            <p class="dark">{{ party.blurb|safe}}</p>
         </div>
         <div class="col-7">
         <!--    Nav Bar              -->
@@ -41,7 +41,7 @@
                                     <div class="card-body" style="height: inherit;">
                                         <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a></h3>
                                         <p class="subtitle">(Portrayed By - <a style="position: relative;" class="stretched-link" href=/database/actors/{{ pc.played_by.all.0.id }}>{{ pc.played_by.all.0.name }}</a>)</p>
-                                        <p class="card-text">{{ pc.blurb }}</p>
+                                        <p class="card-text">{{ pc.blurb|safe}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                                                 {% endfor %}
                                             </small>
                                         </p>
-                                        <p class="card-text">{{ campaign.blurb }}</p>
+                                        <p class="card-text">{{ campaign.blurb|safe}}</p>
 
                                     </div>
                                 </div>

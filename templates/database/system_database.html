@@ -28,7 +28,7 @@
                                 {% endif %}
                                 (Campaigns in Database: {{ system.campaigns.all.count }})
                             </p>
-                        <p class="card-text">{{ system.blurb }}</p>
+                        <p class="card-text">{{ system.blurb|safe}}</p>
                             <div class="row featured_campaigns">
                                 <h5>Featured Campaigns:</h5>
                                 <div class="grid_one-row">

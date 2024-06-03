@@ -37,7 +37,7 @@
                                 </td>
                             </tr>
                         </table>
-                        {% if campaign.blurb %}<p class="card-text">{{ campaign.blurb }}</p>{% endif %}
+                        {% if campaign.blurb %}<p class="card-text">{{ campaign.blurb|safe }}</p>{% endif %}
                     </div>
                 </div>
             </div>
