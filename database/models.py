@@ -259,6 +259,13 @@ class Notification(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     read_status = models.BooleanField(default=False)
 
+    updated_obj_type = models.CharField(max_length=50, blank=True, null=True)
+    updated_obj_id = models.IntegerField(blank=True, null=True)
+    added_instance_type = models.CharField(max_length=50, blank=True, null=True)
+    added_instance_id = models.IntegerField(blank=True, null=True)
+
+
+
     class Meta:
         verbose_name = 'Notification'
 

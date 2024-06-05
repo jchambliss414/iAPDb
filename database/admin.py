@@ -160,7 +160,9 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 class NotificationAdmin(admin.ModelAdmin):
-    exclude = ()
+    fields = ['notification_type', 'receiver', 'subject', 'message', 'read_status', 'updated_obj_type',
+              'updated_obj_id', 'added_instance_type', 'added_instance_id', ]
+    readonly_fields = ['updated_obj_id', 'added_instance_id', 'updated_obj_type', 'added_instance_type']
 
 
 class CRUDNotificationAdmin(admin.ModelAdmin):
@@ -181,6 +183,7 @@ admin.site.register(
 admin.site.register(models.Actor, ActorAdmin)
 admin.site.register(models.Campaign, CampaignAdmin)
 admin.site.register(models.Episode, EpisodeAdmin)
+admin.site.register(models.Notification, NotificationAdmin)
 admin.site.register(models.Party, PartyAdmin)
 admin.site.register(models.PC, PCAdmin)
 admin.site.register(models.Publisher, PublisherAdmin)
