@@ -1,6 +1,6 @@
 {% extends 'base_template.html' %}
 
-{% block read_message %}
+{% block read_notification %}
     <h3>{{ notification.subject }} | {{ notification.timestamp }}</h3>
     <p>{{ notification.message|safe }}</p>
 
@@ -8,4 +8,5 @@
         {% csrf_token %}
         <button name="mark_unread" value="unread">Mark As Unread</button>
     </form>
-{% endblock read_message %}
+
+{% endblock read_notification %}

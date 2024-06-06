@@ -65,6 +65,8 @@ def user_homepage(request, user_id):
     following_actors = profile.actors_following.all()
     following_producers = profile.producers_following.all()
 
+    unread_notifications = models.Notification.objects.filter(receiver=profile).filter(read_status=False).order_by('-timestamp')
+
     if request.method == 'POST':
         if 'WatchlistToWatching' in request.POST:
             campaign_id = request.POST.get('WatchlistToWatching')
@@ -112,9 +114,63 @@ def user_homepage(request, user_id):
                'have_watchedlist': have_watchedlist,
                'watchinglist': watchinglist,
                'watchlist': watchlist,
+               'unread_notifications': unread_notifications,
                }
 
     return render(request, 'members/user_home.html', context)
+
+
+@login_required(login_url="/members/login")
+def inbox(request, user_id):
+    user = get_object_or_404(models.Profile, id=user_id)
+    notifications = models.Notification.objects.filter(receiver=user)
+    unread_notifications = notifications.filter(read_status=False).order_by('-timestamp')
+    read_notifications = notifications.filter(read_status=True).order_by('-timestamp')
+    context = {
+        "user": user,
+        "notifications": notifications,
+        "unread_notifications": unread_notifications,
+        "read_notifications": read_notifications,
+    }
+    return render(request, "members/notifications/inbox.html", context)
+
+
+@login_required(login_url="/members/login")
+def read_notification(request, notification_id):
+    notification = get_object_or_404(models.Notification, id=notification_id)
+    if notification.read_status is False:
+        notification.read_status = True
+        notification.save()
+
+    if "CRUD_event" in notification.notification_type:
+        parent_obj_type = notification.updated_obj_type
+        parent_obj_id = notification.updated_obj_id
+        added_obj_type = notification.added_instance_type
+        added_obj_id = notification.added_instance_id
+        parent_obj = get_object_or_404(getattr(models, parent_obj_type), id=parent_obj_id)
+        added_obj = get_object_or_404(getattr(models, added_obj_type), id=added_obj_id)
+
+        if parent_obj_type == 'Party':
+            parent_o_t_for_link = 'parties'
+        else:
+            parent_o_t_for_link = str(parent_obj_type.lower()) + 's'
+        if added_obj_type == 'Party':
+            added_o_t_for_link = 'parties'
+        else:
+            added_o_t_for_link = str(added_obj_type.lower()) + 's'
+
+        context = {
+            "notification": notification,
+            "parent_obj": parent_obj,
+            "parent_obj_type": parent_obj_type,
+            "parent_o_t_for_link": parent_o_t_for_link,
+            "added_obj": added_obj,
+            "added_obj_type": added_obj_type,
+            "added_o_t_for_link": added_o_t_for_link,
+        }
+        return render(request, "members/notifications/crud_notification.html", context)
+    else:
+        pass
 
 
 def crud_notification(crud_event, c_t):
@@ -141,36 +197,50 @@ def crud_notification(crud_event, c_t):
             # for each instance, notify its followers if it has any
             # first check to see if the added model is a "guest pc", notify the actor's followers instead
             if "guest" in changed_field:
+                actors = []
                 for pc in added_instances:
-                    actors = []
                     for a in pc.played_by.all():
                         actors.append(a)
-                    for actor in actors:
-                        if actor.followers.all():
-                            for follower in actor.followers.all():
+                for actor in actors:
+                    print(actor)
+                for actor in actors:
+                    if actor.followers.all():
+                        for follower in actor.followers.all():
+                            models.Notification.objects.create(
+                                notification_type='CRUD_event',
+                                receiver=follower,
+                                subject=str(actor.name) + " listed as a Guest on '" + str(parent_instance.title) + "'",
+                                updated_obj_type=parent_c_t,
+                                updated_obj_id=parent_instance_id,
+                                added_instance_type='PC',
+                                added_instance_id=instance.id
+                            )
+            else:
+                for instance in added_instances:
+                    if instance.followers.all():
+                        for follower in instance.followers.all():
+                            if "gm" in changed_field:
                                 models.Notification.objects.create(
                                     notification_type='CRUD_event',
                                     receiver=follower,
-                                    subject=str(actor.name) + " listed as a Guest on '" + str(parent_instance.title) + "'",
+                                    subject=str(instance) + " added as GM to new Campaign",
                                     updated_obj_type=parent_c_t,
                                     updated_obj_id=parent_instance_id,
-                                    added_instance_type='PC',
+                                    added_instance_type=changed_field_splitter(crud_event.changed_fields)["c_f_model_name"],
                                     added_instance_id=instance.id
                                 )
-            for instance in added_instances:
-                if instance.followers.all():
-                    for follower in instance.followers.all():
-                        models.Notification.objects.create(
-                            notification_type='CRUD_event',
-                            receiver=follower,
-                            subject="There's been an update to " +
-                                    str(changed_field_splitter(crud_event.changed_fields)["c_f_model_name"]) +
-                                    " " + str(instance),
-                            updated_obj_type=parent_c_t,
-                            updated_obj_id=parent_instance_id,
-                            added_instance_type=changed_field_splitter(crud_event.changed_fields)["c_f_model_name"],
-                            added_instance_id=instance.id
-                        )
+                            else:
+                                models.Notification.objects.create(
+                                    notification_type='CRUD_event',
+                                    receiver=follower,
+                                    subject="There's been an update to " +
+                                            str(changed_field_splitter(crud_event.changed_fields)["c_f_model_name"]) +
+                                            " '" + str(instance) + "'",
+                                    updated_obj_type=parent_c_t,
+                                    updated_obj_id=parent_instance_id,
+                                    added_instance_type=changed_field_splitter(crud_event.changed_fields)["c_f_model_name"],
+                                    added_instance_id=instance.id
+                                )
 
     if crud_event.event_type == 1:
         type = ContentType.objects.get_for_model(models.Episode)
@@ -194,6 +264,7 @@ def crud_notification(crud_event, c_t):
                     print("notification created")
         else:
             pass
+
 
 def changed_field_splitter(changed_fields):
     new_punctuation = string.punctuation.replace("_", '')
@@ -229,9 +300,9 @@ def changed_field_splitter(changed_fields):
         c_f_model_name = 'Campaign'
 
     c_f_ids = changed_fields.replace(c_f, '')
-    for p in string.punctuation:
-        c_f_ids = c_f_ids.replace(p, '')
-    c_f_ids = c_f_ids.replace(' ', '')
+    c_f_ids = c_f_ids.replace('"', '').replace(":", '').replace('{', '').replace('[', '').replace('}', '').replace(']', '')
+    c_f_ids = c_f_ids.split(",")
+
 
     return {
         "field_name": c_f,

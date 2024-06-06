@@ -1,0 +1,17 @@
+{% extends 'base_template.html' %}
+
+{% block crud_notification %}
+    <h3>{{ notification.subject }} | {{ notification.timestamp }}</h3>
+
+
+    <form method="post">
+        {% csrf_token %}
+        <button name="mark_unread" value="unread">Mark As Unread</button>
+    </form>
+
+    <p>
+        A new {{ added_obj_type }} (<a href=/database/{{ added_o_t_for_link }}/{{ added_obj.id }}>{{ added_obj.name }}{{ added_obj.title }}</a>) has been added to
+        {{ parent_obj_type }}
+        '<a href=/database/{{ parent_o_t_for_link }}/{{ parent_obj.id }}>{{ parent_obj.name }}{{ parent_obj.title }}</a>'
+    </p>
+{% endblock crud_notification %}

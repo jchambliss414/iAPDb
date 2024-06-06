@@ -4,36 +4,39 @@
     <h1>User Homepage for <u>{{ user }}</u></h1>
 
     <div class="body-container">
-{#        <section name="unread_inbox">#}
-{#            <h1 class="dark">Unread Notifications</h1>#}
-{#            <table>#}
-{#                {% for notification in unread_notifications %}#}
-{#                    {% if forloop.counter <= 5%}#}
-{#                        <tr>#}
-{#                            <th>{{ forloop.counter }}.</th>#}
-{#                            <td>#}
-{#                                <a href={% url 'notification' notification_id=notification.id %}>#}
-{#                                    {{ notification.subject }}#}
-{#                                </a>#}
-{#                            </td>#}
-{#                        <td>{{ notification.timestamp }}</td>#}
-{#                        </tr>#}
-{#                    {% endif %}#}
-{#                {% endfor %}#}
-{#            </table>#}
-{#                <a href="{% url 'inbox' user_id=user.id %}">#}
-{#                    {% if unread_notifications.all.count > 5 %}#}
-{#                        <h6 class="dark" style="margin: 1% 0 0 0">#}
-{#                            {{ unread_notifications.all.count|add:"-5" }} More Unread Notification(s)#}
-{#                        </h6>#}
-{#                    {% else %}#}
-{#                        <h5 class="dark" style="margin: 1% 0 0 0">#}
-{#                            Go to Inbox#}
-{#                        </h5>#}
-{#                    {% endif %}#}
-{#                </a>#}
-{##}
-{#        </section>#}
+        <section name="unread_inbox">
+            <h1 class="dark">Unread Notifications</h1>
+            <table>
+                {% for notification in unread_notifications %}
+                    {% if forloop.counter <= 5%}
+                        <tr>
+                            <th>{{ forloop.counter }}.</th>
+                            <td>
+                                <a href={% url 'notification' notification_id=notification.id %}>
+                                    {{ notification.subject }}
+                                </a>
+                            </td>
+                        <td>{{ notification.timestamp }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+                    {% if unread_notifications.all.count > 5 %}
+                        <h6 class="dark" style="margin: 1% 0 0 0">
+                            <a href="{% url 'inbox' user_id=user.id %}">
+                                {{ unread_notifications.all.count|add:"-5" }} More Unread Notification(s)
+                            </a>
+                        </h6>
+                    {% else %}
+                        <h5 class="dark" style="margin: 1% 0 0 0">
+                            No Unread Notifications <br><br>
+                            <a href="{% url 'inbox' user_id=user.id %}">
+                                Go to Inbox
+                            </a>
+                        </h5>
+                    {% endif %}
+
+        </section>
         <br>
         <hr>
         <section name="watchlists">
