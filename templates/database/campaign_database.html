@@ -3,47 +3,119 @@
 {% block campaigns %}
 <h1>Campaign Page</h1>
 
-<div class="body-container">
-    <a href='{% url 'add_model' entity='campaign' %}' class="database-header-link">Add New Campaign(s)</a>
-    {% for campaign in campaigns %}
-        {% if forloop.counter > 1%}<br>{% endif %}
-        <div class="card dark-background" style="max-width: 95%;">
-            <div class="row g-0">
-                <div class="col-md-6 my-auto">
-                    <img class="img-fluid rounded-start" style="height: 250px; width: 100%; object-fit: cover" src={{ campaign.image_url }}>
-                </div>
-                <div class="col-md-6 my-auto" style="justify-content: center">
-                    <div class="card-body">
-                        <h3 class="card-title"><a class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a></h3>
-                        <table style="margin: auto; margin-bottom: 3%">
-                            <tr>
-                                <td colspan="2" style="text-align: center">{{ campaign.progress }}</td>
-                                <td colspan="2" style="text-align: center">{{ campaign.medium }} - {{ campaign.type }}</td>
-                            </tr>
-                            <tr>
-                                <th>Produced by:</th>
-                                <td colspan="3">
-                                    {% for producer in campaign.produced_by.all %}
-                                        <a style="position: relative;" class="stretched-link" href=producers/{{ producer.id }}>{{ producer.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>System(s):</th>
-                                <td colspan="3">
-                                    {% for system in campaign.system.all %}
-                                        <a style="position: relative;" class="stretched-link" href=systems/{{ system.id }}>{{ system.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                        </table>
-                        {% if campaign.blurb %}<p class="card-text">{{ campaign.blurb|safe }}</p>{% endif %}
+<div style="background-color: #4ab08e">
+    <div class="row">
+        <div class="col-2" style="background-color: #262322">
+            <p></p>
+        </div>
+
+        <div class="col-8">
+            <a href='{% url 'add_model' entity='campaign' %}' class="database-header-link">Add New Campaign(s)</a>
+            {% for campaign in campaigns %}
+                {% if forloop.counter > 1 %}<br>{% endif %}
+                <div class="card dark-background" style="max-width: 95%;">
+                    <div class="row g-0">
+                        <div class="col-md-6 my-auto">
+                            <img class="img-fluid rounded-start" style="height: 250px; width: 100%; object-fit: cover"
+                                 src={{ campaign.image_url }}>
+                        </div>
+                        <div class="col-md-6 my-auto" style="justify-content: center">
+                            <div class="card-body">
+                                <h3 class="card-title"><a class="stretched-link"
+                                                          href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a></h3>
+                                <table style="margin: auto; margin-bottom: 3%">
+                                    <tr>
+                                        <td colspan="2" style="text-align: center">{{ campaign.progress }}</td>
+                                        <td colspan="2" style="text-align: center">{{ campaign.medium }}
+                                            - {{ campaign.type }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Produced by:</th>
+                                        <td colspan="3">
+                                            {% for producer in campaign.produced_by.all %}
+                                                <a style="position: relative;" class="stretched-link"
+                                                   href=producers/{{ producer.id }}>{{ producer.name }}</a>
+                                                {% if not forloop.last %},&nbsp{% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>System(s):</th>
+                                        <td colspan="3">
+                                            {% for system in campaign.system.all %}
+                                                <a style="position: relative;" class="stretched-link"
+                                                   href=systems/{{ system.id }}>{{ system.name }}</a>
+                                                {% if not forloop.last %},&nbsp{% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                </table>
+                                {% if campaign.blurb %}<p class="card-text">{{ campaign.blurb|safe }}</p>{% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
+            <br>
         </div>
-    {% endfor %}
-        <br>
-</div>
 
+        <div class="col-2" style="background-color: #262322">
+            <h3 class="title">Sort and Filter</h3>
+            <p>
+                <b><u>Active Filter(s):</u></b> <br>
+                {% if progress %}
+                    Progress: {{ progress }} <br>
+                {% endif %}
+                {% if medium %}
+                    Medium: {{ medium }} <br>
+                {% endif %}
+                {% if t %}
+                    Type: {{ type }} <br>
+                {% endif %}
+            </p>
+            <form action="#" method="POST":>
+            {% csrf_token %}
+                <h4 class="with_subtitle">Sort Order</h4>
+                <fieldset>
+                    <input type="radio" name="sort_order" id="asc" value="asc">
+                    <label style="color: #4ab08e" for="asc">Ascending</label>
+                    <br>
+                    <input type="radio" name="sort_order" id="desc" value="desc">
+                    <label style="color: #4ab08e" for="desc">Descending</label>
+                </fieldset>
+            <br>
+                <h4>Filters</h4>
+                <p class="with_subtitle" style="text-decoration: underline;"><b>Progress</b></p>
+                <fieldset>
+                    {% for key, value in progress_choices.items %}
+                        <input type="radio" name="progress_filter" id={{ key }} value={{ value }}>
+                        <label style="color: #4ab08e" for={{ key }}>{{ value }}</label>
+                        <br>
+                    {% endfor %}
+                </fieldset>
+            <br>
+                <p class="with_subtitle" style="text-decoration: underline;"><b>Medium</b></p>
+                <fieldset>
+                    {% for key, value in medium_choices.items %}
+                        <input type="radio" name="medium_filter" id={{ key }} value={{ value }}>
+                        <label style="color: #4ab08e" for={{ key }}>{{ value }}</label>
+                        <br>
+                    {% endfor %}
+                </fieldset>
+            <br>
+                <p class="with_subtitle" style="text-decoration: underline;"><b>Type</b></p>
+                <fieldset>
+                    {% for key, value in type_choices.items %}
+                        <input type="radio" name="type_filter" id={{ key }} value={{ value }}>
+                        <label style="color: #4ab08e" for={{ key }}>{{ value }}</label>
+                        <br>
+                    {% endfor %}
+                </fieldset>
+            <br>
+
+                <input type="submit" name="submit_filter" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock campaigns %}

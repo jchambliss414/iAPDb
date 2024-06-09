@@ -65,7 +65,8 @@ def user_homepage(request, user_id):
     following_actors = profile.actors_following.all()
     following_producers = profile.producers_following.all()
 
-    unread_notifications = models.Notification.objects.filter(receiver=profile).filter(read_status=False).order_by('-timestamp')
+    unread_notifications = models.Notification.objects.filter(receiver=profile).filter(read_status=False).order_by(
+        '-timestamp')
 
     if request.method == 'POST':
         if 'WatchlistToWatching' in request.POST:
@@ -191,7 +192,8 @@ def crud_notification(crud_event, c_t):
             # collect the instances of the models being added
             added_instances = []
             for i_id in instance_ids:
-                instance = get_object_or_404(changed_field_splitter(crud_event.changed_fields)["changed_model_type"], id=i_id)
+                instance = get_object_or_404(changed_field_splitter(crud_event.changed_fields)["changed_model_type"],
+                                             id=i_id)
                 added_instances.append(instance)
 
             # for each instance, notify its followers if it has any
@@ -226,7 +228,8 @@ def crud_notification(crud_event, c_t):
                                     subject=str(instance) + " added as GM to new Campaign",
                                     updated_obj_type=parent_c_t,
                                     updated_obj_id=parent_instance_id,
-                                    added_instance_type=changed_field_splitter(crud_event.changed_fields)["c_f_model_name"],
+                                    added_instance_type=changed_field_splitter(crud_event.changed_fields)[
+                                        "c_f_model_name"],
                                     added_instance_id=instance.id
                                 )
                             else:
@@ -238,7 +241,8 @@ def crud_notification(crud_event, c_t):
                                             " '" + str(instance) + "'",
                                     updated_obj_type=parent_c_t,
                                     updated_obj_id=parent_instance_id,
-                                    added_instance_type=changed_field_splitter(crud_event.changed_fields)["c_f_model_name"],
+                                    added_instance_type=changed_field_splitter(crud_event.changed_fields)[
+                                        "c_f_model_name"],
                                     added_instance_id=instance.id
                                 )
 
@@ -300,9 +304,9 @@ def changed_field_splitter(changed_fields):
         c_f_model_name = 'Campaign'
 
     c_f_ids = changed_fields.replace(c_f, '')
-    c_f_ids = c_f_ids.replace('"', '').replace(":", '').replace('{', '').replace('[', '').replace('}', '').replace(']', '')
+    c_f_ids = c_f_ids.replace('"', '').replace(":", '').replace('{', '').replace('[', '').replace('}', '').replace(']',
+                                                                                                                   '')
     c_f_ids = c_f_ids.split(",")
-
 
     return {
         "field_name": c_f,

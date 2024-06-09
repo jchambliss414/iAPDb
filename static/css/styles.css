@@ -17,6 +17,11 @@ h1, h2, h3, h4, h5, h6, p, li {
     background-color: #262322 !important;
 }
 
+.title {
+    text-align: center;
+    text-decoration: underline;
+}
+
 .with_subtitle {
     margin-bottom: 0!important;
     padding: 0!important;
@@ -77,6 +82,10 @@ p.alert_message {
     width: fit-content;
     padding-left: 1%;
     padding-right: 1%;
+}
+
+.filter-label {
+    color: #4ab08e;
 }
 
     /* -------------- Tables and Elements --------------*/

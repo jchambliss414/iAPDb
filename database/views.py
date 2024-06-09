@@ -4,6 +4,7 @@ from database import models
 from django.utils.dateparse import parse_duration
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from database.models import Campaign
 
 
 def database_home(request):
@@ -31,7 +32,49 @@ def database_home(request):
 def database_pages(request, entity):
     if entity == 'campaigns':
         campaigns = models.Campaign.objects.all()
-        return render(request, 'database/campaign_database.html', {'campaigns': campaigns})
+        progress_choices = {}
+        for choice in Campaign.progress_choices:
+            progress_choices[choice[0].lower().replace(' ', '_')] = choice[0]
+
+        medium_choices = {}
+        for choice in Campaign.medium_choices:
+            medium_choices[choice[0].lower().replace(' ', '_')] = choice[0]
+
+        type_choices = {}
+        for choice in Campaign.type_choices:
+            type_choices[choice[0].lower().replace(' ', '_')] = choice[0]
+
+        if request.method == 'POST':
+            if "submit_filter" in request.POST:
+                if request.POST.get('sort_order') == 'asc':
+                    sort_order = request.POST.get('sort_order')
+                    campaigns = campaigns.order_by('title')
+                elif request.POST.get('sort_order') == 'desc':
+                    sort_order = request.POST.get('sort_order')
+                    campaigns = campaigns.order_by('-title')
+                else:
+                    sort_order = request.POST.get('sort_order')
+                    campaigns = campaigns.order_by('title')
+                if request.POST.get('progress_filter'):
+                    progress = request.POST.get('progress_filter')
+                    campaigns = campaigns.filter(progress__icontains=progress)
+                if request.POST.get('medium_filter'):
+                    medium = request.POST.get('medium_filter')
+                    campaigns = campaigns.filter(medium__icontains=medium)
+                if request.POST.get('type_filter'):
+                    t = request.POST.get('type_filter')
+                    campaigns = campaigns.filter(type__icontains=t)
+        context = {
+            "campaigns": campaigns,
+            # "progress": progress,
+            "progress_choices": progress_choices,
+            # "medium": medium,
+            "medium_choices": medium_choices,
+            # "type": t,
+            "type_choices": type_choices,
+            # "sort_order": sort_order,
+        }
+        return render(request, 'database/campaign_database.html', context)
 
     if entity == 'actors':
         actors = models.Actor.objects.all()

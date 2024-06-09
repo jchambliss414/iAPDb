@@ -6,721 +6,734 @@
             You searched <u style="text-transform: capitalize">{{ entity_searched }}</u> for: "{{ searched }}"
             <small style="font-size: large">(Results: {{ results.count }}{{ result_count }})</small>
         </h1>
-        <div class="body-container">
-        {% if entity_searched == 'all' %}
-            {% for result in results %}
-                {% if result in campaigns %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%;">
-                        <div class="search-card-header">
-                            Campaign
-                        </div>
-                        <div class="row g-0">
-                            <div class="col-md-6 my-auto">
-                                <img class="img-fluid rounded-start" style="height: 250px; width: 100%; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-6 my-auto" style="justify-content: center">
-                                <div class="card-body">
-                                    <h3 class="card-title"><a class="stretched-link" href=campaigns/{{ result.id }}>{{ result.title }}</a></h3>
-                                    <table style="margin: auto; margin-bottom: 3%">
-                                        <tr>
-                                            <td colspan="2" style="text-align: center">{{ result.progress }}</td>
-                                            <td colspan="2" style="text-align: center">{{ result.medium }} - {{ result.type }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Produced by:</th>
-                                            <td colspan="3">
-                                                {% for producer in result.produced_by.all %}
-                                                    <a style="position: relative;" class="stretched-link" href=producers/{{ producer.id }}>{{ producer.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
-                                                {% endfor %}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>System(s):</th>
-                                            <td colspan="3">
-                                                {% for system in result.system.all %}
-                                                    <a style="position: relative;" class="stretched-link" href=systems/{{ system.id }}>{{ system.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
-                                                {% endfor %}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    {% if result.blurb %}<p class="card-text">{{ result.blurb|safe}}</p>{% endif %}
+        <div style="background-color: #4ab08e">
+            <div class="row">
+                <div class="col-2" style="background-color: #262322">
+                    <p></p>
+                </div>
+
+                <div class="col-8">
+                {% if entity_searched == 'all' %}
+                    {% for result in results %}
+                        {% if result in campaigns %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%;">
+                                <div class="search-card-header">
+                                    Campaign
+                                </div>
+                                <div class="row g-0">
+                                    <div class="col-md-6 my-auto">
+                                        <img class="img-fluid rounded-start" style="height: 250px; width: 100%; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-6 my-auto" style="justify-content: center">
+                                        <div class="card-body">
+                                            <h3 class="card-title"><a class="stretched-link" href=campaigns/{{ result.id }}>{{ result.title }}</a></h3>
+                                            <table style="margin: auto; margin-bottom: 3%">
+                                                <tr>
+                                                    <td colspan="2" style="text-align: center">{{ result.progress }}</td>
+                                                    <td colspan="2" style="text-align: center">{{ result.medium }} - {{ result.type }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Produced by:</th>
+                                                    <td colspan="3">
+                                                        {% for producer in result.produced_by.all %}
+                                                            <a style="position: relative;" class="stretched-link" href=producers/{{ producer.id }}>{{ producer.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>System(s):</th>
+                                                    <td colspan="3">
+                                                        {% for system in result.system.all %}
+                                                            <a style="position: relative;" class="stretched-link" href=systems/{{ system.id }}>{{ system.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            {% if result.blurb %}<p class="card-text">{{ result.blurb|safe}}</p>{% endif %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                {% endif %}
+                        {% endif %}
 
-                {% if result in actors %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="search-card-header">
-                            Actor
-                        </div>
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 card-col my-auto" style="height: inherit">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:400px; object-fit: cover" src={{ result.image_url }}>
+                        {% if result in actors %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="search-card-header">
+                                    Actor
+                                </div>
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 card-col my-auto" style="height: inherit">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:400px; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 card-col my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title"><a class="stretched-link" href=actors/{{ result.id }}>{{ result.name }}</a></h3>
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+
+                                            {% if result.gm_campaigns.all and result.characters.all %}
+                                                <div class="row">
+                                                    <div class="col-sm-6 my-auto">
+                                                        <h5>GM For:</h5>
+                                                        <div class="grid_one-row">
+                                                            {% for campaign in result.gm_campaigns.all %}
+                                                                <div class="card_sm">
+                                                                    <div class="card-header" style="text-align: center">
+                                                                        <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                    </div>
+                                                                    <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 my-auto">
+                                                        <h5>Characters:</h5>
+                                                        <div class="grid_one-row">
+                                                            {% for pc in result.characters.all %}<div class="card_sm">
+                                                                <div class="card-header" style="padding: 1%">
+                                                                <u>{{ pc.name }}</u> <br>
+                                                                <small>
+                                                                    ({% if pc.member_of.all %}
+                                                                        {% for result in pc.member_of.all %}
+                                                                            {% for campaign in result.campaigns.all %}
+                                                                                <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last%},&nbsp{% endif %}
+                                                                            {% endfor %}
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                                    {% if pc.guest_of.all %}
+                                                                        {% for campaign in pc.guest_of.all %}
+                                                                            <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                        {% endfor %}
+                                                                    {% endif %})
+                                                                </small>
+                                                                </div>
+                                                                <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
+                                                            </div>{% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% elif result.gm_campaigns.all and not result.characters.all %}
+                                                <div class="row my-auto">
+                                                    <h5>GM For:</h5>
+                                                        <div class="grid_one-row">
+                                                            {% for campaign in result.gm_campaigns.all %}
+                                                                <div class="card_sm">
+                                                                <div class="card-header" style="text-align: center">
+                                                                    <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                </div>
+                                                                <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                </div>
+                                            {% elif not result.gm_campaigns.all and result.characters.all %}
+                                                <div class="row my-auto">
+                                                    <h5>Characters:</h5>
+                                                    <div class="grid_one-row">
+                                                        {% for pc in result.characters.all%}
+                                                            <div class="card_sm">
+                                                            <div class="card-header" style="padding: 1%">
+                                                                <a style="position: relative;" class="stretched-link" href=pcs/{{ pc.id }}>{{ pc.name }}</a> <br>
+                                                                <small>
+                                                                    ({% if pc.member_of.all %}
+                                                                        {% for result in pc.member_of.all %}
+                                                                            {% for campaign in result.campaigns.all %}
+                                                                                <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last%},&nbsp{% endif %}
+                                                                            {% endfor %}
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                                    {% if pc.guest_of.all %}
+                                                                        {% for campaign in pc.guest_of.all %}
+                                                                            <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                        {% endfor %}
+                                                                    {% endif %})
+                                                                </small>
+                                                            </div>
+                                                            <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-7 card-col my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title"><a class="stretched-link" href=actors/{{ result.id }}>{{ result.name }}</a></h3>
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
+                        {% endif %}
 
-                                    {% if result.gm_campaigns.all and result.characters.all %}
-                                        <div class="row">
-                                            <div class="col-sm-6 my-auto">
-                                                <h5>GM For:</h5>
+                        {% if result in parties %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="search-card-header">
+                                    Party
+                                </div>
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/parties/{{ result.id }}>{{ result.name }}</a></h3>
+                                            {% if result.campaigns.all %}
+                                                <p class="subtitle">(
+                                                    {% for campaign in result.campaigns.all|slice:"0:3" %}
+                                                        {% if forloop.counter < 3%}
+                                                            <a style="position: relative;" class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last %},{% endif %}
+                                                        {% elif forloop.counter >= 3 %}
+                                                            <a style="position: relative;" class="stretched-link" href=/database/parties/{{ result.id }}>and more...</a>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                )</p>
+                                            {% endif %}
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+                                            <div class="row">
+                                                <h5>Members:</h5>
                                                 <div class="grid_one-row">
-                                                    {% for campaign in result.gm_campaigns.all %}
-                                                        <div class="card_sm">
+                                                    {% for pc in result.members.all %}
+                                                        <div style="position: relative;" class="card_sm">
                                                             <div class="card-header" style="text-align: center">
-                                                                <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                <a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a>
+                                                            </div>
+                                                            <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
+                                                        </div>
+                                                    {% endfor %}
+                                                    {% for campaign in pc.guest_of.all %}
+                                                        <div style="position: relative;" class="card_sm">
+                                                            <div class="card-header" style="text-align: center">
+                                                                <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
                                                             </div>
                                                             <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
                                                         </div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6 my-auto">
-                                                <h5>Characters:</h5>
-                                                <div class="grid_one-row">
-                                                    {% for pc in result.characters.all %}<div class="card_sm">
-                                                        <div class="card-header" style="padding: 1%">
-                                                        <u>{{ pc.name }}</u> <br>
-                                                        <small>
-                                                            ({% if pc.member_of.all %}
-                                                                {% for result in pc.member_of.all %}
-                                                                    {% for campaign in result.campaigns.all %}
-                                                                        <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last%},&nbsp{% endif %}
-                                                                    {% endfor %}
-                                                                {% endfor %}
-                                                            {% endif %}
-                                                            {% if pc.guest_of.all %}
-                                                                {% for campaign in pc.guest_of.all %}
-                                                                    <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                                {% endfor %}
-                                                            {% endif %})
-                                                        </small>
-                                                        </div>
-                                                        <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
-                                                    </div>{% endfor %}
-                                                </div>
-                                            </div>
+
                                         </div>
-                                    {% elif result.gm_campaigns.all and not result.characters.all %}
-                                        <div class="row my-auto">
-                                            <h5>GM For:</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if result in pcs %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="search-card-header">
+                                    Player Character
+                                </div>
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ result.id }}>{{ result.name }}</a></h3>
+                                            {% if result.member_of.all %}<p class="subtitle"><a style="position: relative;" class="stretched-link" href=/database/parties/{{ result.member_of.all.0.id }}>({{ result.member_of.all.0 }})</a></p>{% endif %}
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+                                            <div class="row">
+                                                <h5>Featured In:</h5>
                                                 <div class="grid_one-row">
-                                                    {% for campaign in result.gm_campaigns.all %}
-                                                        <div class="card_sm">
-                                                        <div class="card-header" style="text-align: center">
-                                                            <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                    {% for party in result.member_of.all %}{% for campaign in party.campaigns.all %}
+                                                        <div style="position: relative;"  class="card_sm">
+                                                            <div class="card-header" style="text-align: center">
+                                                                <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <img class="card-img_sm" src={{ campaign.image_url }}>
+                                                            </div>
                                                         </div>
-                                                        <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
-                                                    </div>
+                                                    {% endfor %}{% endfor %}
+                                                    {% for campaign in result.guest_of.all %}
+                                                        <div class="card_sm">
+                                                            <div class="card-header" style="text-align: center">
+                                                                <a style="position: relative;" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                            </div>
+                                                            <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                                        </div>
                                                     {% endfor %}
                                                 </div>
-                                        </div>
-                                    {% elif not result.gm_campaigns.all and result.characters.all %}
-                                        <div class="row my-auto">
-                                            <h5>Characters:</h5>
-                                            <div class="grid_one-row">
-                                                {% for pc in result.characters.all%}
-                                                    <div class="card_sm">
-                                                    <div class="card-header" style="padding: 1%">
-                                                        <a style="position: relative;" class="stretched-link" href=pcs/{{ pc.id }}>{{ pc.name }}</a> <br>
-                                                        <small>
-                                                            ({% if pc.member_of.all %}
-                                                                {% for result in pc.member_of.all %}
-                                                                    {% for campaign in result.campaigns.all %}
-                                                                        <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last%},&nbsp{% endif %}
-                                                                    {% endfor %}
-                                                                {% endfor %}
-                                                            {% endif %}
-                                                            {% if pc.guest_of.all %}
-                                                                {% for campaign in pc.guest_of.all %}
-                                                                    <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                                {% endfor %}
-                                                            {% endif %})
-                                                        </small>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
-                                                </div>
-                                                {% endfor %}
                                             </div>
-                                        </div>
-                                    {% endif %}
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if result in parties %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="search-card-header">
-                            Party
-                        </div>
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 my-auto">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/parties/{{ result.id }}>{{ result.name }}</a></h3>
-                                    {% if result.campaigns.all %}
-                                        <p class="subtitle">(
-                                            {% for campaign in result.campaigns.all|slice:"0:3" %}
-                                                {% if forloop.counter < 3%}
-                                                    <a style="position: relative;" class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last %},{% endif %}
-                                                {% elif forloop.counter >= 3 %}
-                                                    <a style="position: relative;" class="stretched-link" href=/database/parties/{{ result.id }}>and more...</a>
-                                                {% endif %}
-                                            {% endfor %}
-                                        )</p>
-                                    {% endif %}
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-                                    <div class="row">
-                                        <h5>Members:</h5>
-                                        <div class="grid_one-row">
-                                            {% for pc in result.members.all %}
-                                                <div style="position: relative;" class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
-                                                </div>
-                                            {% endfor %}
-                                            {% for campaign in pc.guest_of.all %}
-                                                <div style="position: relative;" class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
-                                                </div>
-                                            {% endfor %}
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                {% endif %}
+                        {% endif %}
 
-                {% if result in pcs %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="search-card-header">
-                            Player Character
-                        </div>
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 my-auto">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ result.id }}>{{ result.name }}</a></h3>
-                                    {% if result.member_of.all %}<p class="subtitle"><a style="position: relative;" class="stretched-link" href=/database/parties/{{ result.member_of.all.0.id }}>({{ result.member_of.all.0 }})</a></p>{% endif %}
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-                                    <div class="row">
-                                        <h5>Featured In:</h5>
-                                        <div class="grid_one-row">
-                                            {% for party in result.member_of.all %}{% for campaign in party.campaigns.all %}
-                                                <div style="position: relative;"  class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <img class="card-img_sm" src={{ campaign.image_url }}>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}{% endfor %}
-                                            {% for campaign in result.guest_of.all %}
-                                                <div class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a style="position: relative;" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
+                        {% if result in producers %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="search-card-header">
+                                    Producer
+                                </div>
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
                                     </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if result in producers %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="search-card-header">
-                            Producer
-                        </div>
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 my-auto">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/producers/{{ result.id }}>{{ result.name }}</a></h3>
-                                    {% if result.medium %}<p class="subtitle">({{ result.medium }})</p>{% endif %}
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-                                    <div class="row">
-                                        <h5>Campaigns:</h5>
-                                        <div class="grid_one-row">
-                                            {% for campaign in result.campaigns.all %}
-                                                <div style="position: relative;"  class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if result in publishers %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="search-card-header">
-                            Publisher
-                        </div>
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 my-auto">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/publishers/{{ result.id }}>{{ result.name }}</a></h3>
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-                                    <div class="row">
-                                        <h5>Systems:</h5>
-                                        <div class="grid_one-row">
-                                            {% for system in result.systems.all %}
-                                                <div style="position: relative;" class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a class="stretched-link" href=/database/systems/{{ system.id }}>{{ system.name }}</a>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ system.image_url }}></div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if result in systems %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="search-card-header">
-                            System
-                        </div>
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 my-auto">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/systems/{{ result.id }}>{{ result.name }}</a></h3>
-                                        <p class="subtitle">
-                                            {% if result.published_by.all %}
-                                                (Published By: {% for publisher in result.published_by.all|slice:"0:3" %}
-                                                    {% if forloop.counter < 3%}
-                                                        <a style="position: relative;" class="stretched-link" href=/database/publisher/{{ publisher.id }}>{{ publisher.name }}</a>{% if not forloop.last %},{% endif %}
-                                                    {% elif forloop.counter >= 3 %}
-                                                        <a style="position: relative;" class="stretched-link" href=/database/results/{{ result.id }}>and more...</a>
-                                                    {% endif %}
-                                                {% endfor %})
-                                            <br>
-                                            {% endif %}
-                                            (Campaigns in Database: {{ result.campaigns.all.count }})
-                                        </p>
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-                                        <div class="row featured_campaigns">
-                                            <h5>Featured Campaigns:</h5>
-                                            <div class="grid_one-row">
-                                                {% for campaign in featured_campaigns %}
-                                                    {% if result in campaign.result.all %}
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/producers/{{ result.id }}>{{ result.name }}</a></h3>
+                                            {% if result.medium %}<p class="subtitle">({{ result.medium }})</p>{% endif %}
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+                                            <div class="row">
+                                                <h5>Campaigns:</h5>
+                                                <div class="grid_one-row">
+                                                    {% for campaign in result.campaigns.all %}
                                                         <div style="position: relative;"  class="card_sm">
                                                             <div class="card-header" style="text-align: center">
                                                                 <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
                                                             </div>
                                                             <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
                                                         </div>
-                                                    {% endif %}
-                                                {% endfor %}
+                                                    {% endfor %}
+                                                </div>
                                             </div>
+
                                         </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            {% for result in results %}
-                {% if result in campaigns %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%;">
-                        <div class="row g-0">
-                            <div class="col-md-6 my-auto">
-                                <img class="img-fluid rounded-start" style="height: 250px; width: 100%; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-6 my-auto" style="justify-content: center">
-                                <div class="card-body">
-                                    <h3 class="card-title"><a class="stretched-link" href=campaigns/{{ result.id }}>{{ result.title }}</a></h3>
-                                    <table style="margin: auto; margin-bottom: 3%">
-                                        <tr>
-                                            <td colspan="2" style="text-align: center">{{ result.progress }}</td>
-                                            <td colspan="2" style="text-align: center">{{ result.medium }} - {{ result.type }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Produced by:</th>
-                                            <td colspan="3">
-                                                {% for producer in result.produced_by.all %}
-                                                    <a style="position: relative;" class="stretched-link" href=producers/{{ producer.id }}>{{ producer.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
-                                                {% endfor %}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>System(s):</th>
-                                            <td colspan="3">
-                                                {% for system in result.system.all %}
-                                                    <a style="position: relative;" class="stretched-link" href=systems/{{ system.id }}>{{ system.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
-                                                {% endfor %}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    {% if result.blurb %}<p class="card-text">{{ result.blurb|safe}}</p>{% endif %}
+                        {% endif %}
+
+                        {% if result in publishers %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="search-card-header">
+                                    Publisher
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if result in actors %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 card-col my-auto" style="height: inherit">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:400px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 card-col my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title"><a class="stretched-link" href=actors/{{ result.id }}>{{ result.name }}</a></h3>
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-
-                                    {% if result.gm_campaigns.all and result.characters.all %}
-                                        <div class="row">
-                                            <div class="col-sm-6 my-auto">
-                                                <h5>GM For:</h5>
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/publishers/{{ result.id }}>{{ result.name }}</a></h3>
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+                                            <div class="row">
+                                                <h5>Systems:</h5>
                                                 <div class="grid_one-row">
-                                                    {% for campaign in result.gm_campaigns.all %}
-                                                        <div class="card_sm">
+                                                    {% for system in result.systems.all %}
+                                                        <div style="position: relative;" class="card_sm">
                                                             <div class="card-header" style="text-align: center">
-                                                                <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                <a class="stretched-link" href=/database/systems/{{ system.id }}>{{ system.name }}</a>
+                                                            </div>
+                                                            <div class="card-body"><img class="card-img_sm" src={{ system.image_url }}></div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if result in systems %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="search-card-header">
+                                    System
+                                </div>
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/systems/{{ result.id }}>{{ result.name }}</a></h3>
+                                                <p class="subtitle">
+                                                    {% if result.published_by.all %}
+                                                        (Published By: {% for publisher in result.published_by.all|slice:"0:3" %}
+                                                            {% if forloop.counter < 3%}
+                                                                <a style="position: relative;" class="stretched-link" href=/database/publisher/{{ publisher.id }}>{{ publisher.name }}</a>{% if not forloop.last %},{% endif %}
+                                                            {% elif forloop.counter >= 3 %}
+                                                                <a style="position: relative;" class="stretched-link" href=/database/results/{{ result.id }}>and more...</a>
+                                                            {% endif %}
+                                                        {% endfor %})
+                                                    <br>
+                                                    {% endif %}
+                                                    (Campaigns in Database: {{ result.campaigns.all.count }})
+                                                </p>
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+                                                <div class="row featured_campaigns">
+                                                    <h5>Featured Campaigns:</h5>
+                                                    <div class="grid_one-row">
+                                                        {% for campaign in featured_campaigns %}
+                                                            {% if result in campaign.result.all %}
+                                                                <div style="position: relative;"  class="card_sm">
+                                                                    <div class="card-header" style="text-align: center">
+                                                                        <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                    </div>
+                                                                    <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% for result in results %}
+                        {% if result in campaigns %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%;">
+                                <div class="row g-0">
+                                    <div class="col-md-6 my-auto">
+                                        <img class="img-fluid rounded-start" style="height: 250px; width: 100%; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-6 my-auto" style="justify-content: center">
+                                        <div class="card-body">
+                                            <h3 class="card-title"><a class="stretched-link" href=campaigns/{{ result.id }}>{{ result.title }}</a></h3>
+                                            <table style="margin: auto; margin-bottom: 3%">
+                                                <tr>
+                                                    <td colspan="2" style="text-align: center">{{ result.progress }}</td>
+                                                    <td colspan="2" style="text-align: center">{{ result.medium }} - {{ result.type }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Produced by:</th>
+                                                    <td colspan="3">
+                                                        {% for producer in result.produced_by.all %}
+                                                            <a style="position: relative;" class="stretched-link" href=producers/{{ producer.id }}>{{ producer.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>System(s):</th>
+                                                    <td colspan="3">
+                                                        {% for system in result.system.all %}
+                                                            <a style="position: relative;" class="stretched-link" href=systems/{{ system.id }}>{{ system.name }}</a>{% if not forloop.last %},&nbsp{% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            {% if result.blurb %}<p class="card-text">{{ result.blurb|safe}}</p>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if result in actors %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 card-col my-auto" style="height: inherit">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:400px; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 card-col my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title"><a class="stretched-link" href=actors/{{ result.id }}>{{ result.name }}</a></h3>
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+
+                                            {% if result.gm_campaigns.all and result.characters.all %}
+                                                <div class="row">
+                                                    <div class="col-sm-6 my-auto">
+                                                        <h5>GM For:</h5>
+                                                        <div class="grid_one-row">
+                                                            {% for campaign in result.gm_campaigns.all %}
+                                                                <div class="card_sm">
+                                                                    <div class="card-header" style="text-align: center">
+                                                                        <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                    </div>
+                                                                    <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 my-auto">
+                                                        <h5>Characters:</h5>
+                                                        <div class="grid_one-row">
+                                                            {% for pc in result.characters.all %}<div class="card_sm">
+                                                                <div class="card-header" style="padding: 1%">
+                                                                <u>{{ pc.name }}</u> <br>
+                                                                <small>
+                                                                    ({% if pc.member_of.all %}
+                                                                        {% for result in pc.member_of.all %}
+                                                                            {% for campaign in result.campaigns.all %}
+                                                                                <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last%},&nbsp{% endif %}
+                                                                            {% endfor %}
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                                    {% if pc.guest_of.all %}
+                                                                        {% for campaign in pc.guest_of.all %}
+                                                                            <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                        {% endfor %}
+                                                                    {% endif %})
+                                                                </small>
+                                                                </div>
+                                                                <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
+                                                            </div>{% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% elif result.gm_campaigns.all and not result.characters.all %}
+                                                <div class="row my-auto">
+                                                    <h5>GM For:</h5>
+                                                        <div class="grid_one-row">
+                                                            {% for campaign in result.gm_campaigns.all %}
+                                                                <div class="card_sm">
+                                                                <div class="card-header" style="text-align: center">
+                                                                    <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                </div>
+                                                                <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                </div>
+                                            {% elif not result.gm_campaigns.all and result.characters.all %}
+                                                <div class="row my-auto">
+                                                    <h5>Characters:</h5>
+                                                    <div class="grid_one-row">
+                                                        {% for pc in result.characters.all%}
+                                                            <div class="card_sm">
+                                                            <div class="card-header" style="padding: 1%">
+                                                                <a style="position: relative;" class="stretched-link" href=pcs/{{ pc.id }}>{{ pc.name }}</a> <br>
+                                                                <small>
+                                                                    ({% if pc.member_of.all %}
+                                                                        {% for result in pc.member_of.all %}
+                                                                            {% for campaign in result.campaigns.all %}
+                                                                                <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last%},&nbsp{% endif %}
+                                                                            {% endfor %}
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                                    {% if pc.guest_of.all %}
+                                                                        {% for campaign in pc.guest_of.all %}
+                                                                            <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                        {% endfor %}
+                                                                    {% endif %})
+                                                                </small>
+                                                            </div>
+                                                            <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if result in parties %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/parties/{{ result.id }}>{{ result.name }}</a></h3>
+                                            {% if result.campaigns.all %}
+                                                <p class="subtitle">(
+                                                    {% for campaign in result.campaigns.all|slice:"0:3" %}
+                                                        {% if forloop.counter < 3%}
+                                                            <a style="position: relative;" class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last %},{% endif %}
+                                                        {% elif forloop.counter >= 3 %}
+                                                            <a style="position: relative;" class="stretched-link" href=/database/parties/{{ result.id }}>and more...</a>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                )</p>
+                                            {% endif %}
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+                                            <div class="row">
+                                                <h5>Members:</h5>
+                                                <div class="grid_one-row">
+                                                    {% for pc in result.members.all %}
+                                                        <div style="position: relative;" class="card_sm">
+                                                            <div class="card-header" style="text-align: center">
+                                                                <a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a>
+                                                            </div>
+                                                            <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
+                                                        </div>
+                                                    {% endfor %}
+                                                    {% for campaign in pc.guest_of.all %}
+                                                        <div style="position: relative;" class="card_sm">
+                                                            <div class="card-header" style="text-align: center">
+                                                                <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
                                                             </div>
                                                             <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
                                                         </div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6 my-auto">
-                                                <h5>Characters:</h5>
-                                                <div class="grid_one-row">
-                                                    {% for pc in result.characters.all %}<div class="card_sm">
-                                                        <div class="card-header" style="padding: 1%">
-                                                        <u>{{ pc.name }}</u> <br>
-                                                        <small>
-                                                            ({% if pc.member_of.all %}
-                                                                {% for result in pc.member_of.all %}
-                                                                    {% for campaign in result.campaigns.all %}
-                                                                        <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last%},&nbsp{% endif %}
-                                                                    {% endfor %}
-                                                                {% endfor %}
-                                                            {% endif %}
-                                                            {% if pc.guest_of.all %}
-                                                                {% for campaign in pc.guest_of.all %}
-                                                                    <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                                {% endfor %}
-                                                            {% endif %})
-                                                        </small>
-                                                        </div>
-                                                        <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
-                                                    </div>{% endfor %}
-                                                </div>
-                                            </div>
+
                                         </div>
-                                    {% elif result.gm_campaigns.all and not result.characters.all %}
-                                        <div class="row my-auto">
-                                            <h5>GM For:</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if result in pcs %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ result.id }}>{{ result.name }}</a></h3>
+                                            {% if result.member_of.all %}<p class="subtitle"><a style="position: relative;" class="stretched-link" href=/database/parties/{{ result.member_of.all.0.id }}>({{ result.member_of.all.0 }})</a></p>{% endif %}
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+                                            <div class="row">
+                                                <h5>Featured In:</h5>
                                                 <div class="grid_one-row">
-                                                    {% for campaign in result.gm_campaigns.all %}
-                                                        <div class="card_sm">
-                                                        <div class="card-header" style="text-align: center">
-                                                            <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                    {% for party in result.member_of.all %}{% for campaign in party.campaigns.all %}
+                                                        <div style="position: relative;"  class="card_sm">
+                                                            <div class="card-header" style="text-align: center">
+                                                                <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <img class="card-img_sm" src={{ campaign.image_url }}>
+                                                            </div>
                                                         </div>
-                                                        <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
-                                                    </div>
+                                                    {% endfor %}{% endfor %}
+                                                    {% for campaign in result.guest_of.all %}
+                                                        <div class="card_sm">
+                                                            <div class="card-header" style="text-align: center">
+                                                                <a style="position: relative;" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                            </div>
+                                                            <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                                        </div>
                                                     {% endfor %}
                                                 </div>
-                                        </div>
-                                    {% elif not result.gm_campaigns.all and result.characters.all %}
-                                        <div class="row my-auto">
-                                            <h5>Characters:</h5>
-                                            <div class="grid_one-row">
-                                                {% for pc in result.characters.all%}
-                                                    <div class="card_sm">
-                                                    <div class="card-header" style="padding: 1%">
-                                                        <a style="position: relative;" class="stretched-link" href=pcs/{{ pc.id }}>{{ pc.name }}</a> <br>
-                                                        <small>
-                                                            ({% if pc.member_of.all %}
-                                                                {% for result in pc.member_of.all %}
-                                                                    {% for campaign in result.campaigns.all %}
-                                                                        <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last%},&nbsp{% endif %}
-                                                                    {% endfor %}
-                                                                {% endfor %}
-                                                            {% endif %}
-                                                            {% if pc.guest_of.all %}
-                                                                {% for campaign in pc.guest_of.all %}
-                                                                    <a style="position: relative;" class="stretched-link" href=campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                                {% endfor %}
-                                                            {% endif %})
-                                                        </small>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
-                                                </div>
-                                                {% endfor %}
                                             </div>
-                                        </div>
-                                    {% endif %}
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if result in parties %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 my-auto">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/parties/{{ result.id }}>{{ result.name }}</a></h3>
-                                    {% if result.campaigns.all %}
-                                        <p class="subtitle">(
-                                            {% for campaign in result.campaigns.all|slice:"0:3" %}
-                                                {% if forloop.counter < 3%}
-                                                    <a style="position: relative;" class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>{% if not forloop.last %},{% endif %}
-                                                {% elif forloop.counter >= 3 %}
-                                                    <a style="position: relative;" class="stretched-link" href=/database/parties/{{ result.id }}>and more...</a>
-                                                {% endif %}
-                                            {% endfor %}
-                                        )</p>
-                                    {% endif %}
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-                                    <div class="row">
-                                        <h5>Members:</h5>
-                                        <div class="grid_one-row">
-                                            {% for pc in result.members.all %}
-                                                <div style="position: relative;" class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a class="stretched-link" href=/database/pcs/{{ pc.id }}>{{ pc.name }}</a>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ pc.image_url }}></div>
-                                                </div>
-                                            {% endfor %}
-                                            {% for campaign in pc.guest_of.all %}
-                                                <div style="position: relative;" class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
-                                                </div>
-                                            {% endfor %}
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                {% endif %}
+                        {% endif %}
 
-                {% if result in pcs %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 my-auto">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/pcs/{{ result.id }}>{{ result.name }}</a></h3>
-                                    {% if result.member_of.all %}<p class="subtitle"><a style="position: relative;" class="stretched-link" href=/database/parties/{{ result.member_of.all.0.id }}>({{ result.member_of.all.0 }})</a></p>{% endif %}
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-                                    <div class="row">
-                                        <h5>Featured In:</h5>
-                                        <div class="grid_one-row">
-                                            {% for party in result.member_of.all %}{% for campaign in party.campaigns.all %}
-                                                <div style="position: relative;"  class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <img class="card-img_sm" src={{ campaign.image_url }}>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}{% endfor %}
-                                            {% for campaign in result.guest_of.all %}
-                                                <div class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a style="position: relative;" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
+                        {% if result in producers %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
                                     </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if result in producers %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 my-auto">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/producers/{{ result.id }}>{{ result.name }}</a></h3>
-                                    {% if result.medium %}<p class="subtitle">({{ result.medium }})</p>{% endif %}
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-                                    <div class="row">
-                                        <h5>Campaigns:</h5>
-                                        <div class="grid_one-row">
-                                            {% for campaign in result.campaigns.all %}
-                                                <div style="position: relative;"  class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if result in publishers %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 my-auto">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/publishers/{{ result.id }}>{{ result.name }}</a></h3>
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-                                    <div class="row">
-                                        <h5>Systems:</h5>
-                                        <div class="grid_one-row">
-                                            {% for system in result.systems.all %}
-                                                <div style="position: relative;" class="card_sm">
-                                                    <div class="card-header" style="text-align: center">
-                                                        <a class="stretched-link" href=/database/systems/{{ system.id }}>{{ system.name }}</a>
-                                                    </div>
-                                                    <div class="card-body"><img class="card-img_sm" src={{ system.image_url }}></div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if result in systems %}
-                    <br>
-                    <div class="card dark-background" style="max-width: 95%; height: 400px">
-                        <div class="row" style="max-width: 100%; height: inherit">
-                            <div class="col-md-5 my-auto">
-                                <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
-                            </div>
-                            <div class="col-md-7 my-auto">
-                                <div class="card-body" style="height: inherit">
-                                    <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/systems/{{ result.id }}>{{ result.name }}</a></h3>
-                                        <p class="subtitle">
-                                            {% if result.published_by.all %}
-                                                (Published By: {% for publisher in result.published_by.all|slice:"0:3" %}
-                                                    {% if forloop.counter < 3%}
-                                                        <a style="position: relative;" class="stretched-link" href=/database/publisher/{{ publisher.id }}>{{ publisher.name }}</a>{% if not forloop.last %},{% endif %}
-                                                    {% elif forloop.counter >= 3 %}
-                                                        <a style="position: relative;" class="stretched-link" href=/database/results/{{ result.id }}>and more...</a>
-                                                    {% endif %}
-                                                {% endfor %})
-                                            <br>
-                                            {% endif %}
-                                            (Campaigns in Database: {{ result.campaigns.all.count }})
-                                        </p>
-                                    <p class="card-text">{{ result.blurb|safe}}</p>
-                                        <div class="row featured_campaigns">
-                                            <h5>Featured Campaigns:</h5>
-                                            <div class="grid_one-row">
-                                                {% for campaign in featured_campaigns %}
-                                                    {% if result in campaign.result.all %}
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/producers/{{ result.id }}>{{ result.name }}</a></h3>
+                                            {% if result.medium %}<p class="subtitle">({{ result.medium }})</p>{% endif %}
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+                                            <div class="row">
+                                                <h5>Campaigns:</h5>
+                                                <div class="grid_one-row">
+                                                    {% for campaign in result.campaigns.all %}
                                                         <div style="position: relative;"  class="card_sm">
                                                             <div class="card-header" style="text-align: center">
                                                                 <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
                                                             </div>
                                                             <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
                                                         </div>
-                                                    {% endif %}
-                                                {% endfor %}
+                                                    {% endfor %}
+                                                </div>
                                             </div>
+
                                         </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        {% endif %}
+
+                        {% if result in publishers %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/publishers/{{ result.id }}>{{ result.name }}</a></h3>
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+                                            <div class="row">
+                                                <h5>Systems:</h5>
+                                                <div class="grid_one-row">
+                                                    {% for system in result.systems.all %}
+                                                        <div style="position: relative;" class="card_sm">
+                                                            <div class="card-header" style="text-align: center">
+                                                                <a class="stretched-link" href=/database/systems/{{ system.id }}>{{ system.name }}</a>
+                                                            </div>
+                                                            <div class="card-body"><img class="card-img_sm" src={{ system.image_url }}></div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if result in systems %}
+                            <br>
+                            <div class="card dark-background" style="max-width: 95%; height: 400px">
+                                <div class="row" style="max-width: 100%; height: inherit">
+                                    <div class="col-md-5 my-auto">
+                                        <img class="img-fluid rounded-start" style="width: 100%; height:395px; object-fit: cover" src={{ result.image_url }}>
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <div class="card-body" style="height: inherit">
+                                            <h3 class="card-title with_subtitle"><a class="stretched-link" href=/database/systems/{{ result.id }}>{{ result.name }}</a></h3>
+                                                <p class="subtitle">
+                                                    {% if result.published_by.all %}
+                                                        (Published By: {% for publisher in result.published_by.all|slice:"0:3" %}
+                                                            {% if forloop.counter < 3%}
+                                                                <a style="position: relative;" class="stretched-link" href=/database/publisher/{{ publisher.id }}>{{ publisher.name }}</a>{% if not forloop.last %},{% endif %}
+                                                            {% elif forloop.counter >= 3 %}
+                                                                <a style="position: relative;" class="stretched-link" href=/database/results/{{ result.id }}>and more...</a>
+                                                            {% endif %}
+                                                        {% endfor %})
+                                                    <br>
+                                                    {% endif %}
+                                                    (Campaigns in Database: {{ result.campaigns.all.count }})
+                                                </p>
+                                            <p class="card-text">{{ result.blurb|safe}}</p>
+                                                <div class="row featured_campaigns">
+                                                    <h5>Featured Campaigns:</h5>
+                                                    <div class="grid_one-row">
+                                                        {% for campaign in featured_campaigns %}
+                                                            {% if result in campaign.result.all %}
+                                                                <div style="position: relative;"  class="card_sm">
+                                                                    <div class="card-header" style="text-align: center">
+                                                                        <a class="stretched-link" href=/database/campaigns/{{ campaign.id }}>{{ campaign.title }}</a>
+                                                                    </div>
+                                                                    <div class="card-body"><img class="card-img_sm" src={{ campaign.image_url }}></div>
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
-            {% endfor %}
-        {% endif %}
-        <br>
+                <br>
+                </div>
+
+                <div class="col-2" style="background-color: #262322">
+                    <p></p>
+                </div>
+            </div>
         </div>
 
     {% else %}
         <h1>You haven't searched for anything...</h1>
     {% endif %}
+
 {% endblock %}
