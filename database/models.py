@@ -175,7 +175,7 @@ class Actor(models.Model):
 class Campaign(models.Model):
     Ongoing = 'Ongoing'
     Complete = 'Complete'
-    On_Hiatus = 'On Hiatus'
+    Hiatus = 'Hiatus'
     Podcast = 'Podcast'
     Video = 'Video'
     Live_Stream = 'Live Stream'
@@ -183,7 +183,7 @@ class Campaign(models.Model):
     Series = 'Series'
 
     progress_choices = [
-        (Ongoing, 'Ongoing'), (Complete, 'Complete'), (On_Hiatus, 'On Hiatus')
+        (Ongoing, 'Ongoing'), (Complete, 'Complete'), (Hiatus, 'Hiatus')
     ]
     medium_choices = [
         (Podcast, 'Podcast'), (Video, 'Video'), (Live_Stream, 'Live Stream')

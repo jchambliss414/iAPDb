@@ -16,16 +16,16 @@ def database_home(request):
     systems = models.System.objects.all()
     publishers = models.Publisher.objects.all()
 
-    featured_campaigns = models.Campaign.objects.filter(featured=True)
+    context = {
+        "campaigns": campaigns,
+        "actors": actors,
+        "pcs": pcs,
+        "parties": parties,
+        "producers": producers,
+        "systems": systems,
+        "publishers": publishers
+    }
 
-    context = {'campaigns': campaigns,
-               'actors': actors,
-               'pcs': pcs,
-               'parties': parties,
-               'producers': producers,
-               'systems': systems,
-               'publishers': publishers,
-               'featured_campaigns': featured_campaigns}
     return render(request, 'database/main.html', context)
 
 
@@ -46,7 +46,7 @@ def database_pages(request, entity):
 
         if request.method == 'POST':
             if "submit_filter" in request.POST:
-                if request.POST.get('sort_order') == 'asc':
+                if request.POST.get('sort_order') == 'asc' or None:
                     sort_order = request.POST.get('sort_order')
                     campaigns = campaigns.order_by('title')
                 elif request.POST.get('sort_order') == 'desc':
@@ -55,29 +55,74 @@ def database_pages(request, entity):
                 else:
                     sort_order = request.POST.get('sort_order')
                     campaigns = campaigns.order_by('title')
+
                 if request.POST.get('progress_filter'):
                     progress = request.POST.get('progress_filter')
-                    campaigns = campaigns.filter(progress__icontains=progress)
+                    campaigns = campaigns.filter(progress=progress)
+                else:
+                    progress = None
                 if request.POST.get('medium_filter'):
                     medium = request.POST.get('medium_filter')
                     campaigns = campaigns.filter(medium__icontains=medium)
+                else:
+                    medium = None
                 if request.POST.get('type_filter'):
-                    t = request.POST.get('type_filter')
-                    campaigns = campaigns.filter(type__icontains=t)
+                    type_choice = request.POST.get('type_filter')
+                    campaigns = campaigns.filter(type__icontains=type_choice)
+                else:
+                    type_choice = None
+            if progress or medium or type_choice is not None:
+                filtered = True
+            else:
+                filtered = False
+            context = {
+                "campaigns": campaigns,
+                "progress": progress,
+                "progress_choices": progress_choices,
+                "medium": medium,
+                "medium_choices": medium_choices,
+                "type": type_choice,
+                "type_choices": type_choices,
+                "sort_order": sort_order,
+                "filtered": filtered,
+            }
+            return render(request, 'database/campaign_database.html', context)
         context = {
             "campaigns": campaigns,
-            # "progress": progress,
             "progress_choices": progress_choices,
-            # "medium": medium,
             "medium_choices": medium_choices,
-            # "type": t,
             "type_choices": type_choices,
-            # "sort_order": sort_order,
         }
         return render(request, 'database/campaign_database.html', context)
 
     if entity == 'actors':
         actors = models.Actor.objects.all()
+        if request.method == 'POST':
+            if "submit_filter" in request.POST:
+                if request.POST.get('sort_order') == 'asc' or None:
+                    sort_order = request.POST.get('sort_order')
+                    actors = actors.order_by('name')
+                elif request.POST.get('sort_order') == 'desc':
+                    sort_order = request.POST.get('sort_order')
+                    actors = actors.order_by('-name')
+                else:
+                    sort_order = request.POST.get('sort_order')
+                    actors = actors.order_by('name')
+
+                if request.POST.get('gm_filter'):
+                    gm_status = request.POST.get('gm_filter')
+                else:
+                    gm_status = None
+                if gm_status == 'gm':
+                    actors = actors.exclude(gm_campaigns__isnull=True)
+                if gm_status == 'not_gm':
+                    actors = actors.exclude(gm_campaigns__isnull=False)
+            context = {
+                "actors": actors,
+                "gm_status": gm_status,
+                "sort_order": sort_order,
+            }
+            return render(request, 'database/actor_database.html', context)
         return render(request, 'database/actor_database.html', {'actors': actors})
 
     if entity == 'pcs':

@@ -34,6 +34,12 @@ h1, h2, h3, h4, h5, h6, p, li {
     padding: 0;
 }
 
+.subtitle-unalaign {
+    font-size: small;
+    margin: 0;
+    padding: 0;
+}
+
 a {
   color: aquamarine !important;
 }
@@ -86,6 +92,7 @@ p.alert_message {
 
 .filter-label {
     color: #4ab08e;
+    margin-bottom: 0;
 }
 
     /* -------------- Tables and Elements --------------*/

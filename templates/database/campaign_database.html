@@ -1,7 +1,21 @@
-{% extends 'database_template.html' %}
+{% extends 'base_template.html' %}
 
 {% block campaigns %}
-<h1>Campaign Page</h1>
+<h1 style="margin-bottom: 1%">Campaigns</h1>
+{% if filtered %}
+    <p style="margin: 1% 0 1%;">
+        <b><u>Active Filter(s):</u></b>
+        {% if progress %}
+            Progress: {{ progress }}{% if medium %} | {% endif %}
+        {% endif %}
+        {% if medium %}
+            Medium: {{ medium }}{% if type %} | {% endif %}
+        {% endif %}
+        {% if type %}
+            Type: {{ type }}
+        {% endif %}
+    </p>
+{% endif %}
 
 <div style="background-color: #4ab08e">
     <div class="row">
@@ -11,6 +25,9 @@
 
         <div class="col-8">
             <a href='{% url 'add_model' entity='campaign' %}' class="database-header-link">Add New Campaign(s)</a>
+            {% if not campaigns %}
+                <h1 class="title dark">No Campaigns Match Filter(s)</h1>
+            {% endif %}
             {% for campaign in campaigns %}
                 {% if forloop.counter > 1 %}<br>{% endif %}
                 <div class="card dark-background" style="max-width: 95%;">
@@ -61,27 +78,15 @@
 
         <div class="col-2" style="background-color: #262322">
             <h3 class="title">Sort and Filter</h3>
-            <p>
-                <b><u>Active Filter(s):</u></b> <br>
-                {% if progress %}
-                    Progress: {{ progress }} <br>
-                {% endif %}
-                {% if medium %}
-                    Medium: {{ medium }} <br>
-                {% endif %}
-                {% if t %}
-                    Type: {{ type }} <br>
-                {% endif %}
-            </p>
             <form action="#" method="POST":>
             {% csrf_token %}
                 <h4 class="with_subtitle">Sort Order</h4>
                 <fieldset>
                     <input type="radio" name="sort_order" id="asc" value="asc">
-                    <label style="color: #4ab08e" for="asc">Ascending</label>
+                    <label class="filter-label" for="asc">Ascending</label>
                     <br>
                     <input type="radio" name="sort_order" id="desc" value="desc">
-                    <label style="color: #4ab08e" for="desc">Descending</label>
+                    <label class="filter-label" for="desc">Descending</label>
                 </fieldset>
             <br>
                 <h4>Filters</h4>
@@ -89,7 +94,7 @@
                 <fieldset>
                     {% for key, value in progress_choices.items %}
                         <input type="radio" name="progress_filter" id={{ key }} value={{ value }}>
-                        <label style="color: #4ab08e" for={{ key }}>{{ value }}</label>
+                        <label class="filter-label" for={{ key }}>{{ value }}</label>
                         <br>
                     {% endfor %}
                 </fieldset>
@@ -98,7 +103,7 @@
                 <fieldset>
                     {% for key, value in medium_choices.items %}
                         <input type="radio" name="medium_filter" id={{ key }} value={{ value }}>
-                        <label style="color: #4ab08e" for={{ key }}>{{ value }}</label>
+                        <label class="filter-label" for={{ key }}>{{ value }}</label>
                         <br>
                     {% endfor %}
                 </fieldset>
@@ -107,7 +112,7 @@
                 <fieldset>
                     {% for key, value in type_choices.items %}
                         <input type="radio" name="type_filter" id={{ key }} value={{ value }}>
-                        <label style="color: #4ab08e" for={{ key }}>{{ value }}</label>
+                        <label class="filter-label" for={{ key }}>{{ value }}</label>
                         <br>
                     {% endfor %}
                 </fieldset>

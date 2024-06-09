@@ -1,4 +1,5 @@
-{% extends 'database_template.html' %}
+{% extends 'base_template.html' %}
+
 
 {% block actors %}
 <h1>Actor Page</h1>
@@ -116,7 +117,26 @@
         </div>
 
         <div class="col-2" style="background-color: #262322">
-            <p></p>
+            <h3 class="title">Sort and Filter</h3>
+            <form action="#" method="POST":>
+            {% csrf_token %}
+                <h4 class="with_subtitle">Sort Order</h4>
+                <fieldset>
+                    <input type="radio" name="sort_order" id="asc" value="asc">
+                    <label class="filter-label" for="asc">Ascending</label>
+                    <br>
+                    <input type="radio" name="sort_order" id="desc" value="desc">
+                    <label class="filter-label" for="desc">Descending</label>
+                </fieldset>
+            <br>
+                <h4>Filter</h4>
+                    <input type="radio" name="gm_filter" id="gm_filter" value="gm">
+                    <label class="filter-label" for="gm_filter">Is GM</label><br>
+                    <input type="radio" name="gm_filter" id="non-gm_filter" value="not_gm">
+                    <label class="filter-label" for="non-gm_filter">Not GM</label>
+                <br><br>
+                <input type="submit" name="submit_filter" value="Submit">
+            </form>
         </div>
     </div>
 </div>
