@@ -1,7 +1,6 @@
 {% extends 'base_template.html' %}
 
-
-{% block actors %}
+{% block campaigns %}
 <h1>Actor Page</h1>
 <div style="background-color: #4ab08e">
     <div class="row">
@@ -118,7 +117,7 @@
 
         <div class="col-2" style="background-color: #262322">
             <h3 class="title">Sort and Filter</h3>
-            <form action="#" method="POST":>
+            <form method="POST":>
             {% csrf_token %}
                 <h4 class="with_subtitle">Sort Order</h4>
                 <fieldset>
@@ -135,9 +134,9 @@
                     <input type="radio" name="gm_filter" id="non-gm_filter" value="not_gm">
                     <label class="filter-label" for="non-gm_filter">Not GM</label>
                 <br><br>
-                <input type="submit" name="submit_filter" value="Submit">
+                <input type="submit" name="submit_actor_filter" value="Submit">
             </form>
         </div>
     </div>
 </div>
-{% endblock actors %}
+{% endblock campaigns %}

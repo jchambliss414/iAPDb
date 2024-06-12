@@ -11,8 +11,8 @@
         {% if medium %}
             Medium: {{ medium }}{% if type %} | {% endif %}
         {% endif %}
-        {% if type %}
-            Type: {{ type }}
+        {% if type_choice %}
+            Type: {{ type_choice }}
         {% endif %}
     </p>
 {% endif %}
@@ -118,7 +118,8 @@
                 </fieldset>
             <br>
 
-                <input type="submit" name="submit_filter" value="Submit">
+                <input type="submit" name="submit_campaign_filter" value="Submit">
+                <input type="reset" value="Reset">
             </form>
         </div>
     </div>

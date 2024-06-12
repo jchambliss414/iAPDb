@@ -1,4 +1,3 @@
-
 function load_Campaigns(){
      $(document).ready(function(){
    $('#nav-campaigns').load("campaigns");

@@ -11,21 +11,8 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home</a>
             </li>
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" style="color: #4ab08e!important;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Database
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href={% url 'database_page' entity='campaigns' %}>Campaigns</a>
-                    <a class="dropdown-item" href={% url 'database_page' entity='actors' %}>Actors</a>
-                    <a class="dropdown-item" href={% url 'database_page' entity='pcs' %}>PCs</a>
-                    <a class="dropdown-item" href={% url 'database_page' entity='parties' %}>Parties</a>
-                    <a class="dropdown-item" href={% url 'database_page' entity='producers' %}>Producers</a>
-                    <a class="dropdown-item" href={% url 'database_page' entity='systems' %}>Systems</a>
-                    <a class="dropdown-item" href={% url 'database_page' entity='publishers' %}>Publishers</a>
-                </div>
+            <li class="nav-item">
+                <a class="nav-link" href="/database">Database</a>
             </li>
             {% if not user.is_authenticated %}
             <li class="nav-item">

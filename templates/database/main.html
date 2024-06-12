@@ -1,28 +1,70 @@
 {% extends "base_template.html" %}
 
 {% block database_main %}
-    <ul>
-        <li>
-            <h1><a href={% url 'database_page' entity='campaigns' %}>Campaigns</a></h1>
-        </li>
-        <li>
-            <h1><a href={% url 'database_page' entity='actors' %}>Actors</a></h1>
+<!--    Nav Bar              -->
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-campaigns-tab" data-bs-toggle="tab" data-bs-target="#nav-campaigns" type="button" role="tab" aria-controls="nav-campaigns" aria-selected="true">Campaigns</button>
+            <button class="nav-link" id="nav-actors-tab" data-bs-toggle="tab" data-bs-target="#nav-actors" type="button" role="tab" aria-controls="nav-actors" aria-selected="true">Actors</button>
+            <button class="nav-link" id="nav-pcs-tab" data-bs-toggle="tab" data-bs-target="#nav-pcs" type="button" role="tab" aria-controls="nav-pcs" aria-selected="true">PCs</button>
+            <button class="nav-link" id="nav-parties-tab" data-bs-toggle="tab" data-bs-target="#nav-parties" type="button" role="tab" aria-controls="nav-parties" aria-selected="true">Parties</button>
+            <button class="nav-link" id="nav-producers-tab" data-bs-toggle="tab" data-bs-target="#nav-producers" type="button" role="tab" aria-controls="nav-producers" aria-selected="true">Producers</button>
+            <button class="nav-link" id="nav-systems-tab" data-bs-toggle="tab" data-bs-target="#nav-systems" type="button" role="tab" aria-controls="nav-systems" aria-selected="true">Systems</button>
+            <button class="nav-link" id="nav-publishers-tab" data-bs-toggle="tab" data-bs-target="#nav-publishers" type="button" role="tab" aria-controls="nav-publishers" aria-selected="true">Publishers</button>
+        </div>
+    </nav>
+<!--    Content      -->
+    <div class="tab-content" id="nav-tabContent">
 
-        </li>
-        <li>
-            <h1><a href={% url 'database_page' entity='pcs' %}>PCs</a></h1>
-        </li>
-        <li>
-            <h1><a href={% url 'database_page' entity='parties' %}>Parties</a></h1>
-        </li>
-        <li>
-            <h1><a href={% url 'database_page' entity='producers' %}>Producers</a></h1>
-        </li>
-        <li>
-            <h1><a href={% url 'database_page' entity='systems' %}>Systems</a></h1>
-        </li>
-        <li>
-            <h1><a href={% url 'database_page' entity='publishers' %}>Publishers</a></h1>
-        </li>
-    </ul>
+    <!--        Campaigns       -->
+        <div class="tab-pane fade show active" id="nav-campaigns" role="tabpanel" aria-labelledby="nav-campaigns-tab" tabindex="0">
+            <script>
+              const campaigns_element = document.getElementById('nav-campaigns');
+              campaigns_element.onload = load_Campaigns();
+            </script>
+        </div>
+    <!--        Actors       -->
+        <div class="tab-pane fade" id="nav-actors" role="tabpanel" aria-labelledby="nav-actors-tab" tabindex="0">
+            <script>
+              const actors_element = document.getElementById('nav-actors');
+              actors_element.onload = load_Actors();
+            </script>
+        </div>
+    <!--        PCs       -->
+        <div class="tab-pane fade" id="nav-pcs" role="tabpanel" aria-labelledby="nav-pcs-tab" tabindex="0">
+            <script>
+              const pcs_element = document.getElementById('nav-pcs');
+              pcs_element.onload = load_PCs();
+            </script>
+        </div>
+    <!--        Parties       -->
+        <div class="tab-pane fade" id="nav-parties" role="tabpanel" aria-labelledby="nav-parties-tab" tabindex="0">
+            <script>
+              const parties_element = document.getElementById('nav-parties');
+              pcs_element.onload = load_Parties();
+            </script>
+        </div>
+    <!--        Producers       -->
+        <div class="tab-pane fade" id="nav-producers" role="tabpanel" aria-labelledby="nav-producers-tab" tabindex="0">
+            <script>
+              const producers_element = document.getElementById('nav-producers');
+              producers_element.onload = load_Producers();
+            </script>
+        </div>
+    <!--        Systems       -->
+        <div class="tab-pane fade" id="nav-systems" role="tabpanel" aria-labelledby="nav-systems-tab" tabindex="0">
+            <script>
+              const systems_element = document.getElementById('nav-systems');
+              systems_element.onload = load_Systems();
+            </script>
+        </div>
+    <!--        Publishers       -->
+        <div class="tab-pane fade" id="nav-publishers" role="tabpanel" aria-labelledby="nav-publishers-tab" tabindex="0">
+            <script>
+              const publishers_element = document.getElementById('nav-publishers');
+              publishers_element.onload = load_Publishers();
+            </script>
+        </div>
+
+    </div>
 {% endblock database_main %}

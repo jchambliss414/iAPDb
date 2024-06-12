@@ -20,7 +20,7 @@ from . import views
 import iAPdb_Project.views as project_views
 
 urlpatterns = [
-    path('', views.database_home),
+    path('', views.database_home, name="databse_home"),
     path('<str:entity>/', views.database_pages, name="database_page"),
     path('<str:entity>/<int:ent_id>', views.model_pages, name="model_page"),
 

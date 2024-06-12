@@ -16,6 +16,99 @@ def database_home(request):
     systems = models.System.objects.all()
     publishers = models.Publisher.objects.all()
 
+    progress = ''
+    medium = ''
+    type_choice = ''
+    gm_status = ''
+    filtered = False
+    tab_hash = ''
+
+    progress_choices = {}
+    for choice in Campaign.progress_choices:
+        progress_choices[choice[0].lower().replace(' ', '_')] = choice[0]
+
+    medium_choices = {}
+    for choice in Campaign.medium_choices:
+        medium_choices[choice[0].lower().replace(' ', '_')] = choice[0]
+
+    type_choices = {}
+    for choice in Campaign.type_choices:
+        type_choices[choice[0].lower().replace(' ', '_')] = choice[0]
+
+    if request.method == 'POST':
+        if "submit_campaign_filter" in request.POST:
+            tab_hash = '#campaigns'
+
+            if request.POST.get('sort_order') == 'asc':
+                sort_order = request.POST.get('sort_order')
+                campaigns = campaigns.order_by('title')
+            elif request.POST.get('sort_order') == 'desc':
+                sort_order = request.POST.get('sort_order')
+                campaigns = campaigns.order_by('-title')
+            else:
+                sort_order = request.POST.get('sort_order')
+                campaigns = campaigns.order_by('title')
+
+            if request.POST.get('progress_filter'):
+                progress = request.POST.get('progress_filter')
+                campaigns = campaigns.filter(progress=progress)
+            else:
+                progress = None
+            if request.POST.get('medium_filter'):
+                medium = request.POST.get('medium_filter')
+                campaigns = campaigns.filter(medium__icontains=medium)
+            else:
+                medium = None
+            if request.POST.get('type_filter'):
+                type_choice = request.POST.get('type_filter')
+                campaigns = campaigns.filter(type__icontains=type_choice)
+            else:
+                type_choice = None
+
+        if "submit_actor_filter" in request.POST:
+            print("button pressed")
+
+            if request.POST.get('sort_order') == 'asc':
+                campaigns = campaigns.order_by('title')
+            elif request.POST.get('sort_order') == 'desc':
+                campaigns = campaigns.order_by('-title')
+            else:
+                campaigns = campaigns.order_by('title')
+
+            if request.POST.get('gm_filter'):
+                gm_status = request.POST.get('gm_filter')
+                if gm_status == "gm":
+                    actors = actors.filter(gm_campaigns__isnull=True)
+                elif gm_status == "not_gm":
+                    actors = actors.filter(gm_campaigns__isnull=False)
+                else:
+                    gm_status = None
+
+        if progress or medium or type_choice is not None:
+            filtered = True
+        else:
+            filtered = False
+
+        context = {
+            "campaigns": campaigns,
+            "actors": actors,
+            "pcs": pcs,
+            "parties": parties,
+            "producers": producers,
+            "systems": systems,
+            "publishers": publishers,
+            "progress_choices": progress_choices,
+            "medium_choices": medium_choices,
+            "type_choices": type_choices,
+            "progress": progress,
+            "medium": medium,
+            "type_choice": type_choice,
+            "gm_status": gm_status,
+            "filtered": filtered,
+            "tab_hash": tab_hash
+        }
+        return render(request, 'database/campaign_database.html', context)
+
     context = {
         "campaigns": campaigns,
         "actors": actors,
@@ -23,7 +116,16 @@ def database_home(request):
         "parties": parties,
         "producers": producers,
         "systems": systems,
-        "publishers": publishers
+        "publishers": publishers,
+        "progress_choices": progress_choices,
+        "medium_choices": medium_choices,
+        "type_choices": type_choices,
+        "progress": progress,
+        "medium": medium,
+        "type_choice": type_choice,
+        "gm_status": gm_status,
+        "filtered": filtered,
+        "tab_hash": tab_hash
     }
 
     return render(request, 'database/main.html', context)
@@ -32,73 +134,18 @@ def database_home(request):
 def database_pages(request, entity):
     if entity == 'campaigns':
         campaigns = models.Campaign.objects.all()
-        progress_choices = {}
-        for choice in Campaign.progress_choices:
-            progress_choices[choice[0].lower().replace(' ', '_')] = choice[0]
 
-        medium_choices = {}
-        for choice in Campaign.medium_choices:
-            medium_choices[choice[0].lower().replace(' ', '_')] = choice[0]
-
-        type_choices = {}
-        for choice in Campaign.type_choices:
-            type_choices[choice[0].lower().replace(' ', '_')] = choice[0]
-
-        if request.method == 'POST':
-            if "submit_filter" in request.POST:
-                if request.POST.get('sort_order') == 'asc' or None:
-                    sort_order = request.POST.get('sort_order')
-                    campaigns = campaigns.order_by('title')
-                elif request.POST.get('sort_order') == 'desc':
-                    sort_order = request.POST.get('sort_order')
-                    campaigns = campaigns.order_by('-title')
-                else:
-                    sort_order = request.POST.get('sort_order')
-                    campaigns = campaigns.order_by('title')
-
-                if request.POST.get('progress_filter'):
-                    progress = request.POST.get('progress_filter')
-                    campaigns = campaigns.filter(progress=progress)
-                else:
-                    progress = None
-                if request.POST.get('medium_filter'):
-                    medium = request.POST.get('medium_filter')
-                    campaigns = campaigns.filter(medium__icontains=medium)
-                else:
-                    medium = None
-                if request.POST.get('type_filter'):
-                    type_choice = request.POST.get('type_filter')
-                    campaigns = campaigns.filter(type__icontains=type_choice)
-                else:
-                    type_choice = None
-            if progress or medium or type_choice is not None:
-                filtered = True
-            else:
-                filtered = False
-            context = {
-                "campaigns": campaigns,
-                "progress": progress,
-                "progress_choices": progress_choices,
-                "medium": medium,
-                "medium_choices": medium_choices,
-                "type": type_choice,
-                "type_choices": type_choices,
-                "sort_order": sort_order,
-                "filtered": filtered,
-            }
-            return render(request, 'database/campaign_database.html', context)
         context = {
             "campaigns": campaigns,
-            "progress_choices": progress_choices,
-            "medium_choices": medium_choices,
-            "type_choices": type_choices,
         }
         return render(request, 'database/campaign_database.html', context)
 
     if entity == 'actors':
         actors = models.Actor.objects.all()
         if request.method == 'POST':
-            if "submit_filter" in request.POST:
+            gm_status = ''
+            if "submit_actor_filter" in request.POST:
+                print('gm')
                 if request.POST.get('sort_order') == 'asc' or None:
                     sort_order = request.POST.get('sort_order')
                     actors = actors.order_by('name')
@@ -112,15 +159,15 @@ def database_pages(request, entity):
                 if request.POST.get('gm_filter'):
                     gm_status = request.POST.get('gm_filter')
                 else:
-                    gm_status = None
+                    gm_status = ''
                 if gm_status == 'gm':
+                    print('status = gm')
                     actors = actors.exclude(gm_campaigns__isnull=True)
                 if gm_status == 'not_gm':
                     actors = actors.exclude(gm_campaigns__isnull=False)
             context = {
                 "actors": actors,
                 "gm_status": gm_status,
-                "sort_order": sort_order,
             }
             return render(request, 'database/actor_database.html', context)
         return render(request, 'database/actor_database.html', {'actors': actors})
@@ -146,6 +193,9 @@ def database_pages(request, entity):
         featured_campaigns = models.Campaign.objects.filter(featured=True)
         return render(request, 'database/system_database.html', {'systems': systems,
                                                                  'featured_campaigns': featured_campaigns})
+
+    else:
+        return redirect('/database')
 
 
 def model_pages(request, entity, ent_id):
